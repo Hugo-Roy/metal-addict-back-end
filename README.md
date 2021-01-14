@@ -12,7 +12,7 @@ L'idée est de rester dans ce style musical en incluant tous les genres et sous-
 Pour info, les API externes utilisées sont très complètes et permettront de remonter jusqu'au début du style
 (avec des concerts des années 60/70 pour les plus anciens) jusqu'à aujourd'hui.
 
-L'objectif est de rassembler les fans de metal afin de partager leur expérience et leurs souvenirs.
+L'objectif est de rassembler les fans de metal afin de partager leurs expériences et leurs souvenirs.
 
 ## Plan et fonctionnalités du site
 
@@ -24,7 +24,7 @@ La recherche devra contenir, au minimum, le nom du groupe.
 Cette même recherche pourra être affinée par:
 - pays
 - ville
-- lieu d'évènement
+- lieu de l'évènement
 - année
 
 Seront également présents sur cette page:
@@ -37,7 +37,7 @@ Seront également présents sur cette page:
 L'utilisateur verra ici une liste d'un ou plusieurs éléments résultants de sa recherche. Ceux-ci seront présentés sous forme de cards renseignants:
 - le nom du groupe
 - une photo illustrant le groupe
-- la date du concert
+- la date de l'évènement
 - le lieu de l'évènement
 - une icône "j'y était", permettant à l'utilisateur de signaler sa participation à cet évènement
 - le nombre de reviews rédigées pour cet évènement
@@ -50,7 +50,7 @@ Après avoir cliqué sur l'un des précédents résultats de sa recherche, l'uti
 - une photo illustrant le groupe
 - la date du concert
 - le lieu de l'évènement
-- une icône "j'y était", permettant à l'utilisateur de signaler sa participation à cet évènement
+- une icône "j'y étais", permettant à l'utilisateur de signaler sa participation à cet évènement
 - les reviews rédigées par les utilisateurs, accompagnées des photos de profil de leurs auteurs et leurs pseudonymes
 - la setlist du concert
 - ```(Une "note" attribuée par les utilisateurs)```
@@ -73,7 +73,7 @@ Seront égalements affichés, les photos prisent et ajoutées par l'utilisateur,
 
 ### Page publique de l'utilisateur
 
-C'est le profil publique de l'utilisateur connecté, consultable par les autres utilisateurs. Ceux-ci auront pourront voir:
+C'est le profil public de l'utilisateur connecté, consultable par les autres utilisateurs. Ceux-ci pourront voir:
 - les informations de bases concernant l'utilisateur visité
 - les concerts auxquels il a précisé avoir participé
 - les reviews correspondantes à ces concerts, si existantes
@@ -82,7 +82,7 @@ C'est le profil publique de l'utilisateur connecté, consultable par les autres 
 
 C'est ici qu'un utilisateur non-inscrit deviendra un utilisateur inscrit grâce à un formulaire d'inscription. Voilà.
 
-### Page ou fenêtre de connexion 
+### Page ou fenêtre de connexion
 
 C'est ici qu'un utilisateur inscrit se connectera grâce à un formulaire pour, entre autre, accéder à son espace personnel, rédiger des reviews...
 
@@ -99,3 +99,12 @@ Les utilisateurs **connectés** auront accès à l'ensemble des fonctionnalités
 
 ### Back:
 - Symfony, MySQL, PHP
+
+## Equipe:
+
+- Product owner : Thomas Lutaster
+- Scrum master : Frédéric Millox
+- Lead dev front : Frédéric Millox
+- Lead dev back : Hugo Drelon
+- Git master : Hugo Roy
+- Référent par librairie : Thomas Lutaster
