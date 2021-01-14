@@ -64,13 +64,13 @@ Sur cette page, l'utilisateur aura la possibilité de rédiger une review ou il 
 
 ### Page review
 
-Ici, l'utilisateur aura accès à la version complète de la review sélectionnée, composée comme tel:
+Ici, l'utilisateur aura accès à la version complète de la review sélectionnée, composée comme telle:
 - titre
 - pseudonyme de l'utilisateur et sa photo de profil
 - date de publication
 - contenu principal
 
-Seront égalements affichés, les photos prisent et ajoutées par l'utilisateur, les commentaires associés à cette même review.
+Seront égalements affichés, les photos prises et ajoutées par l'utilisateur, ```(les commentaires associés à cette même review)```.
 
 ### Page publique de l'utilisateur
 
