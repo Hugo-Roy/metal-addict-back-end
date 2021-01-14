@@ -39,7 +39,7 @@ L'utilisateur verra ici une liste d'un ou plusieurs éléments résultants de sa
 - une photo illustrant le groupe
 - la date de l'évènement
 - le lieu de l'évènement
-- une icône "j'y était", permettant à l'utilisateur de signaler sa participation à cet évènement
+- une icône "j'y étais", permettant à l'utilisateur de signaler sa participation à cet évènement
 - le nombre de reviews rédigées pour cet évènement
 - le nombre de photos postées par les utilisateurs
 
