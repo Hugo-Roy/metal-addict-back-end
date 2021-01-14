@@ -53,7 +53,7 @@ Après avoir cliqué sur l'un des précédents résultats de sa recherche, l'uti
 - une icône "j'y étais", permettant à l'utilisateur de signaler sa participation à cet évènement
 - les reviews rédigées par les utilisateurs, accompagnées des photos de profil de leurs auteurs et leurs pseudonymes
 - la setlist du concert
-- un caroussel des photos, concernants le concert, ajoutées par les utilisateurs
+- une galerie de photos, concernants le concert, ajoutées par les utilisateurs
 - ```(Une "note" attribuée par les utilisateurs)```
 
 ### Page de rédaction d'une review
@@ -89,7 +89,7 @@ C'est ici qu'un utilisateur inscrit se connectera grâce à un formulaire pour, 
 
 ## Rôles utilisateurs
 
-les utilisateurs **non connectés** auront accès à l'ensemble des services du site à l'exception de poster des reviews, commenter des reviews, renseigner avoir participé à un évènement.
+les utilisateurs **non connectés** auront accès à l'ensemble des services du site à l'exception de poster des reviews, ```commenter des reviews```, renseigner avoir participé à un évènement.
 
 Les utilisateurs **connectés** auront accès à l'ensemble des fonctionnalités proposées par le site.
 
