@@ -1,0 +1,14 @@
+PICTURE: path, createdAt, updatedAt
+shot, 0N USER, 0N EVENT, 11 PICTURE
+:
+COUNTRY: name, countryCode, createdAt, updatedAt
+
+USER: email, password, nickname, avatar, createdAt, updatedAt
+was, 1N EVENT, 0N USER
+EVENT: setlistId, bandName, date, venue, city, createdAt, updatedAt
+took place, 11 EVENT, 0N COUNTRY
+
+REVIEW: title, content, createdAt, updatedAt
+wrote, 11 REVIEW, 0N EVENT, 0N USER
+performed by, 11 EVENT, 0N BAND
+BAND: name, musicbrainzId, image, createdAt, updatedAt
