@@ -3,7 +3,7 @@
 |Endpoint|Méthode HTTP|Description|Rôles|Retour|
 |-|-|-|-|-|
 |`/api/home`|`GET`|Récupération des dernières reviews postées|USER et VISITOR|200|
-|`/api/search/{bandId}`|`POST`|Liste des events en fonction des paramètres donnés|USER et VISITOR|200|
+|`/api/search/{bandId}`|`GET`|Liste des events en fonction des paramètres donnés|USER et VISITOR|200|
 |`/api/user/{id}`|`GET`|Récupération des données de l'utilisateur|USER et VISITOR|200 ou 404|
 |`/api/user`|`POST`|Création des données de l'utilisateur|VISITOR|200|
 |`/api/user/{id}`|`PUT`|Modification des données de l'utilisateur|USER(owner)|200, 204 ou 204|

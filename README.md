@@ -23,14 +23,14 @@ L'utilisateur pourra effectuer une recherche depuis la page d'accueil.
 La recherche devra contenir, au minimum, le nom du groupe.
 Cette même recherche pourra être affinée par:
 - pays
-- ville
-- lieu de l'évènement
+- ```(ville)```
+- ```(lieu de l'évènement)```
 - année
 
 Seront également présents sur cette page:
 - une présentation du site
 - une liste des dernières reviews postées par les utilisateurs
-- une liste des reviews les plus populaires
+- ```(une liste des reviews les plus populaires)```
 
 ### Page de résultat de recherche
 
@@ -39,7 +39,7 @@ L'utilisateur verra ici une liste d'un ou plusieurs éléments résultants de sa
 - une photo illustrant le groupe
 - la date de l'évènement
 - le lieu de l'évènement
-- une icône "j'y étais", permettant à l'utilisateur de signaler sa participation à cet évènement
+- ```(une icône "j'y étais", permettant à l'utilisateur de signaler sa participation à cet évènement)```
 - le nombre de reviews rédigées pour cet évènement
 - le nombre de photos postées par les utilisateurs
 
