@@ -4,7 +4,7 @@ at, 0N EVENT, 11 PICTURE
 took place, 11 EVENT, 0N COUNTRY
 COUNTRY: name, countryCode, createdAt, updatedAt
 
-USER: email, password, nickname, avatar, createdAt, updatedAt
+USER: email, password, nickname, avatar, biography, createdAt, updatedAt
 was, 1N EVENT, 0N USER
 EVENT: setlistId, bandName, date, venue, city, createdAt, updatedAt
 performed by, 11 EVENT, 0N BAND
