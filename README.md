@@ -12,6 +12,8 @@ L'idée est de rester dans ce style musical en incluant tous les genres et sous-
 
 L'objectif est de rassembler les fans de metal afin de partager leurs expériences et leurs souvenirs.
 
+```(Le texte présenté sous cette forme signal les fonctionnalités envisagées pour l'avenir)```
+
 ## Plan et fonctionnalités du site
 
 ### Page d'accueil
@@ -122,8 +124,11 @@ Les utilisateurs **connectés** auront accès à l'ensemble de la navigation du 
 - Symfony, MySQL, PHP
 
 ### API:
-- Musicbrainz (https://musicbrainz.org/doc/MusicBrainz_API)
-- Setlist.fm (https://api.setlist.fm/docs/1.0/index.html) nécessaire à la récupération d'évènements et de leurs données associées
+- Musicbrainz (https://musicbrainz.org/doc/MusicBrainz_API) nécessaire à la création de notre banque de données de groupes.
+- Setlist, nécessaire à la récupération d'évènements et de leurs données associées.
+- https://api.setlist.fm/docs/1.0/resource__1.0_artist__mbid__setlists.html
+- https://api.setlist.fm/docs/1.0/resource__1.0_setlist__setlistId_.html
+- https://api.setlist.fm/docs/1.0/ui/index.html#//1.0/search/setlists
 
 ## Equipe:
 
