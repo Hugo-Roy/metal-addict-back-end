@@ -33,7 +33,8 @@
 | email (unique)                     | no                  | string              |
 | password            | no                  | string (encoded)             |
 | nickname                    | no                  | string              |
-| avatar                    | yes                  | url              |
+| biography                    | no                  | string              |
+| avatar                    | yes                  | string              |
 | createdAt                | no                  | dateTime            |
 | updatedAt                | yes                  | dateTime            |
 
@@ -67,7 +68,7 @@
 | field name               | nullable            | type                |
 |--------------------------|---------------------|---------------------|
 | id                     | no                  | int              |
-| path                     | no                  | url              |
+| path                     | no                  | string              |
 | userId            | no                  | int             |
 | eventId            | no                  | int             |
 | createdAt                | no                  | dateTime            |
