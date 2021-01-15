@@ -138,3 +138,28 @@ Les utilisateurs **connectés** auront accès à l'ensemble de la navigation du 
 - Lead dev back : Hugo Drelon
 - Git master : Hugo Roy
 - Référent par librairie : Thomas Lutaster
+
+## User Stories
+
+- En tant que visiteur, je peux utiliser la navigation (accueil, connexion)
+- En tant que visiteur, je peux effectuer une recherche par nom (obligatoire), ville, pays, salle de spectacles ou année
+- En tant que visiteur, je peux consulter sur la Home les dernières reviews postés par les utilisateurs
+- En tant que visiteur, je peux consulter la page Results Events
+- En tant que visiteur, je peux cliquer sur la page Results Events sur un événement retourné
+- En tant que visiteur, je peux filtrer sur la page Results Events les résultats de la recherche
+- En tant que visiteur, je peux consulter la page Event
+- En tant que visiteur, je peux cliquer sur la page Event sur une review du concert
+- En tant que visiteur, je peux consulter sur la page Event toutes les photos des reviews du concert
+- En tant que visiteur, je peux consulter la page Review
+- En tant que visiteur, je peux consulter sur la page Review toutes les photos des reviews du concert
+- En tant que visiteur, je peux m’inscrire sur le site
+- En tant qu’utilisateur inscrit, je peux indiquer sur la page Results Events que j’ai participé au concert
+- En tant qu’utilisateur inscrit, je peux accéder sur la page Event à la page Add Review
+- En tant qu’utilisateur inscrit, je peux ajouter/supprimer sur la page Event une photo
+- En tant qu’utilisateur inscrit, je peux créer sur la page Add Review une review
+- En tant qu’utilisateur inscrit, je peux modifier sur la page Review ma review
+- En tant qu’utilisateur inscrit, je peux accéder à la page User Profile
+- En tant qu’utilisateur inscrit, je peux sur la page Page Profile lister mes photos / suppression
+- En tant qu’utilisateur inscrit, je peux sur la page Page Profile lister mes concerts
+- En tant qu’utilisateur inscrit, je peux sur la page Page Profile lister mes reviews
+- En tant que visiteur, je peux utiliser la navigation (accueil, déconnexion)
