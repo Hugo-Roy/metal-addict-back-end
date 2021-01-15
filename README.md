@@ -74,7 +74,7 @@ Ici, l'utilisateur aura accès à la version complète de la review sélectionn�
 
 Seront égalements affichés, les photos prises et ajoutées par l'auteur de la review, ```(les commentaires associés à cette même review)```.
 
-### Page profil de l'utilisateur
+### Page profil d'un utilisateur visité
 
 C'est le profil d'un utilisateur inscrit, consultable par les autres utilisateurs. Ceux-ci pourront voir:
 - les informations de bases concernant l'utilisateur visité
@@ -82,27 +82,48 @@ C'est le profil d'un utilisateur inscrit, consultable par les autres utilisateur
 - les photos ajoutées par l'utilisateur visité.
 - les reviews correspondantes à ces concerts, si existantes.
 
+### Page profil de l'utilisateur connecté concerné
+
+C'est le profil d'un utilisateur inscrit, consultable par les autres utilisateurs. Ceux-ci pourront voir:
+- les informations de bases concernant l'utilisateur
+- les concerts auxquels il a précisé avoir participé
+- les photos ajoutées par l'utilisateur visité.
+- les reviews correspondantes à ces concerts, si existantes.
+- possibilité de supprimer ses reviews
+- possibilité de supprimer ses photos
+- possibilité de modifier ses infos
+
 ### Page d'inscription
 
-C'est ici qu'un utilisateur non-inscrit deviendra un utilisateur inscrit grâce à un formulaire d'inscription. Voilà.
+C'est ici qu'un utilisateur non-inscrit deviendra un utilisateur inscrit grâce à un formulaire d'inscription.
 
-### Page ou fenêtre de connexion
+```(Validation d'inscription par email)```
 
-C'est ici qu'un utilisateur inscrit se connectera grâce à un formulaire pour, entre autre, accéder à son espace personnel, rédiger des reviews...
+### Fenêtre de connexion
+
+C'est ici qu'un utilisateur inscrit se connectera grâce à un formulaire de connexion.
 
 ## Rôles utilisateurs
 
-les utilisateurs **non connectés** auront accès à l'ensemble des services du site à l'exception de poster des reviews, ```commenter des reviews```, renseigner avoir participé à un évènement.
+les utilisateurs **non connectés** auront accès à l'ensemble de la navigation du site.
 
-Les utilisateurs **connectés** auront accès à l'ensemble des fonctionnalités proposées par le site.
+Les utilisateurs **connectés** auront accès à l'ensemble de la navigation du site, il pourra:
+- ajouter, modifier, supprimer ses reviews
+- ajouter, modifier, supprimer ses photos
+- modifier les informations de son profil
+- ajouter un concert à son historique via le bouton "j'y étais"
 
 ## Technologies utilisées
 
 ### Front:
-- React, librairies
+- React, librairies React Hook Form, Animate on Scroll, React Slick, React Spinner.
 
 ### Back:
 - Symfony, MySQL, PHP
+
+### API:
+- Musicbrainz (https://musicbrainz.org/doc/MusicBrainz_API)
+- Setlist.fm (https://api.setlist.fm/docs/1.0/index.html) nécessaire à la récupération d'évènements et de leurs données associées
 
 ## Equipe:
 
