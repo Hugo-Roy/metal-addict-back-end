@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-# Généré par Mocodo 2.3.7 le Thu, 14 Jan 2021 06:07:10
+# Généré par Mocodo 2.3.7 le Fri, 15 Jan 2021 06:56:47
 
 from __future__ import division
 from math import hypot
@@ -9,7 +9,7 @@ import time, codecs
 
 import json
 
-with codecs.open('Events_geo.json') as f:
+with codecs.open('mcd_geo.json') as f:
     geo = json.loads(f.read())
 (width,height) = geo.pop('size')
 for (name, l) in geo.items(): globals()[name] = dict(l)
@@ -171,26 +171,92 @@ lines += '\n\n<svg width="%s" height="%s" view_box="0 0 %s %s"\nxmlns="http://ww
 lines += u'\\n\\n<desc>Généré par Mocodo 2.3.7 le %s</desc>' % time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
 lines += '\n\n<rect id="frame" x="0" y="0" width="%s" height="%s" fill="%s" stroke="none" stroke-width="0"/>' % (width,height,colors['background_color'] if colors['background_color'] else "none")
 
-lines += u"""\n\n<!-- Association was -->"""
-(x,y) = (cx[u"was"],cy[u"was"])
+lines += u"""\n\n<!-- Association about -->"""
+(x,y) = (cx[u"about"],cy[u"about"])
+(ex,ey) = (cx[u"REVIEW"],cy[u"REVIEW"])
+leg=straight_leg_factory(ex,ey,37,51,x,y,25,25,21+2*card_margin,15+2*card_margin)
+lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
+(tx,ty)=offset(*leg.card_pos(False,shift[u"about,REVIEW"]))
+lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">1,1</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
 (ex,ey) = (cx[u"EVENT"],cy[u"EVENT"])
-leg=straight_leg_factory(ex,ey,38,76,x,y,19,25,22+2*card_margin,15+2*card_margin)
+leg=straight_leg_factory(ex,ey,38,76,x,y,25,25,22+2*card_margin,15+2*card_margin)
 lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
-(tx,ty)=offset(*leg.card_pos(False,shift[u"was,EVENT"]))
-lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">1,N</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
-(ex,ey) = (cx[u"USER"],cy[u"USER"])
-leg=straight_leg_factory(ex,ey,37,68,x,y,19,25,22+2*card_margin,15+2*card_margin)
-lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
-(tx,ty)=offset(*leg.card_pos(False,shift[u"was,USER"]))
+(tx,ty)=offset(*leg.card_pos(False,shift[u"about,EVENT"]))
 lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">0,N</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
-lines += u"""\n<g id="association-was">""" % {}
-path = upper_round_rect(-19+x,-25+y,38,25,14)
+lines += u"""\n<g id="association-about">""" % {}
+path = upper_round_rect(-25+x,-25+y,50,25,14)
 lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_cartouche_color'], 'stroke_color': colors['association_cartouche_color']}
-path = lower_round_rect(-19+x,0.0+y,38,25,14)
+path = lower_round_rect(-25+x,0.0+y,50,25,14)
 lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_color'], 'stroke_color': colors['association_color']}
-lines += u"""\n	<rect x="%(x)s" y="%(y)s" width="38" height="50" fill="%(color)s" rx="14" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'x': -19+x, 'y': -25+y, 'color': colors['transparent_color'], 'stroke_color': colors['association_stroke_color']}
-lines += u"""\n	<line x1="%(x0)s" y1="%(y0)s" x2="%(x1)s" y2="%(y1)s" stroke="%(stroke_color)s" stroke-width="1"/>""" % {'x0': -19+x, 'y0': 0+y, 'x1': 19+x, 'y1': 0+y, 'stroke_color': colors['association_stroke_color']}
-lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Verdana" font-size="12">was</text>""" % {'x': -12+x, 'y': -7.3+y, 'text_color': colors['association_cartouche_text_color']}
+lines += u"""\n	<rect x="%(x)s" y="%(y)s" width="50" height="50" fill="%(color)s" rx="14" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'x': -25+x, 'y': -25+y, 'color': colors['transparent_color'], 'stroke_color': colors['association_stroke_color']}
+lines += u"""\n	<line x1="%(x0)s" y1="%(y0)s" x2="%(x1)s" y2="%(y1)s" stroke="%(stroke_color)s" stroke-width="1"/>""" % {'x0': -25+x, 'y0': 0+y, 'x1': 25+x, 'y1': 0+y, 'stroke_color': colors['association_stroke_color']}
+lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Verdana" font-size="12">about</text>""" % {'x': -18+x, 'y': -7.3+y, 'text_color': colors['association_cartouche_text_color']}
+lines += u"""\n</g>""" % {}
+
+lines += u"""\n\n<!-- Association shot -->"""
+(x,y) = (cx[u"shot"],cy[u"shot"])
+(ex,ey) = (cx[u"USER"],cy[u"USER"])
+leg=straight_leg_factory(ex,ey,37,68,x,y,21,25,22+2*card_margin,15+2*card_margin)
+lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
+(tx,ty)=offset(*leg.card_pos(False,shift[u"shot,USER"]))
+lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">0,N</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
+(ex,ey) = (cx[u"PICTURE"],cy[u"PICTURE"])
+leg=straight_leg_factory(ex,ey,37,42,x,y,21,25,21+2*card_margin,15+2*card_margin)
+lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
+(tx,ty)=offset(*leg.card_pos(False,shift[u"shot,PICTURE"]))
+lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">1,1</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
+lines += u"""\n<g id="association-shot">""" % {}
+path = upper_round_rect(-21+x,-25+y,42,25,14)
+lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_cartouche_color'], 'stroke_color': colors['association_cartouche_color']}
+path = lower_round_rect(-21+x,0.0+y,42,25,14)
+lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_color'], 'stroke_color': colors['association_color']}
+lines += u"""\n	<rect x="%(x)s" y="%(y)s" width="42" height="50" fill="%(color)s" rx="14" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'x': -21+x, 'y': -25+y, 'color': colors['transparent_color'], 'stroke_color': colors['association_stroke_color']}
+lines += u"""\n	<line x1="%(x0)s" y1="%(y0)s" x2="%(x1)s" y2="%(y1)s" stroke="%(stroke_color)s" stroke-width="1"/>""" % {'x0': -21+x, 'y0': 0+y, 'x1': 21+x, 'y1': 0+y, 'stroke_color': colors['association_stroke_color']}
+lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Verdana" font-size="12">shot</text>""" % {'x': -14+x, 'y': -7.3+y, 'text_color': colors['association_cartouche_text_color']}
+lines += u"""\n</g>""" % {}
+
+lines += u"""\n\n<!-- Association performed by -->"""
+(x,y) = (cx[u"performed by"],cy[u"performed by"])
+(ex,ey) = (cx[u"EVENT"],cy[u"EVENT"])
+leg=straight_leg_factory(ex,ey,38,76,x,y,49,25,21+2*card_margin,15+2*card_margin)
+lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
+(tx,ty)=offset(*leg.card_pos(False,shift[u"performed by,EVENT"]))
+lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">1,1</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
+(ex,ey) = (cx[u"BAND"],cy[u"BAND"])
+leg=straight_leg_factory(ex,ey,48,59,x,y,49,25,22+2*card_margin,15+2*card_margin)
+lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
+(tx,ty)=offset(*leg.card_pos(False,shift[u"performed by,BAND"]))
+lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">0,N</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
+lines += u"""\n<g id="association-performed by">""" % {}
+path = upper_round_rect(-49+x,-25+y,98,25,14)
+lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_cartouche_color'], 'stroke_color': colors['association_cartouche_color']}
+path = lower_round_rect(-49+x,0.0+y,98,25,14)
+lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_color'], 'stroke_color': colors['association_color']}
+lines += u"""\n	<rect x="%(x)s" y="%(y)s" width="98" height="50" fill="%(color)s" rx="14" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'x': -49+x, 'y': -25+y, 'color': colors['transparent_color'], 'stroke_color': colors['association_stroke_color']}
+lines += u"""\n	<line x1="%(x0)s" y1="%(y0)s" x2="%(x1)s" y2="%(y1)s" stroke="%(stroke_color)s" stroke-width="1"/>""" % {'x0': -49+x, 'y0': 0+y, 'x1': 49+x, 'y1': 0+y, 'stroke_color': colors['association_stroke_color']}
+lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Verdana" font-size="12">performed by</text>""" % {'x': -42+x, 'y': -7.3+y, 'text_color': colors['association_cartouche_text_color']}
+lines += u"""\n</g>""" % {}
+
+lines += u"""\n\n<!-- Association at -->"""
+(x,y) = (cx[u"at"],cy[u"at"])
+(ex,ey) = (cx[u"EVENT"],cy[u"EVENT"])
+leg=straight_leg_factory(ex,ey,38,76,x,y,14,25,22+2*card_margin,15+2*card_margin)
+lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
+(tx,ty)=offset(*leg.card_pos(True,shift[u"at,EVENT"]))
+lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">0,N</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
+(ex,ey) = (cx[u"PICTURE"],cy[u"PICTURE"])
+leg=straight_leg_factory(ex,ey,37,42,x,y,14,25,21+2*card_margin,15+2*card_margin)
+lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
+(tx,ty)=offset(*leg.card_pos(False,shift[u"at,PICTURE"]))
+lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">1,1</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
+lines += u"""\n<g id="association-at">""" % {}
+path = upper_round_rect(-14+x,-25+y,28,25,14)
+lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_cartouche_color'], 'stroke_color': colors['association_cartouche_color']}
+path = lower_round_rect(-14+x,0.0+y,28,25,14)
+lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_color'], 'stroke_color': colors['association_color']}
+lines += u"""\n	<rect x="%(x)s" y="%(y)s" width="28" height="50" fill="%(color)s" rx="14" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'x': -14+x, 'y': -25+y, 'color': colors['transparent_color'], 'stroke_color': colors['association_stroke_color']}
+lines += u"""\n	<line x1="%(x0)s" y1="%(y0)s" x2="%(x1)s" y2="%(y1)s" stroke="%(stroke_color)s" stroke-width="1"/>""" % {'x0': -14+x, 'y0': 0+y, 'x1': 14+x, 'y1': 0+y, 'stroke_color': colors['association_stroke_color']}
+lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Verdana" font-size="12">at</text>""" % {'x': -7+x, 'y': -7.3+y, 'text_color': colors['association_cartouche_text_color']}
 lines += u"""\n</g>""" % {}
 
 lines += u"""\n\n<!-- Association took place -->"""
@@ -215,31 +281,26 @@ lines += u"""\n	<line x1="%(x0)s" y1="%(y0)s" x2="%(x1)s" y2="%(y1)s" stroke="%(
 lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Verdana" font-size="12">took place</text>""" % {'x': -32+x, 'y': -7.3+y, 'text_color': colors['association_cartouche_text_color']}
 lines += u"""\n</g>""" % {}
 
-lines += u"""\n\n<!-- Association shot -->"""
-(x,y) = (cx[u"shot"],cy[u"shot"])
-(ex,ey) = (cx[u"USER"],cy[u"USER"])
-leg=straight_leg_factory(ex,ey,37,68,x,y,21,25,22+2*card_margin,15+2*card_margin)
-lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
-(tx,ty)=offset(*leg.card_pos(False,shift[u"shot,USER"]))
-lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">0,N</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
+lines += u"""\n\n<!-- Association was -->"""
+(x,y) = (cx[u"was"],cy[u"was"])
 (ex,ey) = (cx[u"EVENT"],cy[u"EVENT"])
-leg=straight_leg_factory(ex,ey,38,76,x,y,21,25,22+2*card_margin,15+2*card_margin)
+leg=straight_leg_factory(ex,ey,38,76,x,y,19,25,22+2*card_margin,15+2*card_margin)
 lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
-(tx,ty)=offset(*leg.card_pos(False,shift[u"shot,EVENT"]))
+(tx,ty)=offset(*leg.card_pos(False,shift[u"was,EVENT"]))
+lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">1,N</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
+(ex,ey) = (cx[u"USER"],cy[u"USER"])
+leg=straight_leg_factory(ex,ey,37,68,x,y,19,25,22+2*card_margin,15+2*card_margin)
+lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
+(tx,ty)=offset(*leg.card_pos(False,shift[u"was,USER"]))
 lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">0,N</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
-(ex,ey) = (cx[u"PICTURE"],cy[u"PICTURE"])
-leg=straight_leg_factory(ex,ey,37,42,x,y,21,25,21+2*card_margin,15+2*card_margin)
-lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
-(tx,ty)=offset(*leg.card_pos(False,shift[u"shot,PICTURE"]))
-lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">1,1</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
-lines += u"""\n<g id="association-shot">""" % {}
-path = upper_round_rect(-21+x,-25+y,42,25,14)
+lines += u"""\n<g id="association-was">""" % {}
+path = upper_round_rect(-19+x,-25+y,38,25,14)
 lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_cartouche_color'], 'stroke_color': colors['association_cartouche_color']}
-path = lower_round_rect(-21+x,0.0+y,42,25,14)
+path = lower_round_rect(-19+x,0.0+y,38,25,14)
 lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_color'], 'stroke_color': colors['association_color']}
-lines += u"""\n	<rect x="%(x)s" y="%(y)s" width="42" height="50" fill="%(color)s" rx="14" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'x': -21+x, 'y': -25+y, 'color': colors['transparent_color'], 'stroke_color': colors['association_stroke_color']}
-lines += u"""\n	<line x1="%(x0)s" y1="%(y0)s" x2="%(x1)s" y2="%(y1)s" stroke="%(stroke_color)s" stroke-width="1"/>""" % {'x0': -21+x, 'y0': 0+y, 'x1': 21+x, 'y1': 0+y, 'stroke_color': colors['association_stroke_color']}
-lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Verdana" font-size="12">shot</text>""" % {'x': -14+x, 'y': -7.3+y, 'text_color': colors['association_cartouche_text_color']}
+lines += u"""\n	<rect x="%(x)s" y="%(y)s" width="38" height="50" fill="%(color)s" rx="14" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'x': -19+x, 'y': -25+y, 'color': colors['transparent_color'], 'stroke_color': colors['association_stroke_color']}
+lines += u"""\n	<line x1="%(x0)s" y1="%(y0)s" x2="%(x1)s" y2="%(y1)s" stroke="%(stroke_color)s" stroke-width="1"/>""" % {'x0': -19+x, 'y0': 0+y, 'x1': 19+x, 'y1': 0+y, 'stroke_color': colors['association_stroke_color']}
+lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Verdana" font-size="12">was</text>""" % {'x': -12+x, 'y': -7.3+y, 'text_color': colors['association_cartouche_text_color']}
 lines += u"""\n</g>""" % {}
 
 lines += u"""\n\n<!-- Association wrote -->"""
@@ -249,11 +310,6 @@ leg=straight_leg_factory(ex,ey,37,51,x,y,25,25,21+2*card_margin,15+2*card_margin
 lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
 (tx,ty)=offset(*leg.card_pos(False,shift[u"wrote,REVIEW"]))
 lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">1,1</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
-(ex,ey) = (cx[u"EVENT"],cy[u"EVENT"])
-leg=straight_leg_factory(ex,ey,38,76,x,y,25,25,22+2*card_margin,15+2*card_margin)
-lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
-(tx,ty)=offset(*leg.card_pos(False,shift[u"wrote,EVENT"]))
-lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">0,N</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
 (ex,ey) = (cx[u"USER"],cy[u"USER"])
 leg=straight_leg_factory(ex,ey,37,68,x,y,25,25,22+2*card_margin,15+2*card_margin)
 lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
@@ -267,28 +323,6 @@ lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" st
 lines += u"""\n	<rect x="%(x)s" y="%(y)s" width="50" height="50" fill="%(color)s" rx="14" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'x': -25+x, 'y': -25+y, 'color': colors['transparent_color'], 'stroke_color': colors['association_stroke_color']}
 lines += u"""\n	<line x1="%(x0)s" y1="%(y0)s" x2="%(x1)s" y2="%(y1)s" stroke="%(stroke_color)s" stroke-width="1"/>""" % {'x0': -25+x, 'y0': 0+y, 'x1': 25+x, 'y1': 0+y, 'stroke_color': colors['association_stroke_color']}
 lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Verdana" font-size="12">wrote</text>""" % {'x': -18+x, 'y': -7.3+y, 'text_color': colors['association_cartouche_text_color']}
-lines += u"""\n</g>""" % {}
-
-lines += u"""\n\n<!-- Association performed by -->"""
-(x,y) = (cx[u"performed by"],cy[u"performed by"])
-(ex,ey) = (cx[u"EVENT"],cy[u"EVENT"])
-leg=straight_leg_factory(ex,ey,38,76,x,y,49,25,21+2*card_margin,15+2*card_margin)
-lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
-(tx,ty)=offset(*leg.card_pos(False,shift[u"performed by,EVENT"]))
-lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">1,1</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
-(ex,ey) = (cx[u"BAND"],cy[u"BAND"])
-leg=straight_leg_factory(ex,ey,48,59,x,y,49,25,22+2*card_margin,15+2*card_margin)
-lines += u"""\n<line x1="%(ex)s" y1="%(ey)s" x2="%(ax)s" y2="%(ay)s" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'ex': ex, 'ey': ey, 'ax': x, 'ay': y, 'stroke_color': colors['leg_stroke_color']}
-(tx,ty)=offset(*leg.card_pos(False,shift[u"performed by,BAND"]))
-lines += u"""\n<text x="%(tx)s" y="%(ty)s" fill="%(text_color)s" font-family="Verdana" font-size="12">0,N</text>""" % {'tx': tx, 'ty': ty, 'text_color': colors['card_text_color']}
-lines += u"""\n<g id="association-performed by">""" % {}
-path = upper_round_rect(-49+x,-25+y,98,25,14)
-lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_cartouche_color'], 'stroke_color': colors['association_cartouche_color']}
-path = lower_round_rect(-49+x,0.0+y,98,25,14)
-lines += u"""\n	<path d="%(path)s" fill="%(color)s" stroke="%(stroke_color)s" stroke-width="0"/>""" % {'path': path, 'color': colors['association_color'], 'stroke_color': colors['association_color']}
-lines += u"""\n	<rect x="%(x)s" y="%(y)s" width="98" height="50" fill="%(color)s" rx="14" stroke="%(stroke_color)s" stroke-width="2"/>""" % {'x': -49+x, 'y': -25+y, 'color': colors['transparent_color'], 'stroke_color': colors['association_stroke_color']}
-lines += u"""\n	<line x1="%(x0)s" y1="%(y0)s" x2="%(x1)s" y2="%(y1)s" stroke="%(stroke_color)s" stroke-width="1"/>""" % {'x0': -49+x, 'y0': 0+y, 'x1': 49+x, 'y1': 0+y, 'stroke_color': colors['association_stroke_color']}
-lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Verdana" font-size="12">performed by</text>""" % {'x': -42+x, 'y': -7.3+y, 'text_color': colors['association_cartouche_text_color']}
 lines += u"""\n</g>""" % {}
 
 lines += u"""\n\n<!-- Entity PICTURE -->"""
@@ -399,6 +433,6 @@ lines += u"""\n	<text x="%(x)s" y="%(y)s" fill="%(text_color)s" font-family="Ver
 lines += u"""\n</g>""" % {}
 lines += u'\n</svg>'
 
-with codecs.open("Events.svg", "w", "utf8") as f:
+with codecs.open("mcd.svg", "w", "utf8") as f:
     f.write(lines)
-safe_print_for_PHP(u'Fichier de sortie "Events.svg" généré avec succès.')
+safe_print_for_PHP(u'Fichier de sortie "mcd.svg" généré avec succès.')
