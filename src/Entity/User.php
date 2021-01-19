@@ -23,7 +23,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"review_get"})
+     * @Groups("review_get")
      */
     private $email;
 
@@ -35,44 +35,42 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"review_get"})
+     * @Groups("review_get")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups({"review_get"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"review_get"})
+     * @Groups("review_get")
      */
     private $biography;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"review_get"})
+     * @Groups("review_get")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"review_get"})
+     * @Groups("review_get")
      */
     private $updatedAt;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Groups({"review_get"})
+     * @Groups("review_get")
      */
     private $avatar;
 
     /**
      * @ORM\OneToMany(targetEntity=Review::class, mappedBy="user")
-     * @Groups({"review_get"})
      */
     private $reviews;
 
