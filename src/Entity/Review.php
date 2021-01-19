@@ -38,7 +38,7 @@ class Review
     private $updated_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reviews")
+     * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

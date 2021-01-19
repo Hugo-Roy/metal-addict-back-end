@@ -33,7 +33,7 @@ class Picture
     private $updated_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="pictures")
+     * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
