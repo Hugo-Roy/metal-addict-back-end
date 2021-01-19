@@ -18,17 +18,18 @@ class SetlistApi
      *
      * @param array $params search parameters
      */
-    public function fetchEventsList()
+    public function fetchEventsList(array $params)
     {
         $response = $this->client->request(
             'GET',
-            'https://api.setlist.fm/rest/1.0/search/setlists?artistMbid=b574bfea-2359-4e9d-93f6-71c3c9a2a4f0&countryCode=FR&p=1',
+            'https://api.setlist.fm/rest/1.0/search/setlists',
             [
                 'headers' => [
                     'x-api-key' => '24LpnzjvbvX5AsxiSJS9ZsPkATNgtY2996EH',
                     'Accept' =>'application/json',
                     'Accept-Language' => 'fr',
                 ],
+                'query' => $params['parameters']
             ]
         );
 

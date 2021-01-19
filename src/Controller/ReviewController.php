@@ -31,9 +31,15 @@ class ReviewController extends AbstractController
     /**
      * @Route("/api/search/{id}", name="event_search", methods="GET")
      */
-    public function search(Band $band, SetlistApi $setlistApi)
+    public function search(Band $band, SetlistApi $setlistApi, Request $request)
     {
-        $responseContent = $setlistApi->fetchEventsList();
+        $jsonContent = $request->getContent();
+
+        $researchParams = json_decode($jsonContent, true);
+
+        $researchParams['parameters']['artistName'] = $band->getName();
+
+        $responseContent = $setlistApi->fetchEventsList($researchParams);
 
         return $this->json($responseContent);
     }
