@@ -27,7 +27,7 @@ class Band
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $musicbrainz_id;
+    private $musicbrainzId;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, unique=true)
@@ -37,12 +37,12 @@ class Band
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity=Event::class, mappedBy="band")
@@ -52,7 +52,7 @@ class Band
     public function __construct()
     {
         $this->events = new ArrayCollection();
-        $this->created_at = new \DateTime();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -74,12 +74,12 @@ class Band
 
     public function getMusicbrainzId(): ?string
     {
-        return $this->musicbrainz_id;
+        return $this->musicbrainzId;
     }
 
-    public function setMusicbrainzId(?string $musicbrainz_id): self
+    public function setMusicbrainzId(?string $musicbrainzId): self
     {
-        $this->musicbrainz_id = $musicbrainz_id;
+        $this->musicbrainzId = $musicbrainzId;
 
         return $this;
     }
@@ -98,24 +98,24 @@ class Band
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

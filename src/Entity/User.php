@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -15,53 +17,68 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"review_get"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"review_get"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"review_get"})
      */
     private $nickname;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"review_get"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({"review_get"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"review_get"})
      */
     private $biography;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"review_get"})
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"review_get"})
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"review_get"})
      */
-    public $avatar;
+    private $avatar;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="user")
+     * @Groups({"review_get"})
+     */
+    private $reviews;
 
     public function __construct()
     {
-        $this->created_at = new \DateTime();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -143,41 +160,41 @@ class User implements UserInterface
     }
 
     /**
-     * Get the value of created_at
+     * Get the value of createdAt
      */ 
-    public function getCreated_at()
+    public function getCreatedAt()
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /**
-     * Set the value of created_at
+     * Set the value of createdAt
      *
      * @return  self
      */ 
-    public function setCreated_at($created_at)
+    public function setCreatedAt($createdAt)
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     /**
-     * Get the value of updated_at
+     * Get the value of updatedAt
      */ 
-    public function getUpdated_at()
+    public function getUpdatedAt()
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     /**
-     * Set the value of updated_at
+     * Set the value of updatedAt
      *
      * @return  self
      */ 
-    public function setUpdated_at($updated_at)
+    public function setUpdatedAt($updatedAt)
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -238,6 +255,36 @@ class User implements UserInterface
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): self
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews[] = $review;
+            $review->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): self
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getUser() === $this) {
+                $review->setUser(null);
+            }
+        }
 
         return $this;
     }
