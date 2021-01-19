@@ -23,7 +23,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups("review_get")
      */
     private $email;
 
@@ -35,7 +34,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups("review_get")
      */
     private $roles = [];
 
@@ -47,25 +45,21 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups("review_get")
      */
     private $biography;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("review_get")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups("review_get")
      */
     private $updatedAt;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Groups("review_get")
      */
     private $avatar;
 

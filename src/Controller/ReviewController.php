@@ -22,20 +22,9 @@ class ReviewController extends AbstractController
         if (isset($content["parameters"])) {
             $reviews = $reviewRepository->findByLatest($content["parameters"]["orderBy"], $content["parameters"]["limit"]);
             
-            dump($reviews);
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         };
     }
-    
-
-    // [
-    //     {
-    //         "parameters": {
-    //             "limit": 6,
-    //             "orderBy": "ASC"
-    //         }
-    //     }
-    // ]
 }
 
 

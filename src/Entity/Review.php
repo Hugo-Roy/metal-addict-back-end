@@ -39,7 +39,6 @@ class Review
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups("review_get")
      */
     private $updatedAt;
 
