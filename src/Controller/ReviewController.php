@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Band;
+use App\Service\SetlistApi;
 use App\Repository\ReviewRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ReviewController extends AbstractController
 {
     /**
-     * @Route("/api/review", name="review_list")
+     * @Route("/api/review", name="review_list", methods="GET")
      */
     public function list(Request $request, ReviewRepository $reviewRepository): Response
     {
@@ -24,6 +26,16 @@ class ReviewController extends AbstractController
             
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         };
+    }
+
+    /**
+     * @Route("/api/search/{id}", name="event_search", methods="GET")
+     */
+    public function search(Band $band, SetlistApi $setlistApi)
+    {
+        $responseContent = $setlistApi->fetchEventsList();
+
+        return $this->json($responseContent);
     }
 }
 
