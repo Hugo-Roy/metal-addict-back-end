@@ -18,7 +18,6 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginAuthenticator
-            provider: app_user_provider
 
 
     encoders:
@@ -34,5 +33,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/band, roles: ROLE_USER }
+        # - { path: ^/api/band, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }
