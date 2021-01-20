@@ -2,7 +2,6 @@
 
 |Endpoint|Méthode HTTP|Description|Rôles|Retour|
 |-|-|-|-|-|
-|`/api/home`|`GET`|Récupération des dernières reviews postées|USER et VISITOR|200|
 |`/api/search/{bandId}`|`GET`|Liste des events en fonction des paramètres donnés|USER et VISITOR|200|
 |`/api/user/{id}`|`GET`|Récupération des données de l'utilisateur|USER et VISITOR|200 ou 404|
 |`/api/user`|`POST`|Création des données de l'utilisateur|VISITOR|200|
@@ -18,3 +17,5 @@
 |`/api/review/{id}`|`DELETE`|Suppression d'une review|USER(owner)|200, 204 ou 404|
 |`/api/picture`|`POST`|Ajout d'une photo|USER|201|
 |`/api/picture/{id}`|`DELETE`|Suppression d'une photo|USER(owner)|200, 204 ou 404|
+|`/api/band`|`GET`|Récupération de la liste des groupes|VISITOR et USER|200|
+|`/api/country`|`GET`|Récupération de la liste des pays|VISITOR et USER|200|
