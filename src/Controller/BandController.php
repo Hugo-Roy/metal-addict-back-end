@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BandController extends AbstractController
 {
     /**
-     * @Route("/api/bands", name="band_list", methods="GET")
+     * @Route("/api/band", name="band_list", methods="GET")
      */
     public function list(BandRepository $bandRepository): Response
     {

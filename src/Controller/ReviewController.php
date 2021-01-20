@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ReviewController extends AbstractController
 {
     /**
-     * @Route("/api/reviews", name="review_list", methods="GET")
+     * @Route("/api/review", name="review_list", methods="GET")
      */
     public function list(Request $request, ReviewRepository $reviewRepository): Response
     {
