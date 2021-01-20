@@ -68,6 +68,11 @@ class User implements UserInterface
      */
     private $reviews;
 
+    /**
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     */
+    private $apiToken;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -97,7 +102,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->nickname;
+        return (string) $this->email;
     }
 
     /**
@@ -277,6 +282,18 @@ class User implements UserInterface
                 $review->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApiToken(): ?string
+    {
+        return $this->apiToken;
+    }
+
+    public function setApiToken(?string $apiToken): self
+    {
+        $this->apiToken = $apiToken;
 
         return $this;
     }
