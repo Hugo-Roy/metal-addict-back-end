@@ -22,7 +22,7 @@ class Event
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string",unique=true, length=255, nullable=true)
      * @Groups("review_get")
      */
     private $setlistId;

@@ -32,7 +32,29 @@ class SetlistApi
                 'query' => $params,
             ]
         );
-        // dd($response->getStatusCode());
+
+        return $response->toArray();
+    }
+
+    /**
+     * Get one event
+     * 
+     * @param string $setlistId
+     */
+    public function fetchOneEvent($setlistId)
+    {
+        $response = $this->client->request(
+            'GET',
+            'https://api.setlist.fm/rest/1.0/setlist/'.'5bd6dfc0',
+            [
+                'headers' => [
+                    'x-api-key' => '24LpnzjvbvX5AsxiSJS9ZsPkATNgtY2996EH',
+                    'Accept' =>'application/json',
+                    'Accept-Language' => 'fr',
+                ],
+            ]
+        );
+
         return $response->toArray();
     }
 }
