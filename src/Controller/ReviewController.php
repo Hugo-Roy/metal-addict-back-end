@@ -15,15 +15,14 @@ class ReviewController extends AbstractController
      */
     public function list(Request $request, ReviewRepository $reviewRepository): Response
     {
-        $jsonContent = $request->getContent();
+        $limitParameter = $request->query->get('limit');
+        $orderParameter = $request->query->get('order');
 
-        $content = json_decode($jsonContent, true);
-
-        if (isset($content["parameters"])) {
-            
-            $reviews = $reviewRepository->findByLatest($content["parameters"]["orderBy"], $content["parameters"]["limit"]);
+        if (isset($limitParameter) && isset($orderParameter)) {
+            $reviews = $reviewRepository->findByLatest($orderParameter, $limitParameter);
             
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         };
     }
 }
+
