@@ -55,6 +55,7 @@ class Event
     /**
      * @ORM\ManyToOne(targetEntity=Band::class, inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("review_get")
      */
     private $band;
 

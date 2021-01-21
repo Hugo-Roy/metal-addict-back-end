@@ -17,13 +17,13 @@ class Band
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("band_get")
+     * @Groups({"band_get", "review_get"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("band_get")
+     * @Groups({"band_get", "review_get"})
      */
     private $name;
 
@@ -34,7 +34,7 @@ class Band
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, unique=true)
-     * @Groups("band_get")
+     * @Groups({"band_get", "review_get"})
      */
     private $image;
 

@@ -39,7 +39,7 @@ class Review
     private $createdAt;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
 
@@ -59,7 +59,7 @@ class Review
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTime;
     }
 
     public function getId(): ?int
