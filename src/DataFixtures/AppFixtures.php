@@ -91,6 +91,9 @@ class AppFixtures extends Fixture
         $firstUser->setPassword($this->passwordEncoder->encodePassword($firstUser, 'lemmy'));
         $firstUser->setNickname('Lemmy Killmister');
         $firstUser->setRoles(['ROLE_USER']);
+        for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
+            $firstUser->addEvent($eventsCollection[mt_rand(0, 50)]);
+        };
         $usersCollection[] = $firstUser;
         $manager->persist($firstUser);
 
@@ -99,6 +102,9 @@ class AppFixtures extends Fixture
         $secondUser->setPassword($this->passwordEncoder->encodePassword($secondUser, 'josh'));
         $secondUser->setNickname('Josh Homme');
         $secondUser->setRoles(['ROLE_USER']);
+        for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
+            $secondUser->addEvent($eventsCollection[mt_rand(0, 50)]);
+        };
         $usersCollection[] = $secondUser;
         $manager->persist($secondUser);
 
@@ -107,6 +113,9 @@ class AppFixtures extends Fixture
         $thirdUser->setPassword($this->passwordEncoder->encodePassword($thirdUser, 'phil'));
         $thirdUser->setNickname('Phil Anselmo');
         $thirdUser->setRoles(['ROLE_USER']);
+        for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
+            $thirdUser->addEvent($eventsCollection[mt_rand(0, 50)]);
+        };
         $usersCollection[] = $thirdUser;
         $manager->persist($thirdUser);
 
@@ -115,6 +124,9 @@ class AppFixtures extends Fixture
         $fourthUser->setPassword($this->passwordEncoder->encodePassword($fourthUser, 'jerry'));
         $fourthUser->setNickname('Jerry Cantrell');
         $fourthUser->setRoles(['ROLE_USER']);
+        for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
+            $fourthUser->addEvent($eventsCollection[mt_rand(0, 50)]);
+        };
         $usersCollection[] = $fourthUser;
         $manager->persist($fourthUser);
 
@@ -122,6 +134,9 @@ class AppFixtures extends Fixture
         $fifthUser->setEmail('dimebag@dimebag.com');
         $fifthUser->setPassword($this->passwordEncoder->encodePassword($fifthUser, 'dimebag'));
         $fifthUser->setNickname('Dimebag Darrell');
+        for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
+            $fifthUser->addEvent($eventsCollection[mt_rand(0, 50)]);
+        };
         $fifthUser->setRoles(['ROLE_USER']);
         $usersCollection[] = $fifthUser;
         $manager->persist($fifthUser);
