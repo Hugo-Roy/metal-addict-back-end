@@ -18,11 +18,13 @@ class ReviewController extends AbstractController
         $jsonContent = $request->getContent();
 
         $content = json_decode($jsonContent, true);
-
+        dd($content);
         if (isset($content["parameters"])) {
             $reviews = $reviewRepository->findByLatest($content["parameters"]["orderBy"], $content["parameters"]["limit"]);
-            
-            return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
+            //dd($reviews);
+            return new Response('test ok'); 
+            //return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         };
+        //return new Response('test ok'); 
     }
 }
