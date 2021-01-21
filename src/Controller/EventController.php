@@ -16,22 +16,27 @@ class EventController extends AbstractController
      */
     public function search(Band $band, SetlistApi $setlistApi, Request $request, CountryRepository $countryRepository)
     {
-        $jsonContent = $request->getContent();
+        $researchParameters = $request->query->all();
 
-        $researchParams = json_decode($jsonContent, true);
-
-        $researchParams['parameters']['artistName'] = $band->getName();
-
-        if(isset($researchParams['parameters']['countryId'])) {
-            $country = $countryRepository->find($researchParams['parameters']['countryId']);
+        $researchParameters['artistName'] = $band->getName();
         
-            $researchParams['parameters']['countryCode'] = $country->getCountryCode();
+        if(isset($researchParameters['countryId'])) {
+            $country = $countryRepository->find($researchParameters['countryId']);
+        
+            $countryCodeParameter = $country->getCountryCode();
 
-            unset($researchParams['parameters']['countryId']);
+            $researchParameters['countryCode'] = $countryCodeParameter;
+
+            unset($researchParameters['countryId']);
         }
-        
 
-        $responseContent = $setlistApi->fetchEventsList($researchParams);
+        foreach ($researchParameters as $researchParameter => $value) {
+            if(!$value) {
+                unset($researchParameters[$researchParameter]);
+            }
+        }
+
+        $responseContent = $setlistApi->fetchEventsList($researchParameters);
 
         return $this->json($responseContent);
     }

@@ -29,10 +29,10 @@ class SetlistApi
                     'Accept' =>'application/json',
                     'Accept-Language' => 'fr',
                 ],
-                'query' => $params['parameters'],
+                'query' => $params,
             ]
         );
-
+        // dd($response->getStatusCode());
         return $response->toArray();
     }
 }
