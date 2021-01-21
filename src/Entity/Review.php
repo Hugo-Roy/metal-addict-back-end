@@ -6,6 +6,7 @@ use App\Repository\ReviewRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
 /**
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
  */
@@ -32,7 +33,6 @@ class Review
     private $content;
 
     /**
-     * @var string A "Y-m-d H:i:s" formatted value
      * @ORM\Column(type="datetime")
      * @Groups("review_get")
      */
@@ -59,7 +59,7 @@ class Review
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTime;
     }
 
     public function getId(): ?int

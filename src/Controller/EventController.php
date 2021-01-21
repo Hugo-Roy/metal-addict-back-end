@@ -24,7 +24,7 @@ class EventController extends AbstractController
 
         if(isset($researchParams['parameters']['countryId'])) {
             $country = $countryRepository->find($researchParams['parameters']['countryId']);
-    
+        
             $researchParams['parameters']['countryCode'] = $country->getCountryCode();
 
             unset($researchParams['parameters']['countryId']);

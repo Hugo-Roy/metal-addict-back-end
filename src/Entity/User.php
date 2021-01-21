@@ -60,7 +60,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Groups({"review_get"})
      */
     private $avatar;
 
