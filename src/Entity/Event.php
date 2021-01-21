@@ -29,16 +29,19 @@ class Event
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("review_get")
      */
     private $venue;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("review_get")
      */
     private $city;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("review_get")
      */
     private $date;
 
@@ -62,6 +65,7 @@ class Event
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("review_get")
      */
     private $country;
 
