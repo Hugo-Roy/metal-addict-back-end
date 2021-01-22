@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +18,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/api/users", name="api_users", methods={"GET"})
+     * @Route("/api/users", name="user_list", methods={"GET"})
      */
-    public function listAll(UserRepository $userRepository): Response
+    public function list(UserRepository $userRepository): Response
     {
         // $users = $userRepository->findAll();
         
@@ -37,7 +38,7 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user", name="user_add", methods="POST")
      */
-    public function add(Request $request, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
+    public function add(Request $request, EntityManager $entityManager, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
     {
         $jsonContent = $request->getContent();
 
@@ -48,7 +49,6 @@ class UserController extends AbstractController
         $user->setRoles = ['ROLE_USER'];
         $user->setPassword($userPasswordEncoder->encodePassword($user, $user->getPassword()));
 
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($user);
         $entityManager->flush();
     
@@ -64,32 +64,26 @@ class UserController extends AbstractController
     /**
      * Edit user PUT
      * 
-     * @Route("/api/users/{id<\d+>}", name="api_users_put", methods={"PUT", "PATCH"})
+     * @Route("/api/users/{id<\d+>}", name="user_update", methods={"PUT", "PATCH"})
      */
-    public function putAndPatch(User $user = null, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
+    public function update(User $user = null,UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
-        //404
-        if($user === null)
-        {
-            return $this->json(["error" => "Utilisateur non trouvé."], Response::HTTP_NOT_FOUND);
-        }
-
         $jsonContent = $request->getContent();
 
         // Deserializes given data from front in the User object to modify
 
         $userMod = $serializer->deserialize($jsonContent, User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
-        
+        $user->setPassword($userPasswordEncoder->encodePassword($user, $user->getPassword()));
         // Deserialized entity validation
         
-        $errors = $validator->validate($user);
+        // $errors = $validator->validate($user);
 
         // Errors generation with 422 status
 
-        if(count($errors) > 0)
-        {
-            return $this->json($this->generateErrors($errors), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+        // if(count($errors) > 0)
+        // {
+        //     return $this->json($this->generateErrors($errors), Response::HTTP_UNPROCESSABLE_ENTITY);
+        // }
 
         $em->flush();
 
