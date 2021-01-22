@@ -19,6 +19,15 @@ class BandRepository extends ServiceEntityRepository
         parent::__construct($registry, Band::class);
     }
 
+    public function findByAlphabeticalOrder()
+    {
+        return $this->createQueryBuilder('b')
+            ->orderBy('b.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Band[] Returns an array of Band objects
     //  */

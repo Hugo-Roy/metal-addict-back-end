@@ -15,7 +15,7 @@ class BandController extends AbstractController
      */
     public function list(BandRepository $bandRepository): Response
     {
-        $bands = $bandRepository->findAll();
+        $bands = $bandRepository->findByAlphabeticalOrder();
         
         return $this->json($bands, Response::HTTP_OK, [], ['groups' => 'band_get']);
     }
