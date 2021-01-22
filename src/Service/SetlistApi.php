@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SetlistApi
@@ -32,7 +33,7 @@ class SetlistApi
                 'query' => $params,
             ]
         );
-
+       
         return $response->toArray();
     }
 
@@ -55,6 +56,9 @@ class SetlistApi
             ]
         );
 
+        $this->client;
         return $response->toArray();
     }
 }
+
+https://www.strangebuzz.com/en/blog/the-symfony-request-class-interactive-cheatsheet

@@ -20,8 +20,8 @@ class EventController extends AbstractController
         $researchParameters = $request->query->all();
 
         $researchParameters['artistName'] = $band->getName();
-        
-        if(isset($researchParameters['countryId'])) {
+
+        if(!empty($researchParameters['countryId'])) {
             $country = $countryRepository->find($researchParameters['countryId']);
         
             $countryCodeParameter = $country->getCountryCode();
@@ -30,14 +30,29 @@ class EventController extends AbstractController
 
             unset($researchParameters['countryId']);
         }
+        else {
+            $researchParameters['countryCode'] = null;
+        }
 
-        foreach ($researchParameters as $researchParameter => $value) {
+
+        
+        $newResearchParams = [
+            "artistName" => $researchParameters["artistName"],
+            "cityName" => $researchParameters["cityName"],
+            "countryCode" => $researchParameters["countryCode"],
+            "venueName" => $researchParameters["venueName"],
+            "year" => $researchParameters["year"],
+            "p" => $researchParameters["p"],
+        ];
+
+        foreach ($newResearchParams as $newResearchParam => $value) {
             if(!$value) {
-                unset($researchParameters[$researchParameter]);
+                unset($newResearchParams[$newResearchParam]);
             }
         }
 
-        $responseContent = $setlistApi->fetchEventsList($researchParameters);
+
+        $responseContent = $setlistApi->fetchEventsList($newResearchParams);
 
         return $this->json($responseContent);
     }
