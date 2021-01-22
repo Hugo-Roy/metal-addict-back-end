@@ -91,6 +91,7 @@ class AppFixtures extends Fixture
         $firstUser->setPassword($this->passwordEncoder->encodePassword($firstUser, 'lemmy'));
         $firstUser->setNickname('Lemmy Killmister');
         $firstUser->setRoles(['ROLE_USER']);
+        $firstUser->setBiography($faker->realText());
         for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
             $firstUser->addEvent($eventsCollection[mt_rand(0, 50)]);
         };
@@ -102,6 +103,7 @@ class AppFixtures extends Fixture
         $secondUser->setPassword($this->passwordEncoder->encodePassword($secondUser, 'josh'));
         $secondUser->setNickname('Josh Homme');
         $secondUser->setRoles(['ROLE_USER']);
+        $secondUser->setBiography($faker->realText());
         for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
             $secondUser->addEvent($eventsCollection[mt_rand(0, 50)]);
         };
