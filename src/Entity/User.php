@@ -18,7 +18,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"review_get"})
+     * @Groups({"review_get", "user_get"})
      */
     private $id;
 
@@ -29,7 +29,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"review_get"})
+     * @Groups({"review_get", "user_get"})
      */
     private $nickname;
 
@@ -46,6 +46,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"user_get"})
      */
     private $biography;
 
