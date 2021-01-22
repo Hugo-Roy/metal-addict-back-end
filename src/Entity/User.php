@@ -24,6 +24,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"user_get"})
      */
     private $email;
 
@@ -85,6 +86,7 @@ class User implements UserInterface
     {
         $this->createdAt = new \DateTime();
         $this->events = new ArrayCollection();
+        $this->roles = ['ROLE_USER'];
     }
 
     public function getId(): ?int
