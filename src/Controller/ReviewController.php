@@ -16,14 +16,16 @@ class ReviewController extends AbstractController
      */
     public function list(Request $request, ReviewRepository $reviewRepository): Response
     {
-        $limitParameter = $request->query->get('limit');
+        $limitParameter = intval($request->query->get('limit'));
         $orderParameter = $request->query->get('order');
 
-        if (isset($limitParameter) && isset($orderParameter)) {
+        if (is_integer($limitParameter) && $limitParameter !== 0 && $orderParameter === 'ASC') {
             $reviews = $reviewRepository->findByLatest($orderParameter, $limitParameter);
             
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         };
+
+        //TODO handle errors
     }
 
     /**
