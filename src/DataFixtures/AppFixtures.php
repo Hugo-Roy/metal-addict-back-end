@@ -91,6 +91,7 @@ class AppFixtures extends Fixture
         $firstUser->setPassword($this->passwordEncoder->encodePassword($firstUser, 'lemmy'));
         $firstUser->setNickname('Lemmy Killmister');
         $firstUser->setRoles(['ROLE_USER']);
+        $firstUser->setBiography($faker->realText());
         for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
             $firstUser->addEvent($eventsCollection[mt_rand(0, 50)]);
         };
@@ -102,6 +103,7 @@ class AppFixtures extends Fixture
         $secondUser->setPassword($this->passwordEncoder->encodePassword($secondUser, 'josh'));
         $secondUser->setNickname('Josh Homme');
         $secondUser->setRoles(['ROLE_USER']);
+        $secondUser->setBiography($faker->realText());
         for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
             $secondUser->addEvent($eventsCollection[mt_rand(0, 50)]);
         };
@@ -113,6 +115,7 @@ class AppFixtures extends Fixture
         $thirdUser->setPassword($this->passwordEncoder->encodePassword($thirdUser, 'phil'));
         $thirdUser->setNickname('Phil Anselmo');
         $thirdUser->setRoles(['ROLE_USER']);
+        $thirdUser->setBiography($faker->realText());
         for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
             $thirdUser->addEvent($eventsCollection[mt_rand(0, 50)]);
         };
@@ -124,6 +127,7 @@ class AppFixtures extends Fixture
         $fourthUser->setPassword($this->passwordEncoder->encodePassword($fourthUser, 'jerry'));
         $fourthUser->setNickname('Jerry Cantrell');
         $fourthUser->setRoles(['ROLE_USER']);
+        $fourthUser->setBiography($faker->realText());
         for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
             $fourthUser->addEvent($eventsCollection[mt_rand(0, 50)]);
         };
@@ -134,10 +138,11 @@ class AppFixtures extends Fixture
         $fifthUser->setEmail('dimebag@dimebag.com');
         $fifthUser->setPassword($this->passwordEncoder->encodePassword($fifthUser, 'dimebag'));
         $fifthUser->setNickname('Dimebag Darrell');
+        $fifthUser->setRoles(['ROLE_USER']);
+        $fifthUser->setBiography($faker->realText());
         for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
             $fifthUser->addEvent($eventsCollection[mt_rand(0, 50)]);
         };
-        $fifthUser->setRoles(['ROLE_USER']);
         $usersCollection[] = $fifthUser;
         $manager->persist($fifthUser);
 

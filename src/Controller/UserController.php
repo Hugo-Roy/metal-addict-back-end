@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,5 +18,13 @@ class UserController extends AbstractController
         // $users = $userRepository->findAll();
         
         return $this->json($userRepository->findAll(), Response::HTTP_OK, [], ["groups" => "user_get"]);
+    }
+
+    /**
+     * @Route("/api/user/{id}", name="user_show", methods="GET")
+     */
+    public function show(User $user)
+    {
+        return $this->json($user, Response::HTTP_OK, [], ["groups" => "user_get"]);
     }
 }
