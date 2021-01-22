@@ -15,7 +15,7 @@ class CountryController extends AbstractController
      */
     public function list(CountryRepository $countryRepository): Response
     {
-        $countries = $countryRepository->findAll();
+        $countries = $countryRepository->findByAlphabeticalOrder();
         
         return $this->json($countries, Response::HTTP_OK, [], ['groups' => 'country_get']);
     }
