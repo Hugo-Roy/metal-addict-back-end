@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Band;
-use App\Repository\CountryRepository;
+use App\Entity\Event;
 use App\Service\SetlistApi;
+use App\Repository\CountryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,6 +38,18 @@ class EventController extends AbstractController
         }
 
         $responseContent = $setlistApi->fetchEventsList($researchParameters);
+
+        return $this->json($responseContent);
+    }
+
+    /**
+     * @Route("/api/event/{setlistId}", name="event_show", methods="GET")
+     */
+    public function show(Request $request, SetlistApi $setlistApi)
+    {   
+        $setlistId = $request->attributes;
+
+        $responseContent = $setlistApi->fetchOneEvent($setlistId);
 
         return $this->json($responseContent);
     }

@@ -22,7 +22,7 @@ class Event
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string",unique=true, length=255, nullable=true)
      * @Groups("review_get")
      */
     private $setlistId;
@@ -79,11 +79,17 @@ class Event
      */
     private $pictures;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="events")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
         $this->pictures = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -242,6 +248,33 @@ class Event
             if ($picture->getEvent() === $this) {
                 $picture->setEvent(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeEvent($this);
         }
 
         return $this;

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Review;
 use App\Repository\ReviewRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,14 @@ class ReviewController extends AbstractController
             
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         };
+    }
+
+    /**
+     * @Route("/api/review/{id}", name="review_show", methods="GET")
+     */
+    public function show(Review $review)
+    {
+        return $this->json($review, Response::HTTP_OK, [], ['groups' => 'review_get']);
     }
 }
 
