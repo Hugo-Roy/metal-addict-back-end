@@ -64,16 +64,28 @@ class UserController extends AbstractController
     /**
      * Edit user PUT
      * 
-     * @Route("/api/users/{id<\d+>}", name="user_update", methods={"PUT", "PATCH"})
+     * @Route("/api/user/{id<\d+>}", name="user_update", methods={"PUT", "PATCH"})
      */
     public function update(User $user = null,UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
         $jsonContent = $request->getContent();
 
+        $content = json_decode($jsonContent, true);
+
+        $user = $serializer->deserialize($jsonContent, User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
+
+        if(isset($content['newPassword']) && isset($content['oldPassword'])) {
+            if($userPasswordEncoder->isPasswordValid($user, $content['oldPassword']) === false) {
+                return $this->json('wrong password', Response::HTTP_UNAUTHORIZED);
+            }
+            $user->setPassword($userPasswordEncoder->encodePassword($user, $content['newPassword']));
+        }
+
+        
         // Deserializes given data from front in the User object to modify
 
-        $userMod = $serializer->deserialize($jsonContent, User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
-        $user->setPassword($userPasswordEncoder->encodePassword($user, $user->getPassword()));
+        
+
         // Deserialized entity validation
         
         // $errors = $validator->validate($user);
