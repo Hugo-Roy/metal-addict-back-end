@@ -9,14 +9,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/api/login", name="api_login", methods={"POST"})
+     * @Route("/api/login", name="app_login", methods={"POST"})
      */
     public function login(Request $request)
     {
         $user = $this->getUser();
         
         return $this->json([
-            'username' => $user->getUsername(),
+            'email' => $user->getEmail(),
             'nickname' => $user->getNickname(),
             'roles' => $user->getRoles(),
         ]);

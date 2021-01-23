@@ -8,7 +8,7 @@
 |`/api/user/{id}`|`PUT`|Modification des données de l'utilisateur|USER(owner)|200, 204 ou 204|
 |`/api/user/{id}`|`PATCH`|Modification des données de l'utilisateur|USER(owner)|200, 204ou 204|
 |`/api/event/{setlistId}`|`GET`|Récupération d'un évènement et de ses données associées|USER et VISITOR|200 ou 404|
-|`/api/event/{id}`|`POST`|Création d'un évènement en base donnée et l'associer au user concerné|USER|201 ou 404|
+|`/api/event/{setlistId}`|`POST`|Création d'un évènement en base donnée et l'associer au user concerné|USER|201 ou 404|
 |`/api/review`|`GET`|Récupération d'une liste de reviews|USER et VISITOR|200 ou 404|
 |`/api/review/{id}`|`GET`|Récupération d'une review et de ses données associées|USER et VISITOR|200 ou 404|
 |`/api/review/add`|`POST`|Ajout d'une review|USER|201|

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +37,7 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user", name="user_add", methods="POST")
      */
-    public function add(Request $request, EntityManager $entityManager, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
+    public function add(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
     {
         $jsonContent = $request->getContent();
 
@@ -81,21 +80,7 @@ class UserController extends AbstractController
             $user->setPassword($userPasswordEncoder->encodePassword($user, $content['newPassword']));
         }
 
-        
-        // Deserializes given data from front in the User object to modify
-
-        
-
-        // Deserialized entity validation
-        
-        // $errors = $validator->validate($user);
-
-        // Errors generation with 422 status
-
-        // if(count($errors) > 0)
-        // {
-        //     return $this->json($this->generateErrors($errors), Response::HTTP_UNPROCESSABLE_ENTITY);
-        // }
+        //TODO validate the user properties
 
         $em->flush();
 

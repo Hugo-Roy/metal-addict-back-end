@@ -12,12 +12,13 @@ security:
             security: false
         main:
             anonymous: true
-            lazy: true
+            #lazy: true
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
-            guard:
-                authenticators:
-                    - App\Security\LoginAuthenticator
+            json_login:
+                check_path: app_login
+                username_path: email
+                password_path: password
 
 
     encoders:

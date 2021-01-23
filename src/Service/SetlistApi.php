@@ -60,5 +60,3 @@ class SetlistApi
         return $response->toArray();
     }
 }
-
-https://www.strangebuzz.com/en/blog/the-symfony-request-class-interactive-cheatsheet

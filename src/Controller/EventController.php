@@ -6,6 +6,8 @@ use App\Entity\Band;
 use App\Entity\Event;
 use App\Service\SetlistApi;
 use App\Repository\CountryRepository;
+use App\Repository\EventRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -68,4 +70,30 @@ class EventController extends AbstractController
 
         return $this->json($responseContent);
     }
+
+    /**
+     * @Route("/api/event/{setlistId}", name="event_add", methods="POST")
+     */
+    public function add($setlistId, EntityManagerInterface $em, EventRepository $eventRepository, SetlistApi $setlistApi)
+    {
+        $event = $eventRepository->findOneBy(['setlistId' => $setlistId]);
+        $user = $this->getUser();
+
+        if ($event !== null && $user !== null) {
+            $user->addEvent($event);
+            $em->flush();
+        }
+        elseif ($event === null && $user !== null) {
+            $eventProperties = $setlistApi->fetchOneEvent($setlistId);
+            dd($eventProperties);
+        }
+        
+    }
 }
+
+// array:10 [▼
+//   "id" => "5bd6dfc0"
+//   "eventDate" => "14-08-2008"
+//   "artist" => array:5 [▶]
+//   "venue" => array:4 [▶]
+// ]
