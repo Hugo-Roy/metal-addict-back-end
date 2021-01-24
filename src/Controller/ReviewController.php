@@ -19,7 +19,7 @@ class ReviewController extends AbstractController
         $limitParameter = intval($request->query->get('limit'));
         $orderParameter = $request->query->get('order');
 
-        if (is_integer($limitParameter) && $limitParameter !== 0 && $orderParameter === 'ASC') {
+        if (is_integer($limitParameter) && $limitParameter !== 0 && ($orderParameter === 'ASC' || $orderParameter === 'DESC')) {
             $reviews = $reviewRepository->findByLatest($orderParameter, $limitParameter);
             
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);

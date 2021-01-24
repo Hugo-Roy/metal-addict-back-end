@@ -90,10 +90,3 @@ class EventController extends AbstractController
         
     }
 }
-
-// array:10 [▼
-//   "id" => "5bd6dfc0"
-//   "eventDate" => "14-08-2008"
-//   "artist" => array:5 [▶]
-//   "venue" => array:4 [▶]
-// ]
