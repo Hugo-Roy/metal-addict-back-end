@@ -8,7 +8,7 @@ Endpoints have to be prefixed by this URL in any cases.
 
 ## Event endpoints
 
-### event search
+### event search :
 
 Fetch a list of events from the API of Setlist.fm. 
 The authorized method is `GET`.
@@ -19,7 +19,7 @@ The authorized method is `GET`.
 
 #### query parameters
 
-"cityName", "venueName", "countryId", "year" and "p" (for pagination). They can be empty in the url and no particuliar order is required.
+"cityName", "venueName", "countryId", "year" and "p" (for pagination). They can be empty in the url and no particular order is required.
 
 #### request URL example
 
@@ -27,7 +27,7 @@ http://54.162.156.51/Share-O-Metal/public/api/search/5?cityName=Paris&venueName=
 
 Click on the link above to see a Json response example.
 
-### event show
+### event show :
 
 Fetch an event and its datas from the API of Setlist.fm.
 The authorized method is `GET`.
@@ -48,7 +48,7 @@ Click on the link above to see a Json response example.
 
 ## Review endpoints
 
-#### review list
+### review list :
 
 Fetch a list of reviews. At the moment, it only works for the list of reviews needed for the home page.
 The authorized method is `GET`.
@@ -67,7 +67,7 @@ http://54.162.156.51/Share-O-Metal/public/api/review?limit=6&order=ASC
 
 Click on the link above to see a Json response example.
 
-#### review show
+### review show :
 
 Fetch a review and its associated event, user, band and country.
 The authorized method is `GET`.
@@ -88,7 +88,7 @@ Click on the link above to see a Json response example.
 
 ### User endpoints
 
-#### user show
+### user show :
 
 Fetch a user and its associated datas.
 The authorized method is `GET`.
@@ -107,7 +107,7 @@ http://54.162.156.51/Share-O-Metal/public/api/user/2
 
 Click on the link above to see a Json response example.
 
-#### user update
+### user update :
 
 Fetch a user and its associated datas.
 The authorized methods are `PUT` and `PATCH`.
@@ -122,11 +122,11 @@ No query parameter is allowed in the URL. Although the request need a Json body 
 
 ```
 {
-    "email": "josh@josh.com",
-    "biography": "Lorem...",
-    "nickname": "My new nickname",
-    "oldPassword": "josh",
-	"newPassword": "homme"
+  "email": "josh@josh.com",
+  "biography": "Lorem...",
+  "nickname": "My new nickname",
+  "oldPassword": "josh",
+  "newPassword": "homme"
 }
 ```
 
@@ -138,7 +138,7 @@ http://54.162.156.51/Share-O-Metal/public/api/user/2
 
 //TODO standardise the response with the front-end app.
 
-#### user login
+### user login :
 
 Fetch a user and its associated datas.
 The authorized method is `POST`.
@@ -183,7 +183,7 @@ else
 
 ### Band endpoints
 
-#### band list
+### band list :
 
 Fetch a list of all authorized bands for event research. 
 The authorized method is `GET`.
@@ -204,7 +204,7 @@ Click on the link above to see a Json response example.
 
 ### Country endpoints
 
-#### country list
+### country list :
 
 Fetch a list of all authorized countries for event research. 
 The authorized method is `GET`.
