@@ -42,19 +42,11 @@ class ReviewController extends AbstractController
     /**
      * @Route("/api/review", name="review_add", methods="POST")
      */
-    public function add(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, ValidatorInterface $validator)
+    public function add(Request $request, SerializerInterface $serializer, EntityManagerInterface $em)
     {
         $jsonContent = $request->getContent();
 
         $review = $serializer->deserialize($jsonContent, Review::class, 'json');
-
-        // Validation de l'entité désérialisée
-        //$errors = $validator->validate($review);
-        // Génération des erreurs
-        // if (count($errors) > 0) {
-        //     // On retourne le tableau d'erreurs en Json au front avec un status code 422
-        //     return $this->json($this->generateErrors($errors), Response::HTTP_UNPROCESSABLE_ENTITY);
-        // }
 
         $em->persist($review);
     
