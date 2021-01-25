@@ -62,10 +62,8 @@ class EventController extends AbstractController
     /**
      * @Route("/api/event/{setlistId}", name="event_show", methods="GET")
      */
-    public function show(Request $request, SetlistApi $setlistApi)
+    public function show($setlistId, SetlistApi $setlistApi)
     {   
-        $setlistId = $request->attributes;
-
         $responseContent = $setlistApi->fetchOneEvent($setlistId);
 
         return $this->json($responseContent);
