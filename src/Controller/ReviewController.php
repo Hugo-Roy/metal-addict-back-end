@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Review;
 use App\Repository\ReviewRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ReviewController extends AbstractController
 {
@@ -34,6 +37,22 @@ class ReviewController extends AbstractController
     public function show(Review $review)
     {
         return $this->json($review, Response::HTTP_OK, [], ['groups' => 'review_get']);
+    }
+
+    /**
+     * @Route("/api/review", name="review_add", methods="POST")
+     */
+    public function add(Request $request, SerializerInterface $serializer, EntityManagerInterface $em)
+    {
+        $jsonContent = $request->getContent();
+
+        $review = $serializer->deserialize($jsonContent, Review::class, 'json');
+
+        $em->persist($review);
+    
+        $em->flush();
+
+        return $this->json($review, Response::HTTP_CREATED, ['Location' => $this->generateUrl('review_show', ['id' => $review->getId()])], ['groups' => 'review_get']);
     }
 }
 
