@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Review;
+use App\Entity\User;
 use App\Repository\ReviewRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -46,8 +50,10 @@ class ReviewController extends AbstractController
     public function add(Request $request, SerializerInterface $serializer, EntityManagerInterface $em)
     {
         $jsonContent = $request->getContent();
-
+        
         $review = $serializer->deserialize($jsonContent, Review::class, 'json');
+        
+        //TODO validate the review properties
 
         $em->persist($review);
     
@@ -61,18 +67,20 @@ class ReviewController extends AbstractController
      */
     public function update(Review $review, EntityManagerInterface $em, SerializerInterface $serializer, Request $request)
     {
-        if($review === null)
-        {
-            return $this->json(['error' => "Review non trouvée."], Response::HTTP_NOT_FOUND);
-        }
-
         $jsonContent = $request->getContent();
+        
+        $reviewToMod = $serializer->deserialize($jsonContent, Review::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $review]);
 
-        $serializer->deserialize($jsonContent, Review::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $review]);
-
-        $em->flush();
+        if($reviewToMod->getUser() !== $user)
+        {
+            return $this->json('Erreur mec', Response::HTTP_FORBIDDEN);
+        }
+        else
+        {
+            $em->flush();
+        }
+        
 
         return $this->json(['message' => 'Review modifiée.'], Response::HTTP_OK);
     }
 }
-
