@@ -8,9 +8,9 @@
 |`/api/user/{id}`|`PUT`|Modification des données de l'utilisateur|USER(owner)|200, 204 ou 204|doing|
 |`/api/user/{id}`|`PATCH`|Modification des données de l'utilisateur|USER(owner)|200, 204ou 204|doing|
 |`/api/event/{setlistId}`|`GET`|Récupération d'un évènement et de ses données associées|USER et VISITOR|200 ou 404|done|
-|`/api/event/{setlistId}`|`POST`|Création d'un évènement en base donnée et l'associer au user concerné|USER|201 ou 404|doing|
+|`/api/event/{setlistId}`|`POST`|Création d'un évènement en base donnée et l'associer au user concerné|USER|201 ou 404|done|
 |`/api/review`|`GET`|Récupération d'une liste de reviews|USER et VISITOR|200 ou 404|doing|
-|`/api/review/{id}`|`GET`|Récupération d'une review et de ses données associées|USER et VISITOR|200 ou 404|todo|
+|`/api/review/{id}`|`GET`|Récupération d'une review et de ses données associées|USER et VISITOR|200 ou 404|done|
 |`/api/review/add`|`POST`|Ajout d'une review|USER|201|todo|
 |`/api/review/{id}`|`PUT`|Modification d'une review et de ses données associées|USER(owner)|200, 204 ou 204|todo|
 |`/api/review/{id}`|`PATCH`|Modification d'une review et de ses données associées|USER(owner)|200, 204 ou 204|todo|

@@ -98,7 +98,7 @@ class EventController extends AbstractController
             $em->persist($event);
             $em->flush();
 
-            return $this->json('', Response::HTTP_CREATED);
+            return $this->json('The user has been associated with the event', Response::HTTP_CREATED);
         }
     }
 }
