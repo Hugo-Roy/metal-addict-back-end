@@ -20,12 +20,6 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
-        main:
-            anonymous: true
-            #lazy: true
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
-
         api:
             pattern:   ^/api
             stateless: true
@@ -33,6 +27,13 @@ security:
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
+                    
+        main:
+            anonymous: true
+            #lazy: true
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
 
 
     encoders:
