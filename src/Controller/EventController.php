@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Band;
 use App\Entity\Event;
+use App\Repository\BandRepository;
 use App\Service\SetlistApi;
 use App\Repository\CountryRepository;
 use App\Repository\EventRepository;
@@ -11,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 class EventController extends AbstractController
 {
@@ -72,19 +74,31 @@ class EventController extends AbstractController
     /**
      * @Route("/api/event/{setlistId}", name="event_add", methods="POST")
      */
-    public function add($setlistId, EntityManagerInterface $em, EventRepository $eventRepository, SetlistApi $setlistApi)
+    public function add($setlistId, EntityManagerInterface $em, EventRepository $eventRepository,CountryRepository $countryRepository, BandRepository $bandRepository, SetlistApi $setlistApi)
     {
         $event = $eventRepository->findOneBy(['setlistId' => $setlistId]);
         $user = $this->getUser();
-
+        
         if ($event !== null && $user !== null) {
-            $user->addEvent($event);
+            $event->addUser($user);
             $em->flush();
+
+            return $this->json('', Response::HTTP_CREATED);
         }
         elseif ($event === null && $user !== null) {
             $eventProperties = $setlistApi->fetchOneEvent($setlistId);
-            dd($eventProperties);
+            $event = new Event();
+            $event->setSetlistId($eventProperties['id']);
+            $event->setVenue($eventProperties['venue']['name']);
+            $event->setCity($eventProperties['venue']['city']['name']);
+            $event->setDate(new \DateTime($eventProperties['eventDate']));
+            $event->setBand($bandRepository->findOneBy(['name' => $eventProperties['artist']['name']]));
+            $event->setCountry($countryRepository->findOneBy(['countryCode' => $eventProperties['venue']['city']['country']['code']]));
+            $event->addUser($user);
+            $em->persist($event);
+            $em->flush();
+
+            return $this->json('', Response::HTTP_CREATED);
         }
-        
     }
 }
