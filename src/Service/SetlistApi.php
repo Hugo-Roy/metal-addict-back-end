@@ -46,7 +46,7 @@ class SetlistApi
     {
         $response = $this->client->request(
             'GET',
-            'https://api.setlist.fm/rest/1.0/setlist/'.'5bd6dfc0',
+            'https://api.setlist.fm/rest/1.0/setlist/',
             [
                 'headers' => [
                     'x-api-key' => '24LpnzjvbvX5AsxiSJS9ZsPkATNgtY2996EH',
