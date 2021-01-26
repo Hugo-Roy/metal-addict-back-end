@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PictureController extends AbstractController
@@ -49,5 +50,33 @@ class PictureController extends AbstractController
         $em->flush();
 
         return $this->json($picture->getPath(), Response::HTTP_CREATED);
+    }
+
+    private function __toString()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @Route("/api/picture/{id}", name="picture_delete", methods="DELETE")
+     */
+    public function delete(Picture $picture, EntityManagerInterface $em, PictureUploader $pictureUploader, Filesystem $filesystem)
+    {
+        $user = $this->getUser();
+        
+        if($user !== $picture->getUser())
+        {
+            return $this->json(Response::HTTP_FORBIDDEN);
+        }
+
+        $path = $pictureUploader->getTargetDirectory();
+        $picturePath = $picture->getPath();
+        $toRemove = $path . '/' . $picturePath;
+        //dd($toRemove);
+        $filesystem->remove($toRemove);
+        $em->remove($picture);
+        $em->flush();
+
+        return $this->json(Response::HTTP_OK);
     }
 }
