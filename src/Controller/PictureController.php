@@ -62,12 +62,7 @@ class PictureController extends AbstractController
      */
     public function delete(Picture $picture, EntityManagerInterface $em, PictureUploader $pictureUploader, Filesystem $filesystem)
     {
-        $user = $this->getUser();
-        
-        if($user !== $picture->getUser())
-        {
-            return $this->json(Response::HTTP_FORBIDDEN);
-        }
+        $this->denyAccessUnlessGranted('delete', $picture);
 
         $path = $pictureUploader->getTargetDirectory();
         $picturePath = $picture->getPath();
