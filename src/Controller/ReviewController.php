@@ -68,19 +68,11 @@ class ReviewController extends AbstractController
     public function update(Review $review, EntityManagerInterface $em, SerializerInterface $serializer, Request $request)
     {
         $jsonContent = $request->getContent();
-        
-        $reviewToMod = $serializer->deserialize($jsonContent, Review::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $review]);
 
-        if($reviewToMod->getUser() !== $user)
-        {
-            return $this->json('Erreur mec', Response::HTTP_FORBIDDEN);
-        }
-        else
-        {
-            $em->flush();
-        }
-        
+        $serializer->deserialize($jsonContent, Review::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $review]);
 
-        return $this->json(['message' => 'Review modifiée.'], Response::HTTP_OK);
+        $em->flush();
+        
+        return $this->json(['Review modified'], Response::HTTP_OK);
     }
 }
