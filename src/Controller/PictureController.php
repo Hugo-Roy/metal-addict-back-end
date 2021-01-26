@@ -72,7 +72,7 @@ class PictureController extends AbstractController
         $path = $pictureUploader->getTargetDirectory();
         $picturePath = $picture->getPath();
         $toRemove = $path . '/' . $picturePath;
-        //dd($toRemove);
+        
         $filesystem->remove($toRemove);
         $em->remove($picture);
         $em->flush();
