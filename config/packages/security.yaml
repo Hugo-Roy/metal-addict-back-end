@@ -48,7 +48,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/event, methods: [POST], roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/review, methods: [POST, PUT, PATCH], roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/review, methods: [POST, PUT, PATCH, DELETE], roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/user, methods: [PUT, PATCH], roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/picture, methods: [POST, DELETE], roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/user, methods: [POST], roles: IS_ANONYMOUS }
