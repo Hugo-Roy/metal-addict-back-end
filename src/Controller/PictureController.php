@@ -52,11 +52,6 @@ class PictureController extends AbstractController
         return $this->json($picture->getPath(), Response::HTTP_CREATED);
     }
 
-    private function __toString()
-    {
-        return $this->picture;
-    }
-
     /**
      * @Route("/api/picture/{id}", name="picture_delete", methods="DELETE")
      */
