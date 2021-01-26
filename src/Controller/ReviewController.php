@@ -80,6 +80,6 @@ class ReviewController extends AbstractController
 
         $em->flush();
         
-        return $this->json(['Review modified'], Response::HTTP_OK);
+        return $this->json($review, Response::HTTP_CREATED, ['Location' => $this->generateUrl('review_show', ['id' => $review->getId()])], ['groups' => 'review_get']);
     }
 }
