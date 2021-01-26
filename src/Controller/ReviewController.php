@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\Review;
 use App\Entity\User;
 use App\Repository\ReviewRepository;
@@ -45,13 +46,19 @@ class ReviewController extends AbstractController
     }
 
     /**
-     * @Route("/api/review", name="review_add", methods="POST")
+     * @Route("/api/review/{setlistId}", name="review_add", methods="POST")
      */
-    public function add(Request $request, SerializerInterface $serializer, EntityManagerInterface $em)
+    public function add(Event $event, Request $request, SerializerInterface $serializer, EntityManagerInterface $em)
     {
         $jsonContent = $request->getContent();
         
         $review = $serializer->deserialize($jsonContent, Review::class, 'json');
+
+        $user = $this->getUser();
+
+        $review->setUser($user);
+
+        $review->setEvent($event);
         
         //TODO validate the review properties
 
