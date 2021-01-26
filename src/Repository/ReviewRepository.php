@@ -34,5 +34,22 @@ class ReviewRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Find Reviews by a given event (setlistId)
+     */
+    public function findByEvent($order, $setlistId)
+    {
+        return $this->createQueryBuilder('r')
+            ->innerJoin('r.user', 'u')
+            ->innerJoin('r.event', 'e')
+            ->addSelect('u')
+            ->addSelect('e')
+            ->andWhere('e.setlistId = :val')
+            ->setParameter('val', $setlistId)
+            ->orderBy('r.createdAt', $order)
+            ->getQuery()
+            ->getResult();
+    }
 }
 

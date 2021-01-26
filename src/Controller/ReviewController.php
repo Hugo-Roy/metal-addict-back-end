@@ -22,12 +22,20 @@ class ReviewController extends AbstractController
     {
         $limitParameter = intval($request->query->get('limit'));
         $orderParameter = $request->query->get('order');
+        $eventParameter = $request->query->get('setlistId');
+
+        if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC')) {
+            $reviews = $reviewRepository->findByEvent($orderParameter, $eventParameter);
+
+            return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
+        }
 
         if (is_integer($limitParameter) && $limitParameter !== 0 && ($orderParameter === 'ASC' || $orderParameter === 'DESC')) {
             $reviews = $reviewRepository->findByLatest($orderParameter, $limitParameter);
             
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         };
+
 
         //TODO handle errors
     }
