@@ -78,6 +78,7 @@ class EventController extends AbstractController
     {
         $event = $eventRepository->findOneBy(['setlistId' => $setlistId]);
         $user = $this->getUser();
+        dd($user);
       
         if ($event !== null && $user !== null) {
             $event->addUser($user);
