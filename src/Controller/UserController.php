@@ -67,16 +67,18 @@ class UserController extends AbstractController
      */
     public function update(User $user = null,UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
+        
         $jsonContent = $request->getContent();
-
+        
         $content = json_decode($jsonContent, true);
-
+        
         $user = $serializer->deserialize($jsonContent, User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
-
+        
         if(isset($content['newPassword']) && isset($content['oldPassword'])) {
             if($userPasswordEncoder->isPasswordValid($user, $content['oldPassword']) === false) {
                 return $this->json('wrong password', Response::HTTP_UNAUTHORIZED);
             }
+            $this->denyAccessUnlessGranted('update', $user);
             $user->setPassword($userPasswordEncoder->encodePassword($user, $content['newPassword']));
         }
 
