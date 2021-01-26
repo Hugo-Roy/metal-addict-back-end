@@ -34,15 +34,6 @@ security:
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
-
-        main:
-            anonymous: true
-            #lazy: true
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
-
-
-
     encoders:
         App\Entity\User:
             algorithm: auto
