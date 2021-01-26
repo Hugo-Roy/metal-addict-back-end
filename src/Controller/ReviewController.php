@@ -69,6 +69,8 @@ class ReviewController extends AbstractController
      */
     public function update(Review $review, EntityManagerInterface $em, SerializerInterface $serializer, Request $request)
     {
+        $this->denyAccessUnlessGranted('update', $review);
+
         $jsonContent = $request->getContent();
 
         $serializer->deserialize($jsonContent, Review::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $review]);
