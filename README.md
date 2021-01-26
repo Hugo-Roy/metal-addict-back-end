@@ -6,6 +6,8 @@ The URL of this API is `54.162.156.51/Share-O-Metal/public/api`. No public domai
 
 Endpoints have to be prefixed by this URL in any cases.
 
+Once you get the JWT token, send it to every request headers for authorization (Authorization : Bearer {token}).
+
 ## Event endpoints
 
 ### event search :
@@ -46,11 +48,28 @@ http://54.162.156.51/Share-O-Metal/public/api/event/5bd6dfc0
 
 Click on the link above to see a Json response example.
 
+### event add :
+
+Basically, this endpoint will specify that a user has been to an event. If nobody has been to this event yet, it will be created in or database and associated to the given user. Otherwise it will only be associated with the user.
+The authorized method is `POST`.
+
+#### endpoint
+
+`/event/{setlistId}` the setlist id of the event is required.
+
+#### query parameters
+
+No query parameter is allowed.
+
+#### response example
+
+The response is a basic status 201 "created".
+
 ## Review endpoints
 
 ### review list :
 
-Fetch a list of reviews. At the moment, it only works for the list of reviews needed for the home page.
+Fetch a list of reviews. At the moment, it only works for the list of reviews needed for the home page and a for a given event.
 The authorized method is `GET`.
 
 #### endpoint
@@ -59,7 +78,7 @@ The authorized method is `GET`.
 
 #### query parameters
 
-"order" ("ASC" or "DESC"), "limit". No particular order is required.
+"order" ("ASC" or "DESC"), "limit", "setlistId". No particular order is required. The limit parameter will always be accepted apart for a given event (if you send a setlistId).
 
 #### request URL example
 
@@ -85,6 +104,64 @@ No query parameter is allowed.
 http://54.162.156.51/Share-O-Metal/public/api/review/2
 
 Click on the link above to see a Json response example.
+
+### review add :
+
+Add a review for an event. You must send a valid JWT token.
+The authorized method is `POST`.
+
+#### endpoint
+
+`/review`
+
+#### query parameters
+
+No query parameter is allowed. You have to send the field of the review in a Json body such as :
+
+```json
+{
+	"title": "Awesome review",
+	"content": "lorem..."
+}
+```
+
+#### response example
+
+```json
+{
+  "id": 202,
+  "title": "Awesome review",
+  "content": "lorem de ouf...",
+  "createdAt": "2021-01-26T10:29:11+01:00",
+  "user": {
+    "id": 1,
+    "nickname": "Lemmy Killmister"
+  },
+  "event": {
+    "id": 51,
+    "setlistId": "43cd0f37",
+    "venue": "Cabaret Sauvage",
+    "city": "Ville-Lumière",
+    "date": "2014-12-19T00:00:00+01:00",
+    "band": {
+      "id": 4,
+      "name": "Meshuggah",
+      "image": null
+    },
+    "country": {
+      "id": 1,
+      "name": "France",
+      "countryCode": "FR"
+    }
+  }
+}
+```
+### review update :
+
+Modify a review for an event. You must send a valid JWT token.
+The authorized methods are `PUT` and `PATCH`.
+
+It works almost the same as review add. Just send the field you want to update with your valid JWT token.
 
 ### User endpoints
 
@@ -120,7 +197,7 @@ The authorized methods are `PUT` and `PATCH`.
 
 No query parameter is allowed in the URL. Although the request need a Json body such as :
 
-```
+```json
 {
   "email": "josh@josh.com",
   "biography": "Lorem...",
@@ -151,7 +228,7 @@ The authorized method is `POST`.
 
 No query parameter is allowed in the URL as the datas are sent in `POST`. Although the request need a Json body such as :
 
-```
+```json
 {
     "email": "josh@josh.com",
     "password": "josh",
@@ -162,24 +239,7 @@ No query parameter is allowed in the URL as the datas are sent in `POST`. Althou
 
 http://54.162.156.51/Share-O-Metal/public/api/login
 
-#### response exemple
-
-if connected
-```
-{
-  "email": "josh@josh.com",
-  "nickname": "Josh Homme",
-  "roles": [
-    "ROLE_USER"
-  ]
-}
-```
-else
-```
-{
-  "error": "Invalid credentials."
-}
-```
+The response is a JWT token, decode it to get the user id, username, nickname, avatar and biography.
 
 ### Band endpoints
 
@@ -222,3 +282,37 @@ No query parameter is allowed in the URL.
 http://54.162.156.51/Share-O-Metal/public/api/country
 
 Click on the link above to see a Json response example.
+
+### Picture endpoints
+
+### picture add :
+
+Add a picture associated with a user and an event.
+The authorized method is `POST`.
+
+#### endpoint
+
+`/picture/{setlistId}`
+
+#### query parameters
+
+No query parameter is allowed in the URL. 
+
+#### request
+
+You have to set "Content-Type : multipart/form-data" in the headers with a valid JWT token.
+The key name set in the headers of the uploaded file is 'picture'.
+The response is the name of the created picture in the database.
+
+### picture delete :
+
+Delete a picture. The user must be the owner of the picture to delete it.
+The authorized method is `DELETE`.
+
+#### endpoint
+
+`/picture/{id}`
+
+#### query parameters
+
+No query parameter is allowed in the URL. 
