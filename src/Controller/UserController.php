@@ -67,6 +67,7 @@ class UserController extends AbstractController
      */
     public function update(User $user = null,UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
+        //$this->denyAccessUnlessGranted('update', $user);
         
         $jsonContent = $request->getContent();
         
@@ -78,7 +79,6 @@ class UserController extends AbstractController
             if($userPasswordEncoder->isPasswordValid($user, $content['oldPassword']) === false) {
                 return $this->json('wrong password', Response::HTTP_UNAUTHORIZED);
             }
-            $this->denyAccessUnlessGranted('update', $user);
             $user->setPassword($userPasswordEncoder->encodePassword($user, $content['newPassword']));
         }
 
