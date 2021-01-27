@@ -20,12 +20,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/api/users/{setlistId}", name="user_list", methods={"GET"})
+     * @Route("/api/user", name="user_list", methods={"GET"})
      */
-    public function listUser(EventRepository $eventRepository, $setlistId): Response
+    public function listUser(Event $event = null, EventRepository $eventRepository, Request $request): Response
     {
-
-        $currentEvent = $eventRepository->findOneBy(['setlistId' => $setlistId]);
+        $researchParameters = $request->query->all();
+        
+        $currentEvent = $eventRepository->findOneBy(['setlistId' => $researchParameters['setlistId']]);
         
         if(!$currentEvent) 
         {
