@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Event;
+use App\Service\SetlistApi;
 use App\Repository\UserRepository;
+use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,13 +20,24 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/api/users", name="user_list", methods={"GET"})
+     * @Route("/api/users/{setlistId}", name="user_list", methods={"GET"})
      */
-    public function list(UserRepository $userRepository): Response
+    public function listUser(EventRepository $eventRepository, $setlistId): Response
     {
-        // $users = $userRepository->findAll();
+
+        $currentEvent = $eventRepository->findOneBy(['setlistId' => $setlistId]);
         
-        return $this->json($userRepository->findAll(), Response::HTTP_OK, [], ["groups" => "user_get"]);
+        if(!$currentEvent) 
+        {
+            return $this->json('This event does not exist', Response::HTTP_NOT_FOUND);
+        }
+        // This does not work
+        else if(!$currentEvent->getUsers())
+        {
+            return $this->json('This event does not have any users associated', Response::HTTP_OK);
+        }
+
+        return $this->json($currentEvent->getUsers(), Response::HTTP_OK, [], ["groups" => "user_get"]);
     }
 
     /**
