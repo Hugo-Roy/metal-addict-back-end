@@ -12,27 +12,38 @@ use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Provider\ShareOMetalProvider;
+use App\Repository\BandRepository;
+use App\Repository\CountryRepository;
+use App\Service\SetlistApi;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
     private $passwordEncoder;
 
-    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder)
+    private $setlistApi;
+
+    private $bandRepository;
+
+    private $countryRepository;
+
+    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, SetlistApi $setlistApi, BandRepository $bandRepository, CountryRepository $countryRepository)
     {
         $this->passwordEncoder = $userPasswordEncoder;
+        $this->setlistApi = $setlistApi;
+        $this->bandRepository = $bandRepository;
+        $this->countryRepository = $countryRepository;
     }
 
     private function truncate(Connection $connection)
     {
         // reset ids
-        $users = $connection->executeQuery('SET foreign_key_checks = 0');
-        $users = $connection->executeQuery('TRUNCATE TABLE band');
-        $users = $connection->executeQuery('TRUNCATE TABLE country');
-        $users = $connection->executeQuery('TRUNCATE TABLE event');
-        $users = $connection->executeQuery('TRUNCATE TABLE picture');
-        $users = $connection->executeQuery('TRUNCATE TABLE review');
-        $users = $connection->executeQuery('TRUNCATE TABLE user');
+        $connection->executeQuery('SET foreign_key_checks = 0');
+        $connection->executeQuery('TRUNCATE TABLE country');
+        $connection->executeQuery('TRUNCATE TABLE event');
+        $connection->executeQuery('TRUNCATE TABLE picture');
+        $connection->executeQuery('TRUNCATE TABLE review');
+        $connection->executeQuery('TRUNCATE TABLE user');
     }
     
     public function load(ObjectManager $manager)
@@ -44,44 +55,32 @@ class AppFixtures extends Fixture
         $faker->seed('Lyra PHP');
 
         $faker->addProvider(new ShareOMetalProvider());
+
+        //create countries from setlist.fm
+        $countries = $this->setlistApi->getCountries();
+        foreach ($countries as $country) {
+            $countryEntity = new Country();
+            $countryEntity->setCountryCode($country['code']);
+            $countryEntity->setName($country['name']);
+            $manager->persist($countryEntity);
+        }
         
-        // $provider = new ShareOMetalProvider();
-
-        //create bands
-        $bands = $faker->getBands();
-        $bandsCollection = [];
-        foreach ($bands as $bandName) {
-            $band = new Band();
-            $band->setName($bandName);
-            $bandsCollection[] = $band;
-            $manager->persist($band);
-        };
-
-        //create countries
-        $countries = $faker->getCountries();
-        $countriesCollection = [];
-        foreach ($countries as $countryName => $countryCode) {
-            $country = new Country();
-            $country->setName($countryName);
-            $country->setCountryCode($countryCode);
-            $countriesCollection[] = $country;
-            $manager->persist($country);
-        };
 
         //create 50 events
         $eventsCollection = [];
-        for ($i=0; $i < 50; $i++) { 
+        $setlistIds = $faker->getSetlistIds();
+        foreach ($setlistIds as $setlistId ) {
+            $eventProperties = $this->setlistApi->fetchOneEvent($setlistId);
             $event = new Event();
-            $event->setVenue($faker->getVenue());
-            $event->setCity($faker->getCity());
-            $event->setCountry($countriesCollection[mt_rand(0, count($countriesCollection) - 1)]);
-            $event->setBand($bandsCollection[mt_rand(0, count($bandsCollection) - 1)]);
-            $event->setDate($faker->dateTimeBetween("-20 years"));
+            $event->setSetlistId($eventProperties['id']);
+            $event->setVenue($eventProperties['venue']['name']);
+            $event->setCity($eventProperties['venue']['city']['name']);
+            $event->setDate(new \DateTime($eventProperties['eventDate']));
+            $event->setBand($this->bandRepository->findOneBy(['name' => $eventProperties['artist']['name']]));
+            $event->setCountry($this->countryRepository->findOneBy(['countryCode' => $eventProperties['venue']['city']['country']['code']]));
             $eventsCollection[] = $event;
             $manager->persist($event);
         }
-
-        //TODO create pictures
 
         //create 5 users
         $usersCollection = [];
@@ -147,14 +146,17 @@ class AppFixtures extends Fixture
         $manager->persist($fifthUser);
 
 
-        //create 200 reviews
-        for ($i=0; $i < 200; $i++) { 
-            $review = new Review();
-            $review->setTitle($faker->sentence(10));
-            $review->setContent($faker->realText());
-            $review->setUser($usersCollection[mt_rand(0, count($usersCollection) - 1)]);
-            $review->setEvent($eventsCollection[mt_rand(0, count($bandsCollection) - 1)]);
-            $manager->persist($review);
+        //create 6 reviews for each users
+        foreach ($usersCollection as $user) {
+            for ($i=0; $i < 6; $i++) { 
+                $review = new Review();
+                $review->setTitle($faker->sentence(10));
+                $review->setContent($faker->realText());
+                $review->setUser($user);
+                $userEvents = $user->getEvents();
+                $review->setEvent($userEvents[mt_rand(0, count($userEvents) - 1)]);
+                $manager->persist($review);
+            }
         }
 
         $manager->flush();
