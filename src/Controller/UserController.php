@@ -5,13 +5,16 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Event;
 use App\Service\SetlistApi;
+use App\Service\PictureUploader;
 use App\Repository\UserRepository;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -102,6 +105,36 @@ class UserController extends AbstractController
         $em->flush();
 
         return $this->json(["message" => "Informations modifiées."], Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/api/user/avatar/{id<\d+>}", name="user_add_avatar", methods={"POST"})
+     */
+    public function addAvatar(User $user, Request $request,EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader)
+    {
+        $uploadedFile = $request->files->get('image');
+        $violations = $validator->validate(
+            $uploadedFile,
+            [
+                new NotBlank([
+                    'message' => 'Please select a file to upload'
+                ]),
+                new File([
+                    'maxSize' => '5M',
+                    'mimeTypes' => [
+                        'image/*',
+                    ]
+                ])
+            ]
+        );
+        if ($violations->count() > 0) {
+            return $this->json($violations, 400);
+        }
+        $filename = $uploader->upload($uploadedFile);
+        $user->setAvatar($filename);
+        $em->flush();
+
+        return $this->json($user->getAvatar(), Response::HTTP_CREATED);
     }
 
     /**
