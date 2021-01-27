@@ -80,7 +80,7 @@ class Event
     private $pictures;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User:class, mappedBy="events")
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="events")
      */
     private $users;
 
