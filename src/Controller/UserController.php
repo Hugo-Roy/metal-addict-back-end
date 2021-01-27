@@ -84,7 +84,7 @@ class UserController extends AbstractController
      * 
      * @Route("/api/user/{id<\d+>}", name="user_update", methods={"PUT", "PATCH"})
      */
-    public function update(User $user = null,UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
+    public function update(User $user, UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
         $this->denyAccessUnlessGranted('update', $user);
         
@@ -113,7 +113,8 @@ class UserController extends AbstractController
      */
     public function addAvatar(User $user, Request $request,EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader)
     {
-        //TODO deny access
+        $this->denyAccessUnlessGranted('avatar', $user);
+
         $uploadedFile = $request->files->get('image');
         $violations = $validator->validate(
             $uploadedFile,
@@ -144,7 +145,8 @@ class UserController extends AbstractController
      */
     public function updateAvatar(User $user, Request $request,EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader, Filesystem $filesystem)
     {
-        //TODO deny access
+        $this->denyAccessUnlessGranted('avatar', $user);
+
         $path = $uploader->getTargetDirectory();
         $avatar = $user->getAvatar();
         $fullPath = $path . '/' . $avatar;
@@ -180,7 +182,8 @@ class UserController extends AbstractController
      */
     public function deleteAvatar(User $user, EntityManagerInterface $em, PictureUploader $uploader, Filesystem $filesystem)
     {
-        //TODO deny access
+        $this->denyAccessUnlessGranted('avatar', $user);
+
         $path = $uploader->getTargetDirectory();
         $avatar = $user->getAvatar();
         $fullPath = $path . '/' . $avatar;
