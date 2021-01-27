@@ -4,79 +4,33 @@ namespace App\DataFixtures\Provider;
 
 class ShareOMetalProvider 
 {
-    private $bands = [
-        "All Them Witches",
-        "Idles",
-        "Eyehategod",
-        "Meshuggah",
-        "Pantera",
-        "Judas Priest",
-        "Down",
-        "Metallica",
-        "Pearl Jam",
-        "Cannibal Corpse",
-        "Queens Of The Stone Age",
-        "Iron Maiden",
+    private $setlistIds = [
+        '7bea6a34',
+        '3bea6ccc',
+        '5bfbfb50',
+        '1398a5f9',
+        '6b876a6e',
+        '43e2c3ff',
+        '43fe770b',
+        '5b95b738',
+        '395b9c7',
+        '73e75e0d',
+        '1b9a0d60',
+        '23e8e86b',
+        '43e8839f',
+        '3b9048a8',
+        '3b9b9024',
+        '5b9b9b20',
+        '4b9137ae',
+        '73ea6a4d',
+        '1391211d',
+        'b957d0a',
+        '3e4e9fb',
+        '13949501',
     ];
 
-    private $countries = [
-        "France" => "FR",
-        "Etats-Unis" => "US",
-        "Allemagne" => "DE",
-        "Belgique" => "BE",
-        "Luxembourg" => "LU",
-        "Grande-Bretagne" => "GB",
-    ];
-
-    private $cities = [
-        "Besançon",
-        "Lille",
-        "Paris",
-        "Nantes",
-        "Rennes",
-        "Marseilles",
-        "Lyon",
-        "Bruxelles",
-        "Londres",
-        "Berlin",
-        "Luxembourg",
-        "New-York",
-        "Los Angeles",
-    ];
-
-    private $venues = [
-        "La Vapeur",
-        "Aeronef",
-        "Bataclan",
-        "Paris Bercy",
-        "Whisky à Gogo",
-        "Koko",
-        "Berghain",
-        "Ancienne Belgique",
-        "Rockhal",
-        "Le Ferailleur",
-        "Le Zenith",
-        "Parc des Princes",
-        "Ninkasi",
-    ];
-
-    public function getBands()
+    public function getSetlistIds()
     {
-        return $this->bands;
-    }
-
-    public function getCountries()
-    {
-        return $this->countries;
-    }
-
-    public function getCity()
-    {
-        return $this->cities[array_rand($this->cities)];
-    }
-
-    public function getVenue()
-    {
-        return $this->venues[array_rand($this->venues)];
+        return $this->setlistIds;
     }
 }

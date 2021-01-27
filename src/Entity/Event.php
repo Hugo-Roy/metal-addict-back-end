@@ -57,14 +57,14 @@ class Event
 
     /**
      * @ORM\ManyToOne(targetEntity=Band::class, inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups("review_get")
      */
     private $band;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups("review_get")
      */
     private $country;
