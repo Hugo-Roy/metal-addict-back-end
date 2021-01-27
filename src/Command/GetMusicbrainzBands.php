@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Band;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,11 +18,15 @@ class GetMusicbrainzBands extends Command
 
     private $entityManager;
 
-    public function __construct(HttpClientInterface $client, EntityManagerInterface $entityManager)
+    private $connection;
+
+    public function __construct(HttpClientInterface $client, EntityManagerInterface $entityManager, Connection $connection)
     {
         $this->client = $client;
 
         $this->entityManager = $entityManager;
+
+        $this->connection = $connection;
 
         parent::__construct();
     }
@@ -34,6 +39,11 @@ class GetMusicbrainzBands extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->connection->executeQuery('SET foreign_key_checks = 0');
+        $this->connection->executeQuery('TRUNCATE TABLE band');
+
+        $output->writeln('Band table truncated.');
+
         $isBands = false;
         $offset = 0;
 
@@ -60,7 +70,6 @@ class GetMusicbrainzBands extends Command
             [
                 'headers' => [
                     'Accept' =>'application/json',
-                    'Accept-Language' => 'fr',
                 ],
             ]
         );
@@ -68,7 +77,6 @@ class GetMusicbrainzBands extends Command
         $bands =  $response->toArray();
 
         foreach ($bands['artists'] as $band) {
-            $output->writeln($band['id']);
             $output->writeln($band['name']);
             $bandEntity = new Band();
             $bandEntity->setMusicbrainzId($band['id']);

@@ -38,13 +38,12 @@ class AppFixtures extends Fixture
     private function truncate(Connection $connection)
     {
         // reset ids
-        $users = $connection->executeQuery('SET foreign_key_checks = 0');
-        $users = $connection->executeQuery('TRUNCATE TABLE band');
-        $users = $connection->executeQuery('TRUNCATE TABLE country');
-        $users = $connection->executeQuery('TRUNCATE TABLE event');
-        $users = $connection->executeQuery('TRUNCATE TABLE picture');
-        $users = $connection->executeQuery('TRUNCATE TABLE review');
-        $users = $connection->executeQuery('TRUNCATE TABLE user');
+        $connection->executeQuery('SET foreign_key_checks = 0');
+        $connection->executeQuery('TRUNCATE TABLE country');
+        $connection->executeQuery('TRUNCATE TABLE event');
+        $connection->executeQuery('TRUNCATE TABLE picture');
+        $connection->executeQuery('TRUNCATE TABLE review');
+        $connection->executeQuery('TRUNCATE TABLE user');
     }
     
     public function load(ObjectManager $manager)
