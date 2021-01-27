@@ -59,4 +59,24 @@ class SetlistApi
         $this->client;
         return $response->toArray();
     }
+
+    /**
+     * Get a complete list of all supported countries
+     */
+    public function getCountries()
+    {
+        $response = $this->client->request(
+            'GET',
+            'https://api.setlist.fm/rest/1.0/search/countries',
+            [
+                'headers' => [
+                    'x-api-key' => '24LpnzjvbvX5AsxiSJS9ZsPkATNgtY2996EH',
+                    'Accept' =>'application/json',
+                    'Accept-Language' => 'fr',
+                ],
+            ]
+        );
+       
+        return $response->toArray();
+    }
 }

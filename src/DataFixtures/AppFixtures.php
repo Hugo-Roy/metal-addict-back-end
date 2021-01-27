@@ -12,15 +12,19 @@ use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Provider\ShareOMetalProvider;
+use App\Service\SetlistApi;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
     private $passwordEncoder;
 
-    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder)
+    private $setlistApi;
+
+    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, SetlistApi $setlistApi)
     {
         $this->passwordEncoder = $userPasswordEncoder;
+        $this->setlistApi = $setlistApi;
     }
 
     private function truncate(Connection $connection)
@@ -44,29 +48,16 @@ class AppFixtures extends Fixture
         $faker->seed('Lyra PHP');
 
         $faker->addProvider(new ShareOMetalProvider());
+
+        //create countries from setlist.fm
+        $countries = $this->setlistApi->getCountries();
+        foreach ($countries as $country) {
+            $countryEntity = new Country();
+            $countryEntity->setCountryCode($country['code']);
+            $countryEntity->setName($country['name']);
+            $manager->persist($countryEntity);
+        }
         
-        // $provider = new ShareOMetalProvider();
-
-        //create bands
-        $bands = $faker->getBands();
-        $bandsCollection = [];
-        foreach ($bands as $bandName) {
-            $band = new Band();
-            $band->setName($bandName);
-            $bandsCollection[] = $band;
-            $manager->persist($band);
-        };
-
-        //create countries
-        $countries = $faker->getCountries();
-        $countriesCollection = [];
-        foreach ($countries as $countryName => $countryCode) {
-            $country = new Country();
-            $country->setName($countryName);
-            $country->setCountryCode($countryCode);
-            $countriesCollection[] = $country;
-            $manager->persist($country);
-        };
 
         //create 50 events
         $eventsCollection = [];
