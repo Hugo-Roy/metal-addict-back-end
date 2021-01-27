@@ -111,48 +111,20 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user/avatar/{id<\d+>}", name="user_add_avatar", methods={"POST"})
      */
-    public function addAvatar(User $user, Request $request,EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader)
+    public function addAvatar(User $user, Request $request, EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader, Filesystem $filesystem)
     {
         $this->denyAccessUnlessGranted('avatar', $user);
-
-        $uploadedFile = $request->files->get('image');
-        $violations = $validator->validate(
-            $uploadedFile,
-            [
-                new NotBlank([
-                    'message' => 'Please select a file to upload'
-                ]),
-                new File([
-                    'maxSize' => '5M',
-                    'mimeTypes' => [
-                        'image/*',
-                    ]
-                ])
-            ]
-        );
-        if ($violations->count() > 0) {
-            return $this->json($violations, 400);
-        }
-        $filename = $uploader->upload($uploadedFile);
-        $user->setAvatar($filename);
-        $em->flush();
-
-        return $this->json($user->getAvatar(), Response::HTTP_CREATED);
-    }
-
-    /**
-     * @Route("/api/user/avatar/{id<\d+>}", name="user_update_avatar", methods={"PUT", "PATCH"})
-     */
-    public function updateAvatar(User $user, Request $request,EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader, Filesystem $filesystem)
-    {
-        $this->denyAccessUnlessGranted('avatar', $user);
-
-        $path = $uploader->getTargetDirectory();
-        $avatar = $user->getAvatar();
-        $fullPath = $path . '/' . $avatar;
-        $filesystem->remove($fullPath);
         
+        $avatar = $user->getAvatar();
+
+        if ($avatar !== null) {
+            $path = $uploader->getTargetDirectory();
+            $fullPath = $path . '/' . $avatar;
+            $filesystem->remove($fullPath);
+        }
+
         $uploadedFile = $request->files->get('image');
+        
         $violations = $validator->validate(
             $uploadedFile,
             [
