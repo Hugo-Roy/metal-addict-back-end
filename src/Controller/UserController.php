@@ -5,13 +5,17 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Event;
 use App\Service\SetlistApi;
+use App\Service\PictureUploader;
 use App\Repository\UserRepository;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -80,7 +84,7 @@ class UserController extends AbstractController
      * 
      * @Route("/api/user/{id<\d+>}", name="user_update", methods={"PUT", "PATCH"})
      */
-    public function update(User $user = null,UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
+    public function update(User $user, UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
         $this->denyAccessUnlessGranted('update', $user);
         
@@ -102,6 +106,92 @@ class UserController extends AbstractController
         $em->flush();
 
         return $this->json(["message" => "Informations modifiées."], Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/api/user/avatar/{id<\d+>}", name="user_add_avatar", methods={"POST"})
+     */
+    public function addAvatar(User $user, Request $request,EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader)
+    {
+        $this->denyAccessUnlessGranted('avatar', $user);
+
+        $uploadedFile = $request->files->get('image');
+        $violations = $validator->validate(
+            $uploadedFile,
+            [
+                new NotBlank([
+                    'message' => 'Please select a file to upload'
+                ]),
+                new File([
+                    'maxSize' => '5M',
+                    'mimeTypes' => [
+                        'image/*',
+                    ]
+                ])
+            ]
+        );
+        if ($violations->count() > 0) {
+            return $this->json($violations, 400);
+        }
+        $filename = $uploader->upload($uploadedFile);
+        $user->setAvatar($filename);
+        $em->flush();
+
+        return $this->json($user->getAvatar(), Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/api/user/avatar/{id<\d+>}", name="user_update_avatar", methods={"PUT", "PATCH"})
+     */
+    public function updateAvatar(User $user, Request $request,EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader, Filesystem $filesystem)
+    {
+        $this->denyAccessUnlessGranted('avatar', $user);
+
+        $path = $uploader->getTargetDirectory();
+        $avatar = $user->getAvatar();
+        $fullPath = $path . '/' . $avatar;
+        $filesystem->remove($fullPath);
+        
+        $uploadedFile = $request->files->get('image');
+        $violations = $validator->validate(
+            $uploadedFile,
+            [
+                new NotBlank([
+                    'message' => 'Please select a file to upload'
+                ]),
+                new File([
+                    'maxSize' => '5M',
+                    'mimeTypes' => [
+                        'image/*',
+                    ]
+                ])
+            ]
+        );
+        if ($violations->count() > 0) {
+            return $this->json($violations, 400);
+        }
+        $filename = $uploader->upload($uploadedFile);
+        $user->setAvatar($filename);
+        $em->flush();
+
+        return $this->json($user->getAvatar(), Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/api/user/avatar/{id<\d+>}", name="user_delete_avatar", methods={"DELETE"})
+     */
+    public function deleteAvatar(User $user, EntityManagerInterface $em, PictureUploader $uploader, Filesystem $filesystem)
+    {
+        $this->denyAccessUnlessGranted('avatar', $user);
+
+        $path = $uploader->getTargetDirectory();
+        $avatar = $user->getAvatar();
+        $fullPath = $path . '/' . $avatar;
+        $user->setAvatar(null);
+        $filesystem->remove($fullPath);
+        $em->flush();
+
+        return $this->json(Response::HTTP_OK);
     }
 
     /**
