@@ -158,12 +158,17 @@ class UserController extends AbstractController
 
         $path = $uploader->getTargetDirectory();
         $avatar = $user->getAvatar();
-        $fullPath = $path . '/' . $avatar;
-        $user->setAvatar(null);
-        $filesystem->remove($fullPath);
-        $em->flush();
 
-        return $this->json(Response::HTTP_OK);
+        if ($avatar !== null) {
+            $fullPath = $path . '/' . $avatar;
+            $user->setAvatar(null);
+            $filesystem->remove($fullPath);
+            $em->flush();
+    
+            return $this->json('Avatar Removed', Response::HTTP_OK);
+        }
+
+        return $this->json('No avatar found', Response::HTTP_NOT_FOUND);
     }
 
     /**
