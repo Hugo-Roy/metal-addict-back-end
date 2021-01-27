@@ -27,7 +27,7 @@ class ReviewController extends AbstractController
         $eventParameter = $request->query->get('setlistId');
         $userParameter  = $request->query->get('user');
 
-        if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && ($userParameter == null || !$userParameter) ) 
+        if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && $userParameter == null) 
         {
             $reviews = $reviewRepository->findByEvent($orderParameter, $eventParameter);
 
@@ -36,14 +36,23 @@ class ReviewController extends AbstractController
 
         else if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && isset($userParameter) ) 
         {
-            $event = $eventRepository->findOneBy(["setlistId" => $eventParameter["setlistId"]]);
+            $event = $eventRepository->findOneBy(["setlistId" => $eventParameter]);
             
-            $user = $userRepository->findOneBy(["id" => $userParameter["user"]]);
+            $user = $userRepository->findOneBy(["id" => $userParameter]);
             //dd($user);
 
-            $reviews = $reviewRepository->findBy(["setlistId" => $event], ["user" => $user]);
+            $reviews = $reviewRepository->findBy(["event" => $event, "user" => $user]);
 
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
+        }
+
+        else if (!isset($eventParameter) && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && (isset($userParameter) && $userParameter !== ""))
+        {
+            $user = $userRepository->findOneBy(["id" => $userParameter]);
+
+            $reviews = $reviewRepository->findBy(["user" => $user]);
+
+            return $this->json($reviews, Response::HTTP_OK, [], ["groups" => "review_get"]);
         }
 
         elseif (is_integer($limitParameter) && $limitParameter !== 0 && ($orderParameter === 'ASC' || $orderParameter === 'DESC')) 
