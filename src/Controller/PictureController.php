@@ -36,12 +36,6 @@ class PictureController extends AbstractController
         {
             $currentEvent = $eventRepository->findOneBy(["id" => $researchParameters["event"]]);
 
-            // $path = $pictureUploader->getTargetDirectory();
-            // $getPicturePaths = $currentEvent->getPictures();
-            // dd($path . '/' . $currentEvent->getPictures());
-            // $getPath = $path . '/' . $currentEvent->getPictures();
-
-            // dd($getPath);
             return $this->json($currentEvent->getPictures(), Response::HTTP_OK, [], ["groups" => "picture_get"]);
         }
         else if(isset($researchParameters['user']) && !isset($researchParameters['event']))
