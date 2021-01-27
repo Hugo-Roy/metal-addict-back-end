@@ -24,7 +24,7 @@ class EventController extends AbstractController
     {
         $researchParameters = $request->query->all();
 
-        $researchParameters['artistName'] = $band->getName();
+        $researchParameters['artistMbid'] = $band->getMusicbrainzId();
 
         if(!empty($researchParameters['countryId'])) {
             $country = $countryRepository->find($researchParameters['countryId']);
@@ -38,11 +38,9 @@ class EventController extends AbstractController
         else {
             $researchParameters['countryCode'] = null;
         }
-
-
         
         $newResearchParams = [
-            "artistName" => $researchParameters["artistName"],
+            "artistMbid" => $researchParameters["artistMbid"],
             "cityName" => $researchParameters["cityName"],
             "countryCode" => $researchParameters["countryCode"],
             "venueName" => $researchParameters["venueName"],
