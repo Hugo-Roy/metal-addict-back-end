@@ -28,7 +28,7 @@ class Country
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=5, index=true)
      * @Groups({"country_get", "review_get"})
      */
     private $countryCode;
