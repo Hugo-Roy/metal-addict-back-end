@@ -46,7 +46,7 @@ class ReviewController extends AbstractController
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         }
 
-        else if (!isset($eventParameter) && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && (isset($userParameter) && $userParameter !== ""))
+        else if (($orderParameter === 'ASC' || $orderParameter === 'DESC') && (isset($userParameter) && $userParameter !== ""))
         {
             $user = $userRepository->findOneBy(["id" => $userParameter]);
 
