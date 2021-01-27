@@ -8,6 +8,7 @@ use App\Repository\BandRepository;
 use App\Service\SetlistApi;
 use App\Repository\CountryRepository;
 use App\Repository\EventRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -69,6 +70,19 @@ class EventController extends AbstractController
         $responseContent = $setlistApi->fetchOneEvent($setlistId);
 
         return $this->json($responseContent);
+    }
+
+    /**
+     * @Route("/api/event", name="event_list", methods="GET")
+     */
+    public function list(Request $request, UserRepository $userRepository, EventRepository $eventRepository)
+    {
+        $researchParameters = $request->query->get('user');
+
+        $user = $userRepository->findOneBy(["id" => $researchParameters]);
+        
+        $events = $user->getEvents();
+        return $this->json($events, Response::HTTP_OK, [], ["groups" => "event_get"]);
     }
 
     /**
