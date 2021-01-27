@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Review;
+use App\Repository\EventRepository;
 use App\Repository\ReviewRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,19 +20,34 @@ class ReviewController extends AbstractController
     /**
      * @Route("/api/review", name="review_list", methods="GET")
      */
-    public function list(Request $request, ReviewRepository $reviewRepository): Response
+    public function list(Request $request, ReviewRepository $reviewRepository, EventRepository $eventRepository, UserRepository $userRepository): Response
     {
         $limitParameter = intval($request->query->get('limit'));
         $orderParameter = $request->query->get('order');
         $eventParameter = $request->query->get('setlistId');
+        $userParameter  = $request->query->get('user');
 
-        if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC')) {
+        if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && ($userParameter == null || !$userParameter) ) 
+        {
             $reviews = $reviewRepository->findByEvent($orderParameter, $eventParameter);
 
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         }
 
-        if (is_integer($limitParameter) && $limitParameter !== 0 && ($orderParameter === 'ASC' || $orderParameter === 'DESC')) {
+        else if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && isset($userParameter) ) 
+        {
+            $event = $eventRepository->findOneBy(["setlistId" => $eventParameter["setlistId"]]);
+            
+            $user = $userRepository->findOneBy(["id" => $userParameter["user"]]);
+            //dd($user);
+
+            $reviews = $reviewRepository->findBy(["setlistId" => $event], ["user" => $user]);
+
+            return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
+        }
+
+        elseif (is_integer($limitParameter) && $limitParameter !== 0 && ($orderParameter === 'ASC' || $orderParameter === 'DESC')) 
+        {
             $reviews = $reviewRepository->findByLatest($orderParameter, $limitParameter);
             
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);

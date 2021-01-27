@@ -22,20 +22,15 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user", name="user_list", methods={"GET"})
      */
-    public function listUser(Event $event = null, EventRepository $eventRepository, Request $request): Response
+    public function listUser(EventRepository $eventRepository, Request $request): Response
     {
         $researchParameters = $request->query->all();
         
         $currentEvent = $eventRepository->findOneBy(['setlistId' => $researchParameters['setlistId']]);
         
-        if(!$currentEvent) 
+        if($currentEvent === null) 
         {
             return $this->json('This event does not exist', Response::HTTP_NOT_FOUND);
-        }
-        // This does not work
-        else if(!$currentEvent->getUsers())
-        {
-            return $this->json('This event does not have any users associated', Response::HTTP_OK);
         }
 
         return $this->json($currentEvent->getUsers(), Response::HTTP_OK, [], ["groups" => "user_get"]);
