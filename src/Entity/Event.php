@@ -17,31 +17,31 @@ class Event
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("review_get")
+     * @Groups({"review_get", "event_get"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string",unique=true, length=255, nullable=true)
-     * @Groups("review_get")
+     * @Groups({"review_get", "event_get"})
      */
     private $setlistId;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("review_get")
+     * @Groups({"review_get", "event_get"})
      */
     private $venue;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("review_get")
+     * @Groups({"review_get", "event_get"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("review_get")
+     * @Groups({"review_get", "event_get"})
      */
     private $date;
 
@@ -58,14 +58,14 @@ class Event
     /**
      * @ORM\ManyToOne(targetEntity=Band::class, inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("review_get")
+     * @Groups({"review_get", "event_get"})
      */
     private $band;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("review_get")
+     * @Groups({"review_get", "event_get"})
      */
     private $country;
 
@@ -80,7 +80,7 @@ class Event
     private $pictures;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="events")
+     * @ORM\ManyToMany(targetEntity=User:class, mappedBy="events")
      */
     private $users;
 
