@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\ReviewRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -12,13 +11,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Review
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups("review_get")
-     */
-    private $id;
+    // /**
+    //  * @ORM\Id
+    //  * @ORM\GeneratedValue
+    //  * @ORM\Column(type="integer")
+    //  * @Groups("review_get")
+    //  */
+    // private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -44,6 +43,7 @@ class Review
     private $updatedAt;
 
     /**
+     * @ORM\Id
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups("review_get")
@@ -51,6 +51,7 @@ class Review
     private $user;
 
     /**
+     * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups("review_get")
