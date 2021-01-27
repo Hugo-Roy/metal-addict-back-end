@@ -36,15 +36,15 @@ class Picture
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups("picture_get")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="pictures")
-     * @ORM\JoinColumn(nullable=false)
      * @Groups("picture_get")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $event;
 
