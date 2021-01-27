@@ -27,7 +27,7 @@ class UserVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'update':
-                return $subject->getUsername() === $user;
+                return $subject === $user;
                 break;
         }
 

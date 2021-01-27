@@ -67,7 +67,7 @@ class UserController extends AbstractController
      */
     public function update(User $user = null,UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
     {
-        //$this->denyAccessUnlessGranted('update', $user);
+        $this->denyAccessUnlessGranted('update', $user);
         
         $jsonContent = $request->getContent();
         
