@@ -27,6 +27,7 @@ class UserVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'update':
+            case 'avatar':
                 return $subject === $user;
                 break;
         }
