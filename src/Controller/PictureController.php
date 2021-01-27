@@ -2,21 +2,69 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Event;
 use App\Entity\Picture;
+use App\Repository\EventRepository;
 use App\Service\PictureUploader;
+use App\Repository\PictureRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PictureController extends AbstractController
 {
+    /**
+     * @Route("api/picture", name="picture_list", methods="GET")
+     */
+    public function list(Request $request, PictureRepository $pictureRepository, EventRepository $eventRepository, UserRepository $userRepository, PictureUploader $pictureUploader): Response
+    {
+        $researchParameters = $request->query->all();
+        
+        if(!isset($researchParameters['user']) && !isset($researchParameters['event']))
+        {
+            return $this->json('Nope');
+        }
+        else if(!isset($researchParameters['user']) && isset($researchParameters['event']))
+        {
+            $currentEvent = $eventRepository->findOneBy(["id" => $researchParameters["event"]]);
+
+            // $path = $pictureUploader->getTargetDirectory();
+            // $getPicturePaths = $currentEvent->getPictures();
+            // dd($path . '/' . $currentEvent->getPictures());
+            // $getPath = $path . '/' . $currentEvent->getPictures();
+
+            // dd($getPath);
+            return $this->json($currentEvent->getPictures(), Response::HTTP_OK, [], ["groups" => "picture_get"]);
+        }
+        else if(isset($researchParameters['user']) && !isset($researchParameters['event']))
+        {
+            $currentUser = $userRepository->findOneBy(["id" => $researchParameters["user"]]);
+            
+            $currentPictures = $pictureRepository->findBy(["user" => $currentUser]);
+            
+            //dd($currentPictures);
+            return $this->json($currentPictures, Response::HTTP_OK, [], ["groups" => "picture_get"]);
+        }
+        else if(isset($researchParameters['user']) && isset($researchParameters['event']))
+        {
+            $currentEvent = $eventRepository->findOneBy(["id" => $researchParameters["event"]]);
+
+            $currentUser = $userRepository->findOneBy(["id" => $researchParameters['user']]);
+
+            $currentPictures = $pictureRepository->findBy(["event" => $currentEvent, "user" => $currentUser]);
+            
+            return $this->json($currentPictures, Response::HTTP_OK, [], ["groups" => "picture_get"]);
+        }
+    }
+
     /**
      * @Route("/api/picture/{setlistId}", name="picture_add", methods="POST")
      */
