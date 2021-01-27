@@ -73,11 +73,6 @@ class User implements UserInterface
     private $reviews;
 
     /**
-     * @ORM\Column(type="string", unique=true, nullable=true)
-     */
-    private $apiToken;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Event::class, inversedBy="users")
      */
     private $events;
@@ -293,18 +288,6 @@ class User implements UserInterface
                 $review->setUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getApiToken(): ?string
-    {
-        return $this->apiToken;
-    }
-
-    public function setApiToken(?string $apiToken): self
-    {
-        $this->apiToken = $apiToken;
 
         return $this;
     }
