@@ -40,6 +40,7 @@ class GetMusicbrainzBands extends Command
         while ($isBands === false) {
             $isBands = $this->fetchFromMusicbrainz($offset, $output);
             $offset += 100;
+            sleep(1);
         };
 
         // return this if there was no problem running the command
