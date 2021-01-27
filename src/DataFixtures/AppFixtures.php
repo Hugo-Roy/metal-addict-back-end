@@ -57,16 +57,19 @@ class AppFixtures extends Fixture
         $faker->addProvider(new ShareOMetalProvider());
 
         //create countries from setlist.fm
-        $countries = $this->setlistApi->getCountries();
+        $countriesContent = $this->setlistApi->getCountries();
+        $countries = $countriesContent['country'];
         foreach ($countries as $country) {
             $countryEntity = new Country();
             $countryEntity->setCountryCode($country['code']);
             $countryEntity->setName($country['name']);
             $manager->persist($countryEntity);
         }
+
+        $manager->flush();
         
 
-        //create 50 events
+        //create events
         $eventsCollection = [];
         $setlistIds = $faker->getSetlistIds();
         foreach ($setlistIds as $setlistId ) {
@@ -76,10 +79,13 @@ class AppFixtures extends Fixture
             $event->setVenue($eventProperties['venue']['name']);
             $event->setCity($eventProperties['venue']['city']['name']);
             $event->setDate(new \DateTime($eventProperties['eventDate']));
-            $event->setBand($this->bandRepository->findOneBy(['name' => $eventProperties['artist']['name']]));
-            $event->setCountry($this->countryRepository->findOneBy(['countryCode' => $eventProperties['venue']['city']['country']['code']]));
+            $eventBand = $this->bandRepository->findOneBy(['musicbrainzId' => $eventProperties['artist']['mbid']]);
+            $event->setBand($eventBand);
+            $eventCountry = $this->countryRepository->findOneBy(['countryCode' => $eventProperties['venue']['city']['country']['code']]);
+            $event->setCountry($eventCountry);
             $eventsCollection[] = $event;
             $manager->persist($event);
+            sleep(1);
         }
 
         //create 5 users
@@ -91,8 +97,8 @@ class AppFixtures extends Fixture
         $firstUser->setNickname('Lemmy Killmister');
         $firstUser->setRoles(['ROLE_USER']);
         $firstUser->setBiography($faker->realText());
-        for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
-            $firstUser->addEvent($eventsCollection[mt_rand(0, 50)]);
+        for ($i=0; $i < 6; $i++) { 
+            $firstUser->addEvent($eventsCollection[mt_rand(0, count($setlistIds) - 1)]);
         };
         $usersCollection[] = $firstUser;
         $manager->persist($firstUser);
@@ -103,8 +109,8 @@ class AppFixtures extends Fixture
         $secondUser->setNickname('Josh Homme');
         $secondUser->setRoles(['ROLE_USER']);
         $secondUser->setBiography($faker->realText());
-        for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
-            $secondUser->addEvent($eventsCollection[mt_rand(0, 50)]);
+        for ($i=0; $i < 6; $i++) { 
+            $secondUser->addEvent($eventsCollection[mt_rand(0, count($setlistIds) - 1)]);
         };
         $usersCollection[] = $secondUser;
         $manager->persist($secondUser);
@@ -115,8 +121,8 @@ class AppFixtures extends Fixture
         $thirdUser->setNickname('Phil Anselmo');
         $thirdUser->setRoles(['ROLE_USER']);
         $thirdUser->setBiography($faker->realText());
-        for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
-            $thirdUser->addEvent($eventsCollection[mt_rand(0, 50)]);
+        for ($i=0; $i < 6; $i++) { 
+            $thirdUser->addEvent($eventsCollection[mt_rand(0, count($setlistIds) - 1)]);
         };
         $usersCollection[] = $thirdUser;
         $manager->persist($thirdUser);
@@ -127,8 +133,8 @@ class AppFixtures extends Fixture
         $fourthUser->setNickname('Jerry Cantrell');
         $fourthUser->setRoles(['ROLE_USER']);
         $fourthUser->setBiography($faker->realText());
-        for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
-            $fourthUser->addEvent($eventsCollection[mt_rand(0, 50)]);
+        for ($i=0; $i < 6; $i++) { 
+            $fourthUser->addEvent($eventsCollection[mt_rand(0, count($setlistIds) - 1)]);
         };
         $usersCollection[] = $fourthUser;
         $manager->persist($fourthUser);
@@ -139,8 +145,8 @@ class AppFixtures extends Fixture
         $fifthUser->setNickname('Dimebag Darrell');
         $fifthUser->setRoles(['ROLE_USER']);
         $fifthUser->setBiography($faker->realText());
-        for ($i=0; $i < (mt_rand(5, 20)); $i++) { 
-            $fifthUser->addEvent($eventsCollection[mt_rand(0, 50)]);
+        for ($i=0; $i < 6; $i++) { 
+            $fifthUser->addEvent($eventsCollection[mt_rand(0, count($setlistIds) - 1)]);
         };
         $usersCollection[] = $fifthUser;
         $manager->persist($fifthUser);
@@ -148,13 +154,13 @@ class AppFixtures extends Fixture
 
         //create 6 reviews for each users
         foreach ($usersCollection as $user) {
-            for ($i=0; $i < 6; $i++) { 
+            $userEvents = $user->getEvents();
+            foreach ($userEvents as $userEvent ) {
                 $review = new Review();
                 $review->setTitle($faker->sentence(10));
                 $review->setContent($faker->realText());
                 $review->setUser($user);
-                $userEvents = $user->getEvents();
-                $review->setEvent($userEvents[mt_rand(0, count($userEvents) - 1)]);
+                $review->setEvent($userEvent);
                 $manager->persist($review);
             }
         }

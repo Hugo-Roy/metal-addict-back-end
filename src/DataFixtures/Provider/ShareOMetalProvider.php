@@ -10,10 +10,8 @@ class ShareOMetalProvider
         '5bfbfb50',
         '1398a5f9',
         '6b876a6e',
-        '4b9c638e',
         '43e2c3ff',
         '43fe770b',
-        '5be96fdc',
         '5b95b738',
         '395b9c7',
         '73e75e0d',
@@ -28,7 +26,6 @@ class ShareOMetalProvider
         '1391211d',
         'b957d0a',
         '3e4e9fb',
-        '1399adc1',
         '13949501',
     ];
 
