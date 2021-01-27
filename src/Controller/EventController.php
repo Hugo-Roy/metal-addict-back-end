@@ -78,12 +78,16 @@ class EventController extends AbstractController
     {
         $event = $eventRepository->findOneBy(['setlistId' => $setlistId]);
         $user = $this->getUser();
+
+        if ($event->getUsers()->contains($user))  {
+            return $this->json('The user is already associated with the event', Response::HTTP_FORBIDDEN);
+        }
       
-        if ($event !== null && $user !== null) {
+        elseif ($event !== null && $user !== null) {
             $event->addUser($user);
             $em->flush();
 
-            return $this->json('', Response::HTTP_CREATED);
+            return $this->json('The user is associated with the event', Response::HTTP_CREATED);
         }
         elseif ($event === null && $user !== null) {
             $eventProperties = $setlistApi->fetchOneEvent($setlistId);
@@ -98,7 +102,7 @@ class EventController extends AbstractController
             $em->persist($event);
             $em->flush();
 
-            return $this->json('The user has been associated with the event', Response::HTTP_CREATED);
+            return $this->json('The event is cretaed with his associated user.', Response::HTTP_CREATED);
         }
     }
 }
