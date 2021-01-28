@@ -67,9 +67,14 @@ class PictureController extends AbstractController
     /**
      * @Route("/api/picture/{setlistId}", name="picture_add", methods="POST")
      */
-    public function add(Event $event, Request $request, EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader): Response
+    public function add(Event $event = null, Request $request, EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader): Response
     {
         $user = $this->getUser();
+
+        if($user->getEvents()->contains($event) === false) {
+            return $this->json('The user is not associated with the event', Response::HTTP_CONFLICT);
+        }
+
         $uploadedFile = $request->files->get('image');
         $violations = $validator->validate(
             $uploadedFile,
