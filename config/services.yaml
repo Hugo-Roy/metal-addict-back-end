@@ -41,6 +41,10 @@ services:
         arguments:
             $targetDirectory: '%pictures_directory%'
 
+    App\Service\SetPicturePath:
+        public: false
+        autowire: true
+
     acme_api.event.jwt_created_listener:
         class: App\EventListener\JWTCreatedListener
         arguments: [ '@request_stack' ]
