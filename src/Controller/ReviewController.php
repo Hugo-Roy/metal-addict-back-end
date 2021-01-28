@@ -7,6 +7,7 @@ use App\Entity\Review;
 use App\Repository\EventRepository;
 use App\Repository\ReviewRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -117,5 +118,18 @@ class ReviewController extends AbstractController
         $em->flush();
         
         return $this->json($review, Response::HTTP_CREATED, ['Location' => $this->generateUrl('review_show', ['id' => $review->getId()])], ['groups' => 'review_get']);
+    }
+
+    /**
+     * @Route("api/review/{id}", name="review_delete", methods="DELETE")
+     */
+    public function delete(Review $review, EntityManagerInterface $em)
+    {
+        $this->denyAccessUnlessGranted('delete', $review);
+
+        $em->remove($review);
+        $em->flush();
+
+        return $this->json(Response::HTTP_OK);
     }
 }
