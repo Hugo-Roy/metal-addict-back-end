@@ -96,9 +96,13 @@ class UserController extends AbstractController
                 return $this->json('wrong password', Response::HTTP_UNAUTHORIZED);
             }
             $user->setPassword($content['newPassword']);
+
+            $errors = $validator->validate($user, null, 'registration');
+        }
+        else {
+            $errors = $validator->validate($user, null, 'update');
         }
         
-        $errors = $validator->validate($user);
         
         if (count($errors) > 0) {
             $errorsString = (string) $errors;

@@ -26,15 +26,15 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"user_get"})
-     * @Assert\NotBlank
-     * @Assert\Email
+     * @Assert\NotBlank(groups={"registration"})
+     * @Assert\Email(groups={"registration", "update"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"review_get", "user_get"})
-     * @Assert\NotBlank
+     * @Assert\Length(min=5, groups={"update"})
      */
     private $nickname;
 
@@ -46,9 +46,9 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank
-     * @Assert\Length(min=8, max=32)
-     * @Assert\Regex(pattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W])(?=.*\d).{6,}$/i")
+     * @Assert\NotBlank(groups={"registration"})
+     * @Assert\Length(min=8, max=32, groups={"registration"})
+     * @Assert\Regex(pattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W])(?=.*\d).{6,}$/i", groups={"registration"})
      */
     private $password;
 
