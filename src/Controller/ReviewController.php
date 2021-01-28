@@ -7,7 +7,6 @@ use App\Entity\Review;
 use App\Repository\EventRepository;
 use App\Repository\ReviewRepository;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -117,13 +116,22 @@ class ReviewController extends AbstractController
     /**
      * @Route("/api/review/{id<\d+>}", name="review_update", methods={"PUT", "PATCH"})
      */
-    public function update(Review $review, EntityManagerInterface $em, SerializerInterface $serializer, Request $request)
+    public function update(Review $review, EntityManagerInterface $em,ValidatorInterface $validator, SerializerInterface $serializer, Request $request)
     {
         $this->denyAccessUnlessGranted('update', $review);
 
         $jsonContent = $request->getContent();
 
         $serializer->deserialize($jsonContent, Review::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $review]);
+
+        $errors = $validator->validate($review);
+
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+
+            return $this->json($errorsString, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
 
         $em->flush();
         
