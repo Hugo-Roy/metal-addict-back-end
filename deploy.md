@@ -18,9 +18,11 @@ You will need a server running with :
 
 3. Configure the .env.local with `nano .en.local` and write in : 
 
-DATABASE_URL="mysql://explorateur:Ereul9Aeng@127.0.0.1:3306/share_o_metal" <br />
-JWT_PASSPHRASE='jwttoken1234' <br />
-APP_ENV=prod <br />
+    ```
+    DATABASE_URL="mysql://explorateur:Ereul9Aeng@127.0.0.1:3306/share_o_metal"
+    JWT_PASSPHRASE='jwttoken1234'
+    APP_ENV=prod
+    ```
 
 4. create the database `php bin/console doctrine:database:create`.
 
@@ -56,5 +58,7 @@ APP_ENV=prod <br />
     ```
 
 11. Allow read and write on the directory containing the keys with `sudo chmod -R 777 config/jwt/`.
+
+12. clear the cache with `php bin/console cache:clear` and run `php bin/console cache:warmup`.
 
 And that's it (for the moment).
