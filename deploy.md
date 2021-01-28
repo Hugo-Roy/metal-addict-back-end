@@ -41,23 +41,24 @@ You will need a server running with :
 
 8. import the bands for our database with `php bin/console app:get:bands`.
 
-9.  check if there is duplicate rows :
+9. check if there is duplicate rows :
    
-   ```sql
+    ```sql
     SELECT musicbrainz_id, COUNT(*)
     FROM band
     GROUP BY musicbrainz_id
     HAVING COUNT(*) > 1;
-   ```
+    ```
 11. remove duplicate rows :
 
-     ```sql
+    ```sql
     DELETE t1 FROM band t1
     INNER JOIN band t2 
     WHERE 
     t1.id < t2.id AND 
     t1.musicbrainz_id = t2.musicbrainz_id;
-   ```
+    ```
+
 11. create the fixtures (if needed) with `php bin/console doctrine:fixtures:load`
 
 
