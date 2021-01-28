@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ReviewController extends AbstractController
 {
@@ -78,7 +79,7 @@ class ReviewController extends AbstractController
     /**
      * @Route("/api/review/{setlistId}", name="review_add", methods="POST")
      */
-    public function add(Event $event = null, Request $request, SerializerInterface $serializer,ReviewRepository $reviewRepository, EntityManagerInterface $em)
+    public function add(Event $event = null, Request $request,ValidatorInterface $validator, SerializerInterface $serializer,ReviewRepository $reviewRepository, EntityManagerInterface $em)
     {
         $user = $this->getUser();
 
@@ -94,13 +95,18 @@ class ReviewController extends AbstractController
         
         $review = $serializer->deserialize($jsonContent, Review::class, 'json');
 
+        $errors = $validator->validate($review);
+
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+
+            return $this->json($errorsString, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         $review->setUser($user);
 
         $review->setEvent($event);
         
-        //TODO validate the review properties
-
         $em->persist($review);
     
         $em->flush();
