@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     pictures_directory: '%kernel.project_dir%/public/uploads/pictures'
+    base_uri: '54.162.156.51/Share-O-Metal/public/uploads/pictures/'
 
 services:
     # default configuration for services in *this* file
@@ -41,14 +42,15 @@ services:
         arguments:
             $targetDirectory: '%pictures_directory%'
 
-    App\Service\SetPicturePath:
-        public: false
+    App\Service\PathRewritter:
         autowire: true
+        arguments:
+            $baseUri: '%base_uri%'
 
     acme_api.event.jwt_created_listener:
         class: App\EventListener\JWTCreatedListener
         arguments: [ '@request_stack' ]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
-    
+            
         

@@ -18,14 +18,14 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Service\SetPicturePath;
+use App\Service\PathRewritter;
 
 class PictureController extends AbstractController
 {
     /**
      * @Route("api/picture", name="picture_list", methods="GET")
      */
-    public function list(Request $request, PictureRepository $pictureRepository, EventRepository $eventRepository, UserRepository $userRepository, SetPicturePath $setPicturePath): Response
+    public function list(Request $request, PictureRepository $pictureRepository, EventRepository $eventRepository, UserRepository $userRepository, PathRewritter $pathRewritter): Response
     {
         $researchParameters = $request->query->all();
 
@@ -40,7 +40,7 @@ class PictureController extends AbstractController
 
             $currentPicture = $pictureRepository->findByEvent($researchParameters['order'], $event);
 
-            return $this->json($setPicturePath->getFullPath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
+            return $this->json($pathRewritter->getFullPicturePath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
 
         }
         else if (isset($researchParameters['user']) && !isset($researchParameters['setlistId']))
@@ -49,7 +49,7 @@ class PictureController extends AbstractController
 
             $currentPicture = $pictureRepository->findByUser($researchParameters['order'], $user);
 
-            return $this->json($setPicturePath->getFullPath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
+            return $this->json($pathRewritter->getFullPicturePath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
 
         } 
         else if (isset($researchParameters['user']) && isset($researchParameters['setlistId']))
@@ -60,7 +60,7 @@ class PictureController extends AbstractController
 
             $currentPicture = $pictureRepository->findByUserAndEvent($researchParameters['order'], $user, $event);
 
-            return $this->json($setPicturePath->getFullPath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
+            return $this->json($pathRewritter->getFullPicturePath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
         }
     }
 
