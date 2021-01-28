@@ -18,51 +18,56 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\PathRewritter;
 
 class PictureController extends AbstractController
 {
     /**
      * @Route("api/picture", name="picture_list", methods="GET")
      */
-    public function list(Request $request, PictureRepository $pictureRepository, EventRepository $eventRepository, UserRepository $userRepository, PictureUploader $pictureUploader): Response
+    public function list(Request $request, PictureRepository $pictureRepository, EventRepository $eventRepository, UserRepository $userRepository, PathRewritter $pathRewritter): Response
     {
         $researchParameters = $request->query->all();
-        
-        if(!isset($researchParameters['user']) && !isset($researchParameters['event']))
-        {
-            return $this->json('Nope');
-        }
-        else if(!isset($researchParameters['user']) && isset($researchParameters['event']))
-        {
-            $currentEvent = $eventRepository->findOneBy(["id" => $researchParameters["event"]]);
 
-            return $this->json($currentEvent->getPictures(), Response::HTTP_OK, [], ["groups" => "picture_get"]);
-        }
-        else if(isset($researchParameters['user']) && !isset($researchParameters['event']))
+        if (!isset($researchParameters['user']) && !isset($researchParameters['setlistId']))
         {
-            $currentUser = $userRepository->findOneBy(["id" => $researchParameters["user"]]);
-            
-            $currentPictures = $pictureRepository->findBy(["user" => $currentUser]);
-            
-            //dd($currentPictures);
-            return $this->json($currentPictures, Response::HTTP_OK, [], ["groups" => "picture_get"]);
+            return $this->json('User && Event Parameters are missing');
+
         }
-        else if(isset($researchParameters['user']) && isset($researchParameters['event']))
+        else if (!isset($researchParameters['user']) && isset($researchParameters['setlistId']))
         {
-            $currentEvent = $eventRepository->findOneBy(["id" => $researchParameters["event"]]);
+            $event = $eventRepository->findOneBy(['setlistId' => $researchParameters['setlistId'],]);
 
-            $currentUser = $userRepository->findOneBy(["id" => $researchParameters['user']]);
+            $currentPicture = $pictureRepository->findByEvent($researchParameters['order'], $event);
 
-            $currentPictures = $pictureRepository->findBy(["event" => $currentEvent, "user" => $currentUser]);
-            
-            return $this->json($currentPictures, Response::HTTP_OK, [], ["groups" => "picture_get"]);
+            return $this->json($pathRewritter->getFullPicturePath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
+
+        }
+        else if (isset($researchParameters['user']) && !isset($researchParameters['setlistId']))
+        {
+            $user = $userRepository->findOneBy(['id' => $researchParameters['user'],]);
+
+            $currentPicture = $pictureRepository->findByUser($researchParameters['order'], $user);
+
+            return $this->json($pathRewritter->getFullPicturePath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
+
+        } 
+        else if (isset($researchParameters['user']) && isset($researchParameters['setlistId']))
+        {
+            $event = $eventRepository->findOneBy(['setlistId' => $researchParameters['setlistId'],]);
+
+            $user = $userRepository->findOneBy(['id' => $researchParameters['user'],]);
+
+            $currentPicture = $pictureRepository->findByUserAndEvent($researchParameters['order'], $user, $event);
+
+            return $this->json($pathRewritter->getFullPicturePath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
         }
     }
 
     /**
      * @Route("/api/picture/{setlistId}", name="picture_add", methods="POST")
      */
-    public function add(Event $event, Request $request,EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader): Response
+    public function add(Event $event, Request $request, EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader): Response
     {
         $user = $this->getUser();
         $uploadedFile = $request->files->get('image');
@@ -104,7 +109,7 @@ class PictureController extends AbstractController
         $path = $pictureUploader->getTargetDirectory();
         $picturePath = $picture->getPath();
         $toRemove = $path . '/' . $picturePath;
-        
+
         $filesystem->remove($toRemove);
         $em->remove($picture);
         $em->flush();

@@ -19,32 +19,42 @@ class PictureRepository extends ServiceEntityRepository
         parent::__construct($registry, Picture::class);
     }
 
-    // /**
-    //  * @return Picture[] Returns an array of Picture objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+    * @return Picture[] Returns an array of Picture objects
+    */
+    
+    public function findByEvent($order, $event)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+            ->where('p.event = :val')
+            ->setParameter('val', $event)
+            ->orderBy('p.createdAt', $order)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Picture
+    public function findByUser($order, $user)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+            ->where('p.user = :val')
+            ->setParameter('val', $user)
+            ->orderBy('p.createdAt', $order)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
+
+    public function findByUserAndEvent($order, $user, $event)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.user = :val')
+            ->setParameter('val', $user)
+            ->andWhere('p.event = :evt')
+            ->setParameter('evt', $event)
+            ->orderBy('p.createdAt', $order)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
