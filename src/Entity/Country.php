@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CountryRepository::class)
+ * @ORM\Table(name="country",indexes={@ORM\Index(name="search_idx", columns={"country_code"})})
  */
 class Country
 {
@@ -28,7 +29,7 @@ class Country
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=5, index=true)
+     * @ORM\Column(type="string", length=5)
      * @Groups({"country_get", "review_get"})
      */
     private $countryCode;

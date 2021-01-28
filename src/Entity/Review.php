@@ -8,16 +8,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
+ * @ORM\Table(name="review",uniqueConstraints={@ORM\UniqueConstraint(name="user_event_idx", columns={"user_id", "event_id"})})
  */
 class Review
 {
-    // /**
-    //  * @ORM\Id
-    //  * @ORM\GeneratedValue
-    //  * @ORM\Column(type="integer")
-    //  * @Groups("review_get")
-    //  */
-    // private $id;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @Groups("review_get")
+     */
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -43,7 +44,6 @@ class Review
     private $updatedAt;
 
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups("review_get")
@@ -51,7 +51,6 @@ class Review
     private $user;
 
     /**
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups("review_get")
