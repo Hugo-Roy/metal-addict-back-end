@@ -78,12 +78,16 @@ class ReviewController extends AbstractController
     /**
      * @Route("/api/review/{setlistId}", name="review_add", methods="POST")
      */
-    public function add(Event $event, Request $request, SerializerInterface $serializer,ReviewRepository $reviewRepository, EntityManagerInterface $em)
+    public function add(Event $event = null, Request $request, SerializerInterface $serializer,ReviewRepository $reviewRepository, EntityManagerInterface $em)
     {
         $user = $this->getUser();
 
         if($reviewRepository->findByUserAndEvent($user, $event) !== null) {
             return $this->json('The user already wrote a review for this event', Response::HTTP_CONFLICT);
+        }
+
+        if($user->getEvents()->contains($event) === false) {
+            return $this->json('The user is not associated with the event', Response::HTTP_CONFLICT);
         }
 
         $jsonContent = $request->getContent();
