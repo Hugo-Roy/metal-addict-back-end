@@ -51,5 +51,20 @@ class ReviewRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Find a review by a user and a event
+     */
+    public function findByUserAndEvent($user, $event)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('r.event = :evt')
+            ->setParameter('evt', $event)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
 
