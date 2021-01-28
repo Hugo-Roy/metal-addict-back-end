@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=BandRepository::class)
+ * @ORm\Table(name="band",indexes={@ORM\Index(name="search_idx", columns={"musicbrainz_id"})})
  */
 class Band
 {
@@ -28,7 +29,7 @@ class Band
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $musicbrainzId;
 

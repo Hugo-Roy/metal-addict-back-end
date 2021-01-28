@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ReviewRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
+ * @ORM\Table(name="review",uniqueConstraints={@ORM\UniqueConstraint(name="user_event_idx", columns={"user_id", "event_id"})})
  */
 class Review
 {

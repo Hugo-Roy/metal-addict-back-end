@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CountryRepository::class)
+ * @ORM\Table(name="country",indexes={@ORM\Index(name="search_idx", columns={"country_code"})})
  */
 class Country
 {
