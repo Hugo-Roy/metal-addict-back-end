@@ -79,8 +79,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * Edit user PUT
-     * 
      * @Route("/api/user/{id<\d+>}", name="user_update", methods={"PUT", "PATCH"})
      */
     public function update(User $user, UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
@@ -97,11 +95,21 @@ class UserController extends AbstractController
             if($userPasswordEncoder->isPasswordValid($user, $content['oldPassword']) === false) {
                 return $this->json('wrong password', Response::HTTP_UNAUTHORIZED);
             }
-            $user->setPassword($userPasswordEncoder->encodePassword($user, $content['newPassword']));
+            $user->setPassword($content['newPassword']);
+        }
+        
+        $errors = $validator->validate($user);
+        
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+            
+            return $this->json($errorsString, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        //TODO validate the user properties
-
+        if(isset($content['newPassword']) && isset($content['oldPassword'])){
+            $user->setPassword($userPasswordEncoder->encodePassword($user, $content['newPassword']));
+        } 
+        
         $em->flush();
 
         return $this->json(["message" => "Informations modifiées."], Response::HTTP_OK);
