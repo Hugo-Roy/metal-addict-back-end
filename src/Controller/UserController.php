@@ -49,13 +49,19 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user", name="user_add", methods="POST")
      */
-    public function add(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
+    public function add(Request $request, EntityManagerInterface $entityManager,ValidatorInterface $validator, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
     {
         $jsonContent = $request->getContent();
 
         $user = $serializer->deserialize($jsonContent, User::class, 'json');
 
-        //TODO validate the user properties
+        $errors = $validator->validate($user);
+
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+
+            return $this->json($errorsString, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         $user->setRoles = ['ROLE_USER'];
         $user->setPassword($userPasswordEncoder->encodePassword($user, $user->getPassword()));

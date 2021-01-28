@@ -47,8 +47,8 @@ class User implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank
-     * @Assert\Length(min = 8, max = 32)
-     * @Assert\Regex(pattern = "/[A-Za-z\d@$!%*?&\/$£*€+=*-_]/")
+     * @Assert\Length(min=8, max=32)
+     * @Assert\Regex(pattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W])(?=.*\d).{6,}$/i")
      */
     private $password;
 

@@ -40,7 +40,6 @@ class ReviewController extends AbstractController
             $event = $eventRepository->findOneBy(["setlistId" => $eventParameter]);
             
             $user = $userRepository->findOneBy(["id" => $userParameter]);
-            //dd($user);
 
             $reviews = $reviewRepository->findBy(["event" => $event, "user" => $user]);
 
