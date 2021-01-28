@@ -55,7 +55,7 @@ class UserController extends AbstractController
 
         $user = $serializer->deserialize($jsonContent, User::class, 'json');
 
-        $errors = $validator->validate($user);
+        $errors = $validator->validate($user, null, 'registration');
 
         if (count($errors) > 0) {
             $errorsString = (string) $errors;
@@ -102,7 +102,6 @@ class UserController extends AbstractController
         else {
             $errors = $validator->validate($user, null, 'update');
         }
-        
         
         if (count($errors) > 0) {
             $errorsString = (string) $errors;
