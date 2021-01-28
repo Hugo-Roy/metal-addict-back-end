@@ -9,6 +9,14 @@ class SetlistApi
 {
     private $client;
 
+    private $emptyEventList = [
+        "type" => "setlists",
+        "itemsPerPage" => 20,
+        "page" => 1,
+        "total" => 0,
+        "setlist" => [],
+    ];
+
     public function __construct(HttpClientInterface $client)
     {
         $this->client = $client;
@@ -33,6 +41,10 @@ class SetlistApi
                 'query' => $params,
             ]
         );
+
+        if($response->getStatusCode() === 404) {
+            return $this->emptyEventList;
+        }
        
         return $response->toArray();
     }
@@ -56,7 +68,10 @@ class SetlistApi
             ]
         );
 
-        $this->client;
+        if($response->getStatusCode() === 404) {
+            return null;
+        }
+
         return $response->toArray();
     }
 

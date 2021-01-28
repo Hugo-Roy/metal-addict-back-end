@@ -54,7 +54,6 @@ class EventController extends AbstractController
             }
         }
 
-
         $responseContent = $setlistApi->fetchEventsList($newResearchParams);
 
         return $this->json($responseContent);
@@ -64,8 +63,12 @@ class EventController extends AbstractController
      * @Route("/api/event/{setlistId}", name="event_show", methods="GET")
      */
     public function show($setlistId, SetlistApi $setlistApi)
-    {   
+    {  
         $responseContent = $setlistApi->fetchOneEvent($setlistId);
+
+        if ($responseContent === null) {
+            return $this->json('Setlist Not Found.', Response::HTTP_NOT_FOUND);
+        }
 
         return $this->json($responseContent);
     }
