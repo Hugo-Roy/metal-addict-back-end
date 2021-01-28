@@ -34,21 +34,28 @@ class PictureController extends AbstractController
         }
         else if(!isset($researchParameters['user']) && isset($researchParameters['setlistId']))
         {
+            $event = $eventRepository->findOneBy(['setlistId' => $researchParameters['setlistId'],]);
 
-            $currentPicture = $pictureRepository->findByEvent($researchParameters['order'], $researchParameters['setlistId']);
+            $currentPicture = $pictureRepository->findByEvent($researchParameters['order'], $event);
 
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
 
         }
         else if(isset($researchParameters['user']) && !isset($researchParameters['setlistId']))
         {
-            $currentPicture = $pictureRepository->findByUser($researchParameters['order'], $researchParameters['user']);
+            $user = $userRepository->findOneBy(['id' => $researchParameters['user'],]);
+
+            $currentPicture = $pictureRepository->findByUser($researchParameters['order'], $user);
 
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
         }
         else if(isset($researchParameters['user']) && isset($researchParameters['setlistId']))
         {
-            $currentPicture = $pictureRepository->findByUserAndEvent($researchParameters['order'], $researchParameters['user'], $researchParameters['setlistId']);
+            $event = $eventRepository->findOneBy(['setlistId' => $researchParameters['setlistId'],]);
+
+            $user = $userRepository->findOneBy(['id' => $researchParameters['user'],]);
+
+            $currentPicture = $pictureRepository->findByUserAndEvent($researchParameters['order'], $user, $event);
 
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
         }
