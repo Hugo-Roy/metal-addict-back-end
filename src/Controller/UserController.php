@@ -32,7 +32,7 @@ class UserController extends AbstractController
         
         if($currentEvent === null) 
         {
-            return $this->json('This event does not exist', Response::HTTP_NOT_FOUND);
+            return $this->json([], Response::HTTP_OK);
         }
 
         return $this->json($currentEvent->getUsers(), Response::HTTP_OK, [], ["groups" => "user_get"]);
