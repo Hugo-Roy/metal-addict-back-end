@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Event;
 use App\Service\PictureUploader;
 use App\Repository\EventRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +50,7 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user", name="user_add", methods="POST")
      */
-    public function add(Request $request, EntityManagerInterface $entityManager,ValidatorInterface $validator, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
+    public function add(Request $request,UserRepository $userRepository, EntityManagerInterface $entityManager,ValidatorInterface $validator, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
     {
         $jsonContent = $request->getContent();
 
@@ -61,6 +62,10 @@ class UserController extends AbstractController
             $errorsString = (string) $errors;
 
             return $this->json($errorsString, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if($userRepository->findOneBy(['email' => $user->getEmail()])) {
+            return $this->json('This email is already used', Response::HTTP_CONFLICT);
         }
 
         $user->setRoles = ['ROLE_USER'];
