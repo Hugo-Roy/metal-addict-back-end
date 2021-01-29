@@ -24,7 +24,7 @@ class Country
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"country_get", "review_get"})
+     * @Groups({"country_get", "review_get", "event_get"})
      */
     private $name;
 
