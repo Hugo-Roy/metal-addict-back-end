@@ -20,7 +20,7 @@ class Picture
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("picture_get")
+     * @Groups({"picture_get"})
      */
     private $path;
 
@@ -36,14 +36,14 @@ class Picture
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
-     * @Groups("picture_get")
+     * @Groups({"picture_get"})
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="pictures")
-     * @Groups("picture_get")
+     * @Groups({"picture_get"})
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $event;

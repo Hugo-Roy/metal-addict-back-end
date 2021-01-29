@@ -17,13 +17,13 @@ class Event
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"review_get", "event_get"})
+     * @Groups({"review_get", "event_get", "picture_get"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string",unique=true, length=255, nullable=true)
-     * @Groups({"review_get", "event_get"})
+     * @Groups({"review_get", "event_get", "picture_get"})
      */
     private $setlistId;
 
@@ -57,7 +57,7 @@ class Event
 
     /**
      * @ORM\ManyToOne(targetEntity=Band::class, inversedBy="events")
-     * @Groups({"review_get", "event_get"})
+     * @Groups({"review_get", "event_get", "picture_get"})
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $band;

@@ -24,7 +24,7 @@ class Band
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"band_get", "review_get", "event_get"})
+     * @Groups({"band_get", "review_get", "event_get", "picture_get"})
      */
     private $name;
 
