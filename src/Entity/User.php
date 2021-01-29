@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -25,12 +26,16 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"user_get"})
+     * @Assert\NotBlank(groups={"registration"})
+     * @Assert\Email(groups={"registration", "update"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"review_get", "user_get"})
+     * @Assert\Length(min=5, groups={"registration", "update"})
+
      */
     private $nickname;
 
@@ -42,6 +47,9 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(groups={"registration"})
+     * @Assert\Length(min=8, max=32, groups={"registration"})
+     * @Assert\Regex(pattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W])(?=.*\d).{6,}$/i", groups={"registration"})
      */
     private $password;
 

@@ -49,13 +49,19 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user", name="user_add", methods="POST")
      */
-    public function add(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
+    public function add(Request $request, EntityManagerInterface $entityManager,ValidatorInterface $validator, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
     {
         $jsonContent = $request->getContent();
 
         $user = $serializer->deserialize($jsonContent, User::class, 'json');
 
-        //TODO validate the user properties
+        $errors = $validator->validate($user, null, 'registration');
+
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+
+            return $this->json($errorsString, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         $user->setRoles = ['ROLE_USER'];
         $user->setPassword($userPasswordEncoder->encodePassword($user, $user->getPassword()));
@@ -73,8 +79,6 @@ class UserController extends AbstractController
     }
 
     /**
-     * Edit user PUT
-     * 
      * @Route("/api/user/{id<\d+>}", name="user_update", methods={"PUT", "PATCH"})
      */
     public function update(User $user, UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
@@ -91,11 +95,24 @@ class UserController extends AbstractController
             if($userPasswordEncoder->isPasswordValid($user, $content['oldPassword']) === false) {
                 return $this->json('wrong password', Response::HTTP_UNAUTHORIZED);
             }
-            $user->setPassword($userPasswordEncoder->encodePassword($user, $content['newPassword']));
+            $user->setPassword($content['newPassword']);
+
+            $errors = $validator->validate($user, null, 'registration');
+        }
+        else {
+            $errors = $validator->validate($user, null, 'update');
+        }
+        
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+            
+            return $this->json($errorsString, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        //TODO validate the user properties
-
+        if(isset($content['newPassword']) && isset($content['oldPassword'])){
+            $user->setPassword($userPasswordEncoder->encodePassword($user, $content['newPassword']));
+        } 
+        
         $em->flush();
 
         return $this->json(["message" => "Informations modifiées."], Response::HTTP_OK);

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReviewRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -24,12 +25,16 @@ class Review
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("review_get")
+     * @Assert\NotBlank
+     * @Assert\Length(min = 5, max = 50)
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
      * @Groups("review_get")
+     * @Assert\NotBlank
+     * @Assert\Length(min = 10)
      */
     private $content;
 
