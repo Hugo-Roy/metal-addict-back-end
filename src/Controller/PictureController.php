@@ -40,7 +40,7 @@ class PictureController extends AbstractController
 
             $currentPicture = $pictureRepository->findByEvent($researchParameters['order'], $event);
 
-            return $this->json($pathRewritter->getFullPicturePath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
+            return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
 
         }
         else if (isset($researchParameters['user']) && !isset($researchParameters['setlistId']))
@@ -49,7 +49,7 @@ class PictureController extends AbstractController
 
             $currentPicture = $pictureRepository->findByUser($researchParameters['order'], $user);
 
-            return $this->json($pathRewritter->getFullPicturePath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
+            return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
 
         } 
         else if (isset($researchParameters['user']) && isset($researchParameters['setlistId']))
@@ -60,7 +60,7 @@ class PictureController extends AbstractController
 
             $currentPicture = $pictureRepository->findByUserAndEvent($researchParameters['order'], $user, $event);
 
-            return $this->json($pathRewritter->getFullPicturePath($currentPicture), Response::HTTP_OK, [], ["groups" => "picture_get"]);
+            return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
         }
     }
 
