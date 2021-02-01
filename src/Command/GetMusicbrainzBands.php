@@ -4,9 +4,12 @@ namespace App\Command;
 
 use App\Entity\Band;
 use Doctrine\DBAL\Connection;
+use App\Repository\BandRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -20,7 +23,9 @@ class GetMusicbrainzBands extends Command
 
     private $connection;
 
-    public function __construct(HttpClientInterface $client, EntityManagerInterface $entityManager, Connection $connection)
+    private $bandRepository;
+
+    public function __construct(HttpClientInterface $client,BandRepository $bandRepository, EntityManagerInterface $entityManager, Connection $connection)
     {
         $this->client = $client;
 
@@ -28,29 +33,34 @@ class GetMusicbrainzBands extends Command
 
         $this->connection = $connection;
 
+        $this->bandRepository = $bandRepository;
+
         parent::__construct();
     }
 
     protected function configure()
     {
         $this->setDescription('Gets bands.')
-            ->setHelp('This command allows you to get all metal bands from Musicbrainz into your database. ');
+            ->setHelp('This command allows you to get all metal bands from Musicbrainz into your database. ')
+            ->addOption('update', null, InputOption::VALUE_NONE, 'To update the band database instead of truncate and replace it.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->connection->executeQuery('SET foreign_key_checks = 0');
-        $this->connection->executeQuery('TRUNCATE TABLE band');
-
-        $output->writeln('Band table truncated.');
+        $optionValue = $input->getOption('update');
+        if (false === $optionValue) {
+            $this->connection->executeQuery('SET foreign_key_checks = 0');
+            $this->connection->executeQuery('TRUNCATE TABLE band');
+            $output->writeln('Band table truncated.');
+        }
 
         $isBands = false;
-        $offset = 0;
+        $offset = 1;
 
         while ($isBands === false) {
             $isBands = $this->fetchFromMusicbrainz($offset, $output);
             $offset += 100;
-            sleep(1);
+            usleep(500000);
         };
 
         // return this if there was no problem running the command
@@ -77,14 +87,17 @@ class GetMusicbrainzBands extends Command
         $bands =  $response->toArray();
 
         foreach ($bands['artists'] as $band) {
-            $output->writeln($band['name']);
-            $bandEntity = new Band();
-            $bandEntity->setMusicbrainzId($band['id']);
-            $bandEntity->setName($band['name']);
-            $this->entityManager->persist($bandEntity);
+            if ($this->bandRepository->findOneBy(['musicbrainzId' => $band['id']]) === null) {
+                $output->writeln($band['name']);
+                $bandEntity = new Band();
+                $bandEntity->setMusicbrainzId($band['id']);
+                $bandEntity->setName($band['name']);
+                $this->entityManager->persist($bandEntity);
+            }
         }
 
         $this->entityManager->flush();
+        $this->entityManager->clear();
 
         return empty($bands['artists']);
     }
