@@ -23,10 +23,10 @@ class ReviewController extends AbstractController
      */
     public function list(Request $request, ReviewRepository $reviewRepository, EventRepository $eventRepository, UserRepository $userRepository): Response
     {
-        $limitParameter = intval($request->query->get('limit'));
-        $orderParameter = $request->query->get('order');
-        $eventParameter = $request->query->get('setlistId');
-        $userParameter  = $request->query->get('user');
+        $limitParameter  = intval($request->query->get('limit'));
+        $orderParameter  = $request->query->get('order');
+        $eventParameter  = $request->query->get('setlistId');
+        $userParameter   = $request->query->get('user');
 
         if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && $userParameter == null) 
         {
