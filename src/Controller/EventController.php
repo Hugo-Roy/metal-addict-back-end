@@ -9,6 +9,7 @@ use App\Service\SetlistApi;
 use App\Repository\CountryRepository;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
+use App\Service\FanartApi;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -62,13 +63,20 @@ class EventController extends AbstractController
     /**
      * @Route("/api/event/{setlistId}", name="event_show", methods="GET")
      */
-    public function show($setlistId, SetlistApi $setlistApi)
+    public function show($setlistId, SetlistApi $setlistApi, FanartApi $fanartApi)
     {  
-        $responseContent = $setlistApi->fetchOneEvent($setlistId);
+        $setlist = $setlistApi->fetchOneEvent($setlistId);
 
-        if ($responseContent === null) {
+        if ($setlist === null) {
             return $this->json('Setlist Not Found.', Response::HTTP_NOT_FOUND);
         }
+        
+        $bandImages = $fanartApi->fetchImages($setlist['artist']['mbid']);
+
+        $responseContent = [
+            'setlist' => $setlist,
+            'bandImages' => $bandImages,
+        ];
 
         return $this->json($responseContent);
     }
@@ -81,7 +89,7 @@ class EventController extends AbstractController
         $researchParameters['user']  = $request->query->get('user');
         $researchParameters['order'] = $request->query->get('order');
 
-        $user = $userRepository->findOneBy(["id" => $researchParameters['user']]);
+        $user = $userRepository->find($researchParameters['user']);
         
         $events = $user->getEvents();
         
