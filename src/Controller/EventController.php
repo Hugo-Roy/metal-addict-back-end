@@ -78,11 +78,15 @@ class EventController extends AbstractController
      */
     public function list(Request $request, UserRepository $userRepository, EventRepository $eventRepository)
     {
-        $researchParameters = $request->query->get('user');
+        $researchParameters['user']  = $request->query->get('user');
+        $researchParameters['order'] = $request->query->get('order');
 
-        $user = $userRepository->findOneBy(["id" => $researchParameters]);
+        $user = $userRepository->findOneBy(["id" => $researchParameters['user']]);
         
         $events = $user->getEvents();
+        
+        $events = $eventRepository->findByUser($user, $researchParameters['order']);
+
         return $this->json($events, Response::HTTP_OK, [], ["groups" => "event_get"]);
     }
 

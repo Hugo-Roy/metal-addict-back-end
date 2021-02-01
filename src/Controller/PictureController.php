@@ -8,6 +8,7 @@ use App\Entity\Picture;
 use App\Repository\EventRepository;
 use App\Service\PictureUploader;
 use App\Repository\PictureRepository;
+use App\Repository\ReviewRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,16 +25,16 @@ class PictureController extends AbstractController
     /**
      * @Route("api/picture", name="picture_list", methods="GET")
      */
-    public function list(Request $request, PictureRepository $pictureRepository, EventRepository $eventRepository, UserRepository $userRepository): Response
+    public function list(Request $request, PictureRepository $pictureRepository, EventRepository $eventRepository, UserRepository $userRepository, ReviewRepository $reviewRepository): Response
     {
         $researchParameters = $request->query->all();
 
-        if (!isset($researchParameters['user']) && !isset($researchParameters['setlistId']))
+        if (!isset($researchParameters['user']) && !isset($researchParameters['setlistId']) && !isset($researchParameters['review']))
         {
-            return $this->json('User && Event Parameters are missing');
+            return $this->json('User && Event && Review Parameters are missing');
 
         }
-        else if (!isset($researchParameters['user']) && isset($researchParameters['setlistId']))
+        else if (!isset($researchParameters['user']) && isset($researchParameters['setlistId']) && !isset($researchParameters['review']))
         {
             $event = $eventRepository->findOneBy(['setlistId' => $researchParameters['setlistId'],]);
 
@@ -42,7 +43,7 @@ class PictureController extends AbstractController
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
 
         }
-        else if (isset($researchParameters['user']) && !isset($researchParameters['setlistId']))
+        else if (isset($researchParameters['user']) && !isset($researchParameters['setlistId']) && !isset($researchParameters['review']))
         {
             $user = $userRepository->findOneBy(['id' => $researchParameters['user'],]);
 
@@ -51,7 +52,7 @@ class PictureController extends AbstractController
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
 
         } 
-        else if (isset($researchParameters['user']) && isset($researchParameters['setlistId']))
+        else if (isset($researchParameters['user']) && isset($researchParameters['setlistId']) && !isset($researchParameters['review']))
         {
             $event = $eventRepository->findOneBy(['setlistId' => $researchParameters['setlistId'],]);
 
@@ -59,6 +60,14 @@ class PictureController extends AbstractController
 
             $currentPicture = $pictureRepository->findByUserAndEvent($researchParameters['order'], $user, $event);
 
+            return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
+        }
+        else if (!isset($researchParameters['user']) && !isset($researchParameters['setlistId']) && isset($researchParameters['review']))
+        {
+            $reviewUser = $reviewRepository->findBy(['user' => $researchParameters['review']]);
+            
+            $currentPicture = $pictureRepository->findBy(['user' => $reviewUser], ['createdAt' => $researchParameters['order']]);
+            
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
         }
     }

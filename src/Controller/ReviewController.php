@@ -23,10 +23,10 @@ class ReviewController extends AbstractController
      */
     public function list(Request $request, ReviewRepository $reviewRepository, EventRepository $eventRepository, UserRepository $userRepository): Response
     {
-        $limitParameter = intval($request->query->get('limit'));
-        $orderParameter = $request->query->get('order');
-        $eventParameter = $request->query->get('setlistId');
-        $userParameter  = $request->query->get('user');
+        $limitParameter  = intval($request->query->get('limit'));
+        $orderParameter  = $request->query->get('order');
+        $eventParameter  = $request->query->get('setlistId');
+        $userParameter   = $request->query->get('user');
 
         if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && $userParameter == null) 
         {
@@ -41,7 +41,7 @@ class ReviewController extends AbstractController
             
             $user = $userRepository->findOneBy(["id" => $userParameter]);
 
-            $reviews = $reviewRepository->findBy(["event" => $event, "user" => $user]);
+            $reviews = $reviewRepository->findBy(["event" => $event, "user" => $user], ['createdAt' => $orderParameter]);
 
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         }
@@ -50,7 +50,7 @@ class ReviewController extends AbstractController
         {
             $user = $userRepository->findOneBy(["id" => $userParameter]);
 
-            $reviews = $reviewRepository->findBy(["user" => $user]);
+            $reviews = $reviewRepository->findBy(["user" => $user], ['createdAt' => $orderParameter]);
 
             return $this->json($reviews, Response::HTTP_OK, [], ["groups" => "review_get"]);
         }
