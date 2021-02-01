@@ -11,6 +11,17 @@ class FanartApi
 
     private $apiKey;
 
+    private $emptyContent = [
+        'name' => '',
+        'mbid_id' => '',
+        'albums' => [],
+        'artistthumb' => [],
+        'hdmusiclogo' => [],
+        'musiclogo' => [],
+        'musicbanner' => [],
+        'artistbackground' => [],
+    ];
+
     public function __construct(HttpClientInterface $client, $apiKey)
     {
         $this->client = $client;
@@ -36,7 +47,7 @@ class FanartApi
         );
 
         if($response->getStatusCode() === 404) {
-            return $this->null;
+            return $this->emptyContent;
         }
        
         return $response->toArray();
