@@ -41,7 +41,7 @@ class ReviewController extends AbstractController
             
             $user = $userRepository->findOneBy(["id" => $userParameter]);
 
-            $reviews = $reviewRepository->findBy(["event" => $event, "user" => $user]);
+            $reviews = $reviewRepository->findBy(["event" => $event, "user" => $user], ['createdAt' => $orderParameter]);
 
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         }
@@ -50,7 +50,7 @@ class ReviewController extends AbstractController
         {
             $user = $userRepository->findOneBy(["id" => $userParameter]);
 
-            $reviews = $reviewRepository->findBy(["user" => $user]);
+            $reviews = $reviewRepository->findBy(["user" => $user], ['createdAt' => $orderParameter]);
 
             return $this->json($reviews, Response::HTTP_OK, [], ["groups" => "review_get"]);
         }
