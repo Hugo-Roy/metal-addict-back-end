@@ -25,8 +25,10 @@ You will need a server running with :
     ```
 
 4.  Allow read and write on the directory containing the keys with `sudo chmod -R 777 config/jwt/`.
+
+5.  Allow read and write on the directory that will contain the uploads `sudo chmod -R 777 uploads/pictures/`.
    
-5. Configure the .env.local with `nano .en.local` and write in : 
+6. Configure the .env.local with `nano .en.local` and write in : 
 
     ```
     DATABASE_URL="mysql://username:password@127.0.0.1:3306/share_o_metal"
@@ -35,33 +37,15 @@ You will need a server running with :
     ```
     The JWT passphrase was asked to you at the creation of the SSL keys.
 
-6. create the database `php bin/console doctrine:database:create`.
+7. create the database `php bin/console doctrine:database:create`.
 
-7. run the migrations `php bin/console doctrine:migrations:migrate`.
+8. run the migrations `php bin/console doctrine:migrations:migrate`.
 
-8. import the bands for our database with `php bin/console app:get:bands`.
+9. import the bands for our database with `php bin/console app:get:bands`. Use `--update` for further bands import.
 
-9. check if there is duplicate rows :
-   
-    ```sql
-    SELECT musicbrainz_id, COUNT(*)
-    FROM band
-    GROUP BY musicbrainz_id
-    HAVING COUNT(*) > 1;
-    ```
-11. remove duplicate rows :
-
-    ```sql
-    DELETE t1 FROM band t1
-    INNER JOIN band t2 
-    WHERE 
-    t1.id < t2.id AND 
-    t1.musicbrainz_id = t2.musicbrainz_id;
-    ```
-
-11. create the fixtures (if needed) with `php bin/console doctrine:fixtures:load`
+10. create the fixtures (if needed) with `php bin/console doctrine:fixtures:load`
 
 
-12. clear the cache with `php bin/console cache:clear` and run `php bin/console cache:warmup`.
+11. clear the cache with `php bin/console cache:clear` and run `php bin/console cache:warmup`.
 
 And that's it (for the moment).
