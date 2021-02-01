@@ -99,10 +99,10 @@ class PictureController extends AbstractController
         $picture->setPath($filename);
         $picture->setEvent($event);
         $picture->setUser($user);
-        // $em->persist($picture);
-        // $em->flush();
+        $em->persist($picture);
+        $em->flush();
 
-        return $this->json($picture, Response::HTTP_CREATED, ["groups" => "picture_get"]);
+        return $this->json($picture, Response::HTTP_CREATED, [], ["groups" => "picture_get"]);
     }
 
     /**
