@@ -9,6 +9,8 @@ class SetlistApi
 {
     private $client;
 
+    private $apiKey;
+
     private $emptyEventList = [
         "type" => "setlists",
         "itemsPerPage" => 20,
@@ -17,9 +19,10 @@ class SetlistApi
         "setlist" => [],
     ];
 
-    public function __construct(HttpClientInterface $client)
+    public function __construct(HttpClientInterface $client, $apiKey)
     {
         $this->client = $client;
+        $this->apiKey = $apiKey;
     }
 
     /**
@@ -34,7 +37,7 @@ class SetlistApi
             'https://api.setlist.fm/rest/1.0/search/setlists',
             [
                 'headers' => [
-                    'x-api-key' => '24LpnzjvbvX5AsxiSJS9ZsPkATNgtY2996EH',
+                    'x-api-key' => $this->apiKey,
                     'Accept' =>'application/json',
                     'Accept-Language' => 'fr',
                 ],

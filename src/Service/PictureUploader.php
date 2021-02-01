@@ -11,13 +11,13 @@ class PictureUploader
 {
     private $targetDirectory;
     private $slugger;
-    private $baseUri;
+    private $picturesPath;
 
-    public function __construct($targetDirectory, SluggerInterface $slugger, $baseUri)
+    public function __construct($targetDirectory, SluggerInterface $slugger, $picturesPath)
     {
         $this->targetDirectory = $targetDirectory;
         $this->slugger = $slugger;
-        $this->baseUri = $baseUri;
+        $this->picturesPath = $picturesPath;
     }
 
     public function upload(UploadedFile $file)
@@ -25,7 +25,7 @@ class PictureUploader
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
-        $fullFileName = $this->baseUri . $fileName;
+        $fullFileName = $this->picturesPath . $fileName;
 
         try {
             $file->move($this->getTargetDirectory(), $fileName);
