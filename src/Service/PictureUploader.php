@@ -30,7 +30,7 @@ class PictureUploader
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $e) {
-            //TODO handle exception if something happens during file upload
+            return $e->getMessage();
         }
 
         return $fullFileName;

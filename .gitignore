@@ -20,5 +20,5 @@
 ###< lexik/jwt-authentication-bundle ###
 
 ###> downloaded pictures ###
-/public/uploads/pictures/
+/public/uploads/pictures/*
 ###< downloaded pictures ###
