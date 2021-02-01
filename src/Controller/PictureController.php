@@ -94,9 +94,7 @@ class PictureController extends AbstractController
             return $this->json($violations, 400);
         }
         $filename = $uploader->upload($uploadedFile);
-        if($filename === false) {
-            return $this->json('A problem occured, please try later.', Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+
         $picture = new Picture();
         $picture->setPath($filename);
         $picture->setEvent($event);
@@ -104,7 +102,7 @@ class PictureController extends AbstractController
         // $em->persist($picture);
         // $em->flush();
 
-        return $this->json($picture->getPath(), Response::HTTP_CREATED);
+        return $this->json($picture, Response::HTTP_CREATED, ["groups" => "picture_get"]);
     }
 
     /**
