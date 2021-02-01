@@ -32,7 +32,6 @@ class PictureController extends AbstractController
         if (!isset($researchParameters['user']) && !isset($researchParameters['setlistId']) && !isset($researchParameters['review']))
         {
             return $this->json('User && Event && Review Parameters are missing');
-
         }
         else if (!isset($researchParameters['user']) && isset($researchParameters['setlistId']) && !isset($researchParameters['review']))
         {
@@ -135,3 +134,5 @@ class PictureController extends AbstractController
         return $this->json(Response::HTTP_OK);
     }
 }
+
+
