@@ -31,10 +31,6 @@ class BandController extends AbstractController
 
         $responseArray = $fanartApi->fetchImages($mbId);
 
-        if ($responseArray === null) {
-            return $this->json('Setlist Not Found.', Response::HTTP_NOT_FOUND);
-        }
-
         return $this->json($responseArray);
     }
 }
