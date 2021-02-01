@@ -18,14 +18,13 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Service\PathRewritter;
 
 class PictureController extends AbstractController
 {
     /**
      * @Route("api/picture", name="picture_list", methods="GET")
      */
-    public function list(Request $request, PictureRepository $pictureRepository, EventRepository $eventRepository, UserRepository $userRepository, PathRewritter $pathRewritter): Response
+    public function list(Request $request, PictureRepository $pictureRepository, EventRepository $eventRepository, UserRepository $userRepository): Response
     {
         $researchParameters = $request->query->all();
 
@@ -93,10 +92,10 @@ class PictureController extends AbstractController
         if ($violations->count() > 0) {
             return $this->json($violations, 400);
         }
-        $filename = $uploader->upload($uploadedFile);
+        $path = $uploader->upload($uploadedFile);
 
         $picture = new Picture();
-        $picture->setPath($filename);
+        $picture->setPath($path);
         $picture->setEvent($event);
         $picture->setUser($user);
         $em->persist($picture);

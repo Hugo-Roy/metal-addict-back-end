@@ -28,13 +28,13 @@ class BandController extends AbstractController
     public function getImages(Band $band, FanartApi $fanartApi)
     {
         $mbId = $band->getMusicbrainzId();
-        
-        $responseContent = $fanartApi->fetchImages($mbId);
 
-        if ($responseContent === null) {
+        $responseArray = $fanartApi->fetchImages($mbId);
+
+        if ($responseArray === null) {
             return $this->json('Setlist Not Found.', Response::HTTP_NOT_FOUND);
         }
 
-        return $this->json($responseContent);
+        return $this->json($responseArray);
     }
 }

@@ -5,7 +5,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     pictures_directory: '%kernel.project_dir%/public/uploads/pictures'
-    base_uri: '/uploads/pictures/'
+    pictures_path: '/uploads/pictures/'
+    setlist_api_key: 24LpnzjvbvX5AsxiSJS9ZsPkATNgtY2996EH
+    fanart_api_key: e9c3259ee8254da9e32fbe6bbbc5e047
 
 services:
     # default configuration for services in *this* file
@@ -41,12 +43,15 @@ services:
     App\Service\PictureUploader:
         arguments:
             $targetDirectory: '%pictures_directory%'
-            $baseUri: '%base_uri%'
+            $picturesPath: '%pictures_path%'
 
-    App\Service\PathRewritter:
-        autowire: true
+    App\Service\SetlistApi:
+        arguments: 
+            $apiKey: '%setlist_api_key%'
+
+    App\Service\FanartApi:
         arguments:
-            $baseUri: '%base_uri%'
+            $apiKey: '%fanart_api_key%'
 
     acme_api.event.jwt_created_listener:
         class: App\EventListener\JWTCreatedListener

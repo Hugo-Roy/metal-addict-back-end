@@ -9,17 +9,12 @@ class FanartApi
 {
     private $client;
 
-    private $emptyEventList = [
-        "type" => "setlists",
-        "itemsPerPage" => 20,
-        "page" => 1,
-        "total" => 0,
-        "setlist" => [],
-    ];
+    private $apiKey;
 
-    public function __construct(HttpClientInterface $client)
+    public function __construct(HttpClientInterface $client, $apiKey)
     {
         $this->client = $client;
+        $this->apiKey = $apiKey;
     }
 
     /**
@@ -32,12 +27,10 @@ class FanartApi
             'http://webservice.fanart.tv/v3/music/'.$mbId,
             [
                 'headers' => [
-                    'x-api-key' => '24LpnzjvbvX5AsxiSJS9ZsPkATNgtY2996EH',
                     'Accept' =>'application/json',
-                    'Accept-Language' => 'fr',
                 ],
                 'query' => [
-                    'api_key' => 'e9c3259ee8254da9e32fbe6bbbc5e047',
+                    'api_key' => $this->apiKey,
                 ],
             ]
         );
