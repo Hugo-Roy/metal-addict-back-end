@@ -71,7 +71,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Groups({"user_get"})
+     * @Groups({"user_get", "review_get", "picture_get"})
      */
     private $avatar;
 
