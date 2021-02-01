@@ -57,4 +57,17 @@ class PictureRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByReview($order, $user, $event)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.user = :user')
+            ->andWhere('p.event = :event')
+            ->setParameter('user', $user)
+            ->setParameter('event', $event)
+            ->orderBy('p.createdAt', $order)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

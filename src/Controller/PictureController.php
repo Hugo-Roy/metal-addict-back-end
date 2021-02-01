@@ -64,10 +64,10 @@ class PictureController extends AbstractController
         }
         else if (!isset($researchParameters['user']) && !isset($researchParameters['setlistId']) && isset($researchParameters['review']))
         {
-            $reviewUser = $reviewRepository->findBy(['user' => $researchParameters['review']]);
-            
-            $currentPicture = $pictureRepository->findBy(['user' => $reviewUser], ['createdAt' => $researchParameters['order']]);
-            
+         
+            $review =$reviewRepository->findOneBy(['id' => $researchParameters['review']]);
+
+            $currentPicture = $pictureRepository->findByReview($researchParameters['order'], $review->getUser(), $review->getEvent());
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
         }
     }
