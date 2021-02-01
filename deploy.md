@@ -43,7 +43,7 @@ You will need a server running with :
 
 9. import the bands for our database with `php bin/console app:get:bands`. Use `--update` for further bands import.
 
-10. create the fixtures (if needed) with `php bin/console doctrine:fixtures:load`
+10. create the fixtures (if needed) with `php bin/console doctrine:fixtures:load --append`. Don't forget the `--append` option to keep band rows.
 
 
 11. clear the cache with `php bin/console cache:clear` and run `php bin/console cache:warmup`.
