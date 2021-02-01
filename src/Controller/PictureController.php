@@ -67,6 +67,10 @@ class PictureController extends AbstractController
          
             $review =$reviewRepository->findOneBy(['id' => $researchParameters['review']]);
 
+            if ($review === null) {
+                return $this->json('Review not found.', Response::HTTP_NOT_FOUND);
+            }
+
             $currentPicture = $pictureRepository->findByReview($researchParameters['order'], $review->getUser(), $review->getEvent());
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
         }
