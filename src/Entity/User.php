@@ -85,6 +85,11 @@ class User implements UserInterface
      */
     private $events;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private $verified;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -320,6 +325,18 @@ class User implements UserInterface
     public function removeEvent(Event $event): self
     {
         $this->events->removeElement($event);
+
+        return $this;
+    }
+
+    public function getVerified(): ?bool
+    {
+        return $this->verified;
+    }
+
+    public function setVerified(bool $verified): self
+    {
+        $this->verified = $verified;
 
         return $this;
     }
