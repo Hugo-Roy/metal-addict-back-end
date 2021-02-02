@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Event;
 use App\Service\PictureUploader;
-use App\Repository\EventRepository;
 use App\Repository\UserRepository;
+use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\File;
@@ -17,11 +19,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class UserController extends AbstractController
 {
+    private $verifyEmailHelper;
+    private $mailer;
+    
+    public function __construct(VerifyEmailHelperInterface $helper, MailerInterface $mailer)
+    {
+        $this->verifyEmailHelper = $helper;
+        $this->mailer = $mailer;
+    }
+
     /**
      * @Route("/api/user", name="user_list", methods={"GET"})
      */
@@ -73,6 +86,21 @@ class UserController extends AbstractController
 
         $entityManager->persist($user);
         $entityManager->flush();
+
+        $signatureComponents = $this->verifyEmailHelper->generateSignature(
+            'registration_confirmation_route',
+            $user->getId(),
+            $user->getEmail()
+        );
+    
+        $email = new TemplatedEmail();
+        $email->to($user->getEmail());
+        $email->htmlTemplate('registration/confirmation_email.html.twig');
+        $email->context(['signedUrl' => $signatureComponents->getSignedUrl()]);
+        
+    $this->mailer->send($email);
+
+
     
         return $this->redirectToRoute(
             'user_show',
@@ -81,6 +109,30 @@ class UserController extends AbstractController
             ],
             Response::HTTP_CREATED
         );
+    }
+
+    /**
+     * @Route("/verify", name="registration_confirmation_route")
+     */
+    public function verifyUserEmail(Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+
+        // Do not get the User's Id or Email Address from the Request object
+        try {
+            $this->helper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
+        } catch (VerifyEmailExceptionInterface $e) {
+            $this->addFlash('verify_email_error', $e->getReason());
+
+            return $this->redirectToRoute('event_search');
+        }
+
+        // Mark your user as verified. e.g. switch a User::verified property to true
+
+        $this->addFlash('success', 'Your e-mail address has been verified.');
+
+        return $this->redirectToRoute('app_home');
     }
 
     /**
