@@ -76,8 +76,6 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
         
-        $this->confirmationMailer($mailer, $user);
-    
         return $this->redirectToRoute(
             'user_show',
             [
@@ -208,23 +206,5 @@ class UserController extends AbstractController
         }
 
         return $errorsList;
-    }
-
-    /*
-     * Send email confirmation
-     */
-    public function confirmationMailer(MailerInterface $mailer, $user)
-    {
-        $email = (new TemplatedEmail())
-            ->from('hello@example.com')
-            ->to('hugo.drelon@gmail.com')
-            ->subject('Welcome to Metal Addict !')
-            ->text('Please confirm your email adress.')
-            ->htmlTemplate('email.html.twig')
-            ->context([
-                'user' => $user,
-            ]);
-
-        $mailer->send($email);
     }
 }
