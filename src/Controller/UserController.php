@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Event;
 use App\Service\PictureUploader;
-use App\Repository\EventRepository;
 use App\Repository\UserRepository;
+use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\File;
@@ -50,7 +52,7 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user", name="user_add", methods="POST")
      */
-    public function add(Request $request,UserRepository $userRepository, EntityManagerInterface $entityManager,ValidatorInterface $validator, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
+    public function add(Request $request,UserRepository $userRepository, MailerInterface $mailer, EntityManagerInterface $entityManager,ValidatorInterface $validator, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
     {
         $jsonContent = $request->getContent();
 
@@ -70,9 +72,11 @@ class UserController extends AbstractController
 
         $user->setRoles = ['ROLE_USER'];
         $user->setPassword($userPasswordEncoder->encodePassword($user, $user->getPassword()));
-
+        
         $entityManager->persist($user);
         $entityManager->flush();
+        
+        $this->confirmationMailer($mailer, $user);
     
         return $this->redirectToRoute(
             'user_show',
@@ -205,4 +209,23 @@ class UserController extends AbstractController
 
         return $errorsList;
     }
-}
+
+    /**
+     * Send email confirmation
+     */
+    public function confirmationMailer(MailerInterface $mailer, $user)
+    {
+        $email = (new TemplatedEmail())
+            ->from('hello@example.com')
+            ->to('hugo.drelon@gmail.com')
+            ->subject('Welcome to Metal Addict !')
+            ->text('Please confirm your email adress.')
+            ->htmlTemplate('emails/signup.html.twig')
+            ->context([
+                'expiration_date' => new \DateTime('+7 days'),
+                'user' => $user,
+            ]);
+
+        $mailer->send($email);
+    }
+}   
