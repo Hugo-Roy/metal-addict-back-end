@@ -19,6 +19,9 @@
 
 	<p>To confirm your email address, click the following link:<br>
 
-		<br>Click this link: <a href="{{ path('mailer_confirm', { 'id': user.id }) }}">validation link</a>
+		<br>Click this link: 
+			<a href="http://localhost:8000/email/user/{{user.id}}">
+				validation link
+			</a>
   </p>
 {% endblock %}

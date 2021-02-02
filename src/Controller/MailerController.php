@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,9 +15,11 @@ class MailerController extends AbstractController
    /**
      * @Route("/email/user/{id}", name="mailer_confirm")
      */
-    public function confirm(User $user)
+    public function confirm(User $user, EntityManagerInterface $entityManager)
     {
-        //TODO change "verified" to true in User entity
+        $user->setVerified(true);
+
+        $entityManager->flush();
 
         //TODO redirect to url login page
         return $this->json('user verified');
