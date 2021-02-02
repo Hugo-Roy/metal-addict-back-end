@@ -13,12 +13,12 @@
   }
 </style>
 
-	<p>Thank you for creating a Metal Addict account {#{{username}}#}!</p>
+	<p>Thank you for creating a Metal Addict account {{user.nickname}}!</p>
 
 	<p>Verifying your e-mail address ensures that only you have access to your account information.</p>
 
 	<p>To confirm your email address, click the following link:<br>
 
-		<br>Click this link: <a href="{#{{path('mail_verification')}}#}">validation link</a>
+		<br>Click this link: <a href="{{ path('mailer_confirm', { 'id': user.id }) }}">validation link</a>
   </p>
 {% endblock %}

@@ -19,6 +19,6 @@ class MailerController extends AbstractController
         //TODO change "verified" to true in User entity
 
         //TODO redirect to url login page
-        return $this->redirect('');
+        return $this->json('user verified');
     }
 }
