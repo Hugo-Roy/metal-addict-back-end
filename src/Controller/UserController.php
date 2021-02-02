@@ -210,7 +210,6 @@ class UserController extends AbstractController
         return $errorsList;
     }
 
-    /**
      * Send email confirmation
      */
     public function confirmationMailer(MailerInterface $mailer, $user)
@@ -228,4 +227,4 @@ class UserController extends AbstractController
 
         $mailer->send($email);
     }
-}   
+}

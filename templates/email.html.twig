@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+<style>
+	body {
+    text-align: center;
+		font-family: arial;
+		font-size: 15pt;
+	}
+  a:hover {
+    color: red;
+  }
+</style>
+
+	<p>Thank you for creating a Metal Addict account {#{{username}}#}!</p>
+
+	<p>Verifying your e-mail address ensures that only you have access to your account information.</p>
+
+	<p>To confirm your email address, click the following link:<br>
+
+		<br>Click this link: <a href="{#{{path('mail_verification')}}#}">validation link</a>
+  </p>
+{% endblock %}
