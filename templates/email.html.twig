@@ -1,0 +1,31 @@
+{# src/Blogger/BlogBundle/Resources/views/Page/contact.html.twig #}
+{% extends "base.html.twig" %}
+{% block title %}Contact{% endblock%}
+
+{% block body %}
+
+
+</head>
+
+<style>
+	body {
+		font-family: arial;
+		font-size: 15pt;
+	}
+
+	.email-nameprice {
+		font-family: arial;
+		font-size: 9pt;
+	}
+</style>
+
+	<p>Thank you for creating a Metal Addict account.To complete the registration process, please choose one of the options below to verify your e-mail address.</p>
+
+	<p>Verifying your e-mail address ensures that only you have access to your account information.</p>
+
+	<p>To confirm your email address, click the following link:
+
+		<br>Click this link: "validation link"{#{{site.EMAIL_VERIFICATION_URL_LINK}}#}
+  </p>
+
+</body></html>{% endblock %}

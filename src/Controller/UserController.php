@@ -257,4 +257,12 @@ class UserController extends AbstractController
 
         return $errorsList;
     }
+
+    /**
+     * @Route("/email", name="app_email", methods="GET")
+     */
+    public function renderTest()
+    {
+        return $this->render('email.html.twig');
+    }
 }
