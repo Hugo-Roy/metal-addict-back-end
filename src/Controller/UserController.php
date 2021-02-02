@@ -210,9 +210,8 @@ class UserController extends AbstractController
         return $errorsList;
     }
 
-    /**
-     * Send email confirmation
-     */
+    
+    /* Send email confirmation */
     public function confirmationMailer(MailerInterface $mailer, $user)
     {
         $email = (new TemplatedEmail())
@@ -220,12 +219,11 @@ class UserController extends AbstractController
             ->to('hugo.drelon@gmail.com')
             ->subject('Welcome to Metal Addict !')
             ->text('Please confirm your email adress.')
-            ->htmlTemplate('emails/signup.html.twig')
+            ->htmlTemplate('email.html.twig')
             ->context([
-                'expiration_date' => new \DateTime('+7 days'),
                 'user' => $user,
             ]);
 
         $mailer->send($email);
     }
-}   
+}
