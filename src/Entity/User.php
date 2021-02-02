@@ -90,7 +90,6 @@ class User implements UserInterface
         $this->createdAt = new \DateTime();
         $this->events = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
-        $this->verified = false;
     }
 
     public function getId(): ?int
