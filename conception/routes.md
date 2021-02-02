@@ -15,7 +15,7 @@
 |`/api/review/add`|`POST`|Ajout d'une review|USER|201|done|
 |`/api/review/{id}`|`PUT`|Modification d'une review et de ses données associées|USER(owner)|200, 204 ou 204|done|
 |`/api/review/{id}`|`PATCH`|Modification d'une review et de ses données associées|USER(owner)|200, 204 ou 204|done|
-|`/api/review/{id}`|`DELETE`|Suppression d'une review|USER(owner)|200, 204 ou 404|todo|
+|`/api/review/{id}`|`DELETE`|Suppression d'une review|USER(owner)|200, 204 ou 404|done|
 |`/api/picture/{setlistId}`|`POST`|Ajout d'une photo|USER|201|doing|
 |`/api/picture/{id}`|`DELETE`|Suppression d'une photo|USER(owner)|200, 204 ou 404|done|
 |`/api/band`|`GET`|Récupération de la liste des groupes|VISITOR et USER|200|done|
