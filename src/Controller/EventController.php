@@ -21,7 +21,7 @@ class EventController extends AbstractController
     /**
      * @Route("/api/search/{id}", name="event_search", methods="GET")
      */
-    public function search(Band $band, SetlistApi $setlistApi, Request $request, CountryRepository $countryRepository)
+    public function search(Band $band, SetlistApi $setlistApi, FanartApi $fanartApi, Request $request, CountryRepository $countryRepository)
     {
         $researchParameters = $request->query->all();
 
@@ -56,6 +56,10 @@ class EventController extends AbstractController
         }
 
         $responseContent = $setlistApi->fetchEventsList($newResearchParams);
+
+        $fanartResponse = $fanartApi->fetchImages($researchParameters['artistMbid']);
+
+        $responseContent['bandImages'] = $fanartResponse;
 
         return $this->json($responseContent);
     }
