@@ -577,9 +577,6 @@
     "symfony/yaml": {
         "version": "v5.2.1"
     },
-    "symfonycasts/verify-email-bundle": {
-        "version": "v1.1.1"
-    },
     "twig/extra-bundle": {
         "version": "v3.2.1"
     },
