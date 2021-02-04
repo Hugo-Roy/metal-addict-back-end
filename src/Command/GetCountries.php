@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GetCountries extends Command {
-    protected static $defaultName = 'app:get:bands';
+    protected static $defaultName = 'app:get:countries';
 
     private $setlistApi;
 
