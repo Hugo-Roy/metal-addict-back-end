@@ -42,7 +42,7 @@ class GetCountries extends Command {
         $this->connection->executeQuery('TRUNCATE TABLE country');
         $output->writeln('Country table truncated.');
 
-        $countries = json_decode($this->setlistApi->getCountries());
+        $countries = $this->setlistApi->getCountries();
 
         foreach ($countries as $country) {
             $countryEntity = new Country();
