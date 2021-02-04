@@ -49,6 +49,7 @@ class GetCountries extends Command {
             $countryEntity->setCountryCode($country['code']);
             $countryEntity->setName($country['name']);
             $this->entityManager->persist($countryEntity);
+            $output->writeln($country['name']);
         }
 
         $this->entityManager->flush();
