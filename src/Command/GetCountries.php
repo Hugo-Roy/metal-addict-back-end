@@ -33,7 +33,7 @@ class GetCountries extends Command {
     protected function configure()
     {
         $this->setDescription('Gets countries.')
-            ->setHelp('This command allows you to get all countries avialable in Setlist.fm into your database. ')
+            ->setHelp('This command allows you to get all countries avialable in Setlist.fm into your database. ');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
