@@ -34,7 +34,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"review_get", "user_get", "picture_get"})
-     * @Assert\Length(min=3, max=20, groups={"registration", "update"})
+     * @Assert\Length(min=2, max=20, groups={"registration", "update"})
      */
     private $nickname;
 
