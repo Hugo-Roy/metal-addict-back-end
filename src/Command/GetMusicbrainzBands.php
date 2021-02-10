@@ -72,6 +72,9 @@ class GetMusicbrainzBands extends Command
         // return Command::FAILURE;
     }
 
+    /**
+     * Retrieves and stores bands in the database, return false if there is no more band
+     */
     private function fetchFromMusicbrainz($offset, $output)
     {
         $response = $this->client->request(

@@ -19,6 +19,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ReviewController extends AbstractController
 {
     /**
+     * Renders a list of reviews by given query parameters
+     * 
      * @Route("/api/review", name="review_list", methods="GET")
      */
     public function list(Request $request, ReviewRepository $reviewRepository, EventRepository $eventRepository, UserRepository $userRepository): Response
@@ -28,6 +30,7 @@ class ReviewController extends AbstractController
         $eventParameter  = $request->query->get('setlistId');
         $userParameter   = $request->query->get('user');
 
+        //Checks if setlistId is set and in the correct type
         if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && $userParameter == null) 
         {
             $reviews = $reviewRepository->findByEvent($orderParameter, $eventParameter);
@@ -35,6 +38,8 @@ class ReviewController extends AbstractController
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         }
 
+
+        // Checks if setlistId and user are set
         else if (is_string($eventParameter) && $eventParameter !== '' && ($orderParameter === 'ASC' || $orderParameter === 'DESC') && isset($userParameter) ) 
         {
             $event = $eventRepository->findOneBy(["setlistId" => $eventParameter]);
@@ -46,6 +51,7 @@ class ReviewController extends AbstractController
             return $this->json($reviews, Response::HTTP_OK, [], ['groups' => 'review_get']);
         }
 
+        //Checks if only the user parameter is set
         else if (($orderParameter === 'ASC' || $orderParameter === 'DESC') && (isset($userParameter) && $userParameter !== ""))
         {
             $user = $userRepository->findOneBy(["id" => $userParameter]);
@@ -55,6 +61,7 @@ class ReviewController extends AbstractController
             return $this->json($reviews, Response::HTTP_OK, [], ["groups" => "review_get"]);
         }
 
+        // Limits the number of rendered reviews
         elseif (is_integer($limitParameter) && $limitParameter !== 0 && ($orderParameter === 'ASC' || $orderParameter === 'DESC')) 
         {
             $reviews = $reviewRepository->findByLatest($orderParameter, $limitParameter);
@@ -67,6 +74,8 @@ class ReviewController extends AbstractController
     }
 
     /**
+     * Renders a review and its associated data
+     * 
      * @Route("/api/review/{id}", name="review_show", methods="GET")
      */
     public function show(Review $review)
@@ -75,6 +84,8 @@ class ReviewController extends AbstractController
     }
 
     /**
+     * Adds a review for given event and renrs it
+     * 
      * @Route("/api/review/{setlistId}", name="review_add", methods="POST")
      */
     public function add(Event $event = null, Request $request,ValidatorInterface $validator, SerializerInterface $serializer,ReviewRepository $reviewRepository, EntityManagerInterface $em)
@@ -113,6 +124,8 @@ class ReviewController extends AbstractController
     }
 
     /**
+     * Updates the review and renders it
+     * 
      * @Route("/api/review/{id<\d+>}", name="review_update", methods={"PUT", "PATCH"})
      */
     public function update(Review $review, EntityManagerInterface $em,ValidatorInterface $validator, SerializerInterface $serializer, Request $request)
@@ -138,6 +151,8 @@ class ReviewController extends AbstractController
     }
 
     /**
+     * Deletes a review
+     * 
      * @Route("api/review/{id}", name="review_delete", methods="DELETE")
      */
     public function delete(Review $review, EntityManagerInterface $em)

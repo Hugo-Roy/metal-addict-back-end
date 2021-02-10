@@ -25,6 +25,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
+     * Lists the users
+     * 
      * @Route("/api/user", name="user_list", methods={"GET"})
      */
     public function listUser(EventRepository $eventRepository, Request $request): Response
@@ -42,6 +44,8 @@ class UserController extends AbstractController
     }
 
     /**
+     * Renders a user
+     * 
      * @Route("/api/user/{id}", name="user_show", methods="GET")
      */
     public function show(User $user)
@@ -50,6 +54,8 @@ class UserController extends AbstractController
     }
 
     /**
+     * Registers a user
+     * 
      * @Route("/api/user", name="user_add", methods="POST")
      */
     public function add(Request $request,UserRepository $userRepository, MailerInterface $mailer, EntityManagerInterface $entityManager,ValidatorInterface $validator, SerializerInterface $serializer, UserPasswordEncoderInterface $userPasswordEncoder)
@@ -88,6 +94,8 @@ class UserController extends AbstractController
     }
 
     /**
+     * Updates user information
+     * 
      * @Route("/api/user/{id<\d+>}", name="user_update", methods={"PUT", "PATCH"})
      */
     public function update(User $user, UserPasswordEncoderInterface $userPasswordEncoder, EntityManagerInterface $em, SerializerInterface $serializer, Request $request, ValidatorInterface $validator)
@@ -128,6 +136,8 @@ class UserController extends AbstractController
     }
 
     /**
+     * Adds or replaces a user's avatar
+     * 
      * @Route("/api/user/avatar/{id<\d+>}", name="user_add_avatar", methods={"POST"})
      */
     public function addAvatar(User $user, Request $request, EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader, Filesystem $filesystem)
@@ -169,6 +179,8 @@ class UserController extends AbstractController
     }
 
     /**
+     * Deletes the user's avatar
+     * 
      * @Route("/api/user/avatar/{id<\d+>}", name="user_delete_avatar", methods={"DELETE"})
      */
     public function deleteAvatar(User $user, EntityManagerInterface $em, PictureUploader $uploader, Filesystem $filesystem)
@@ -190,27 +202,6 @@ class UserController extends AbstractController
         return $this->json('No avatar found', Response::HTTP_NOT_FOUND);
     }
 
-    /**
-     * Errors generation
-     */
-    private function generateErrors($errors)
-    {
-        // If there is more than 0 error
-        if(count($errors) > 0)
-        {
-            $errorsList = [];
-
-            // Extracts each errors
-            foreach($errors as $error)
-            {
-                $errorsList[$error->getPropertyPath()] = $error->getMessage();
-            }
-        }
-
-        return $errorsList;
-    }
-
-    
     /* Send email confirmation */
     public function confirmationMailer(MailerInterface $mailer, $user)
     {

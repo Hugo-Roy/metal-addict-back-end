@@ -13,6 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BandController extends AbstractController
 {
     /**
+     * Renders a Json list of all the bands sorted by alphabetical order
+     * 
      * @Route("/api/band", name="band_list", methods="GET")
      */
     public function list(BandRepository $bandRepository): Response
@@ -23,6 +25,8 @@ class BandController extends AbstractController
     }
 
     /**
+     * Renders Json links to images for a given band
+     * 
      * @Route("api/band/{id}", name="band_get_images", methods="GET")
      */
     public function getImages(Band $band, FanartApi $fanartApi)

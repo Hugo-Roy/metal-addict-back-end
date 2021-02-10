@@ -20,6 +20,9 @@ class PictureUploader
         $this->picturesPath = $picturesPath;
     }
 
+    /**
+     * Stores in the file system and renames it
+     */
     public function upload(UploadedFile $file)
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);

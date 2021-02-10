@@ -10,8 +10,6 @@ class PictureVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
-        // replace with your own logic
-        // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, ['delete'])
             && $subject instanceof \App\Entity\Picture;
     }
@@ -24,7 +22,7 @@ class PictureVoter extends Voter
             return false;
         }
 
-        // ... (check conditions and return true to grant permission) ...
+        // check conditions and return true to grant permission
         switch ($attribute) {
             case 'delete':
                 return $subject->getUser() === $user;

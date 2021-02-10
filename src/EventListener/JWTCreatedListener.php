@@ -20,6 +20,8 @@ class JWTCreatedListener {
     }
 
     /**
+     * Adds more information to the JWT Token payload
+     * 
      * @param JWTCreatedEvent $event
      *
      * @return void

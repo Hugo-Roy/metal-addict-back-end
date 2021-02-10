@@ -26,7 +26,7 @@ class SetlistApi
     }
 
     /**
-     * Get a list of events
+     * Gets a list of events
      *
      * @param array $params search parameters
      */
@@ -53,7 +53,7 @@ class SetlistApi
     }
 
     /**
-     * Get one event
+     * Gets one event
      * 
      * @param string $setlistId
      */
@@ -79,7 +79,7 @@ class SetlistApi
     }
 
     /**
-     * Get a complete list of all supported countries
+     * Gets a complete list of all supported countries
      */
     public function getCountries()
     {

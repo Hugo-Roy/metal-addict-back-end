@@ -35,6 +35,9 @@ class AppFixtures extends Fixture
         $this->countryRepository = $countryRepository;
     }
 
+    /**
+     * Resets ids before deleting data
+     */
     private function truncate(Connection $connection)
     {
         // reset ids

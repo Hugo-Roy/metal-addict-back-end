@@ -10,8 +10,6 @@ class ReviewVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
-        // replace with your own logic
-        // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, ['update', 'delete'])
             && $subject instanceof \App\Entity\Review;
     }
@@ -24,12 +22,10 @@ class ReviewVoter extends Voter
             return false;
         }
 
-        // ... (check conditions and return true to grant permission) ...
+        // check conditions and return true to grant permission
         switch ($attribute) {
             case 'update':
             case 'delete':
-                // logic to determine if the user can EDIT
-                // return true or false
                 return $subject->getUser() === $user;
                 break;
         }

@@ -23,16 +23,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PictureController extends AbstractController
 {
     /**
+     * Renders a list of pictures by given query parameters
+     * 
      * @Route("api/picture", name="picture_list", methods="GET")
      */
     public function list(Request $request, PictureRepository $pictureRepository, EventRepository $eventRepository, UserRepository $userRepository, ReviewRepository $reviewRepository): Response
     {
         $researchParameters = $request->query->all();
 
+        // If no query parameters are given
         if (!isset($researchParameters['user']) && !isset($researchParameters['setlistId']) && !isset($researchParameters['review']))
         {
             return $this->json('User && Event && Review Parameters are missing');
         }
+
+        // If only the setlistId query parameter is given
         else if (!isset($researchParameters['user']) && isset($researchParameters['setlistId']) && !isset($researchParameters['review']))
         {
             $event = $eventRepository->findOneBy(['setlistId' => $researchParameters['setlistId'],]);
@@ -42,6 +47,8 @@ class PictureController extends AbstractController
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
 
         }
+
+        // If only the user query paramater is given
         else if (isset($researchParameters['user']) && !isset($researchParameters['setlistId']) && !isset($researchParameters['review']))
         {
             $user = $userRepository->findOneBy(['id' => $researchParameters['user'],]);
@@ -51,6 +58,8 @@ class PictureController extends AbstractController
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
 
         } 
+
+        // If both the user and the setlistId query paramaters is given
         else if (isset($researchParameters['user']) && isset($researchParameters['setlistId']) && !isset($researchParameters['review']))
         {
             $event = $eventRepository->findOneBy(['setlistId' => $researchParameters['setlistId'],]);
@@ -61,6 +70,8 @@ class PictureController extends AbstractController
 
             return $this->json($currentPicture, Response::HTTP_OK, [], ["groups" => "picture_get"]);
         }
+
+        // If only the review query parameter is given
         else if (!isset($researchParameters['user']) && !isset($researchParameters['setlistId']) && isset($researchParameters['review']))
         {
          
@@ -76,6 +87,8 @@ class PictureController extends AbstractController
     }
 
     /**
+     * Adds a picture assiociated to a user and an event and render this picture
+     * 
      * @Route("/api/picture/{setlistId}", name="picture_add", methods="POST")
      */
     public function add(Event $event = null, Request $request, EntityManagerInterface $em, ValidatorInterface $validator, PictureUploader $uploader): Response
@@ -117,6 +130,8 @@ class PictureController extends AbstractController
     }
 
     /**
+     * Deletes a picture
+     * 
      * @Route("/api/picture/{id}", name="picture_delete", methods="DELETE")
      */
     public function delete(Picture $picture, EntityManagerInterface $em, PictureUploader $pictureUploader, Filesystem $filesystem)

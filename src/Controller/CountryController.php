@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CountryController extends AbstractController
 {
     /**
+     * Renders a Json list of all the countries sorted by alphabetical order
+     * 
      * @Route("/api/country", name="country_list", methods="GET")
      */
     public function list(CountryRepository $countryRepository): Response
