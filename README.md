@@ -2,7 +2,7 @@
 
 The purpose of this API is to provides datas needed by the front-end application of Share-o-metal.
 
-The URL of this API is `54.162.156.51/Share-O-Metal/public/api`. No public domain has been created yet.
+The URL of this API is `3.80.87.102/Share-O-Metal/public/api`. No public domain has been created yet.
 
 Endpoints have to be prefixed by this URL in any cases.
 
@@ -25,7 +25,7 @@ The authorized method is `GET`.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/search/5?cityName=Paris&venueName=Le%20Zenith&countryId=1&year=2000&p=1
+http://3.80.87.102/Share-O-Metal/public/api/search/5?cityName=Paris&venueName=Le%20Zenith&countryId=1&year=2000&p=1
 
 Click on the link above to see a Json response example.
 
@@ -44,7 +44,7 @@ No query parameter is allowed.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/event/5bd6dfc0
+http://3.80.87.102/Share-O-Metal/public/api/event/5bd6dfc0
 
 Click on the link above to see a Json response example.
 
@@ -82,7 +82,7 @@ The authorized method is `GET`.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/review?limit=6&order=ASC
+http://3.80.87.102/Share-O-Metal/public/api/review?limit=6&order=ASC
 
 Click on the link above to see a Json response example.
 
@@ -101,7 +101,7 @@ No query parameter is allowed.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/review/2
+http://3.80.87.102/Share-O-Metal/public/api/review/2
 
 Click on the link above to see a Json response example.
 
@@ -163,6 +163,19 @@ The authorized methods are `PUT` and `PATCH`.
 
 It works almost the same as review add. Just send the field you want to update with your valid JWT token.
 
+### review delete :
+
+Delete a review. You must send a valid JWT token.
+The authorized method is `DELETE`.
+
+#### endpoint
+
+`/review/{id}`
+
+#### query parameters
+
+No query parameter is allowed.
+
 ### User endpoints
 
 ### user show :
@@ -180,9 +193,32 @@ No query parameter is allowed.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/user/2
+http://3.80.87.102/Share-O-Metal/public/api/user/2
 
 Click on the link above to see a Json response example.
+
+### user add :
+
+Register a user. An email will be sent to validate in the next version.
+The authorized method is `POST`.
+
+#### endpoint
+
+`/user`
+
+#### query parameters
+
+No query parameter is allowed in the URL. Although the request need a Json body such as :
+
+```json
+{
+  "email": "josh@josh.com",
+  "nickname": "My new nickname",
+  "password": "Homm3@is"
+}
+```
+
+The password must contains one of each types ([A-Z], [a-z], [0-9], [!@*$?...]). It has to be at least 8 characters long (and 20 max).
 
 ### user update :
 
@@ -207,11 +243,11 @@ No query parameter is allowed in the URL. Although the request need a Json body 
 }
 ```
 
-No parameter is required in the Json body. Note that if you want to modify the user password, both "oldPassword" and "newPassword" is needed. Changing the avatar is not supported yet.
+No parameter is required in the Json body. Note that if you want to modify the user password, both "oldPassword" and "newPassword" is needed.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/user/2
+http://3.80.87.102/Share-O-Metal/public/api/user/2
 
 //TODO standardise the response with the front-end app.
 
@@ -237,9 +273,28 @@ No query parameter is allowed in the URL as the datas are sent in `POST`. Althou
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/login
+http://3.80.87.102/Share-O-Metal/public/api/login
 
 The response is a JWT token, decode it to get the user id, username, nickname, avatar and biography.
+
+### user avatar :
+
+Add or replace the user's avatar.
+The authorized methods is `POST`.
+
+#### endpoint
+
+`/user/avatar/{id}`
+
+#### query parameters
+
+No query parameter is allowed in the URL. 
+
+#### request
+
+You have to set "Content-Type : multipart/form-data" in the headers with a valid JWT token.
+The key name set in the headers of the uploaded file is 'image'.
+The response is the name of the created picture in the database.
 
 ### Band endpoints
 
@@ -258,7 +313,7 @@ No query parameter is allowed in the URL.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/band
+http://3.80.87.102/Share-O-Metal/public/api/band
 
 Click on the link above to see a Json response example.
 
@@ -279,7 +334,7 @@ No query parameter is allowed in the URL.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/country
+http://3.80.87.102/Share-O-Metal/public/api/country
 
 Click on the link above to see a Json response example.
 
@@ -301,8 +356,8 @@ No query parameter is allowed in the URL.
 #### request
 
 You have to set "Content-Type : multipart/form-data" in the headers with a valid JWT token.
-The key name set in the headers of the uploaded file is 'picture'.
-The response is the name of the created picture in the database.
+The key name set in the headers of the uploaded file is 'image'.
+The response is the picture created in the database.
 
 ### picture delete :
 
