@@ -15,10 +15,17 @@ class SecurityTest extends WebTestCase
             "password" => "lemmy"
         ];
 
-        $client->xmlHttpRequest('POST', '/api/login', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($credentials));
+        $client->request(
+            'POST', 
+            '/api/login', 
+            [], 
+            [],
+            ['CONTENT_TYPE' => 'application/json'], 
+            json_encode($credentials)
+        );
 
         $data = json_decode($client->getResponse()->getContent(), true);
-    
+
         $client->setServerParameter('HTTP_Authorization', sprintf('Bearer %s', $data['token']));
 
         return $client;
@@ -27,16 +34,22 @@ class SecurityTest extends WebTestCase
     public function testUserUpdate()
     {
         $body = [
-            "oldPassword" => "lemmy",
-	        "newPassword" => "killmister"
+            "nickname" => "lemmyMe",
         ];
 
         $client = $this->createAuthenticatedClient();
 
-        $client->xmlHttpRequest('PATCH', '/api/user/1');
+        $client->xmlHttpRequest(
+            'PATCH', 
+            '/api/user/1',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'], 
+            json_encode($body)
+        );
         
         $response = $client->getResponse();
-        dd($response);
+        dd($response->getContent());
         $this->assertJson($response->getContent());
         
         $this->assertResponseIsSuccessful();
