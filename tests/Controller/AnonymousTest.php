@@ -75,8 +75,6 @@ class AnonymousTest extends WebTestCase
             'user',
         ];
 
-        $setlistId = '6b876a6e';
-
         foreach ($types as $type) {
             yield ['/api/' . $type . '/1'];
         }
