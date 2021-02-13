@@ -39,4 +39,22 @@ class EventControllerTest extends WebTestCase
         
         $this->assertResponseIsSuccessful();
     }
+
+    public function testListEvent()
+    {
+        $client = static::createClient();
+
+        $queryParameters = [
+            'user' => 1,
+            'order' => 'ASC',
+        ];
+        
+        $client->xmlHttpRequest('GET', '/api/event', $queryParameters);
+
+        $response = $client->getResponse();
+        
+        $this->assertJson($response->getContent());
+        
+        $this->assertResponseIsSuccessful();
+    }
 }
