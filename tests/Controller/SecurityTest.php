@@ -49,9 +49,9 @@ class SecurityTest extends WebTestCase
         );
         
         $response = $client->getResponse();
-        dd($response->getContent());
-        $this->assertJson($response->getContent());
-        
+
         $this->assertResponseIsSuccessful();
+        
+        $this->assertSame(json_encode(["message" => "Informations modifiées."]), $response->getContent());
     }
 }
