@@ -72,8 +72,6 @@ class SecurityTest extends WebTestCase
             json_encode($body)
         );
         
-        $response = $client->getResponse();
-
         $this->assertResponseStatusCodeSame(403);
     }
 }
