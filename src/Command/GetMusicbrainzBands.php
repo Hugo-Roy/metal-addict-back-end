@@ -42,7 +42,8 @@ class GetMusicbrainzBands extends Command
     {
         $this->setDescription('Gets bands.')
             ->setHelp('This command allows you to get all metal bands from Musicbrainz into your database. ')
-            ->addOption('update', null, InputOption::VALUE_NONE, 'To update the band database instead of truncate and replace it.');
+            ->addOption('update', null, InputOption::VALUE_NONE, 'To update the band database instead of truncate and replace it.')
+            ->addArgument('genre', InputArgument::OPTIONAL, 'The genre to import, the default value is metal');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -54,11 +55,12 @@ class GetMusicbrainzBands extends Command
             $output->writeln('Band table truncated.');
         }
 
+        $genre = $input->getArgument('genre') ?? 'metal';
         $isBands = false;
         $offset = 1;
 
         while ($isBands === false) {
-            $isBands = $this->fetchFromMusicbrainz($offset, $output);
+            $isBands = $this->fetchFromMusicbrainz($offset, $output, $genre);
             $offset += 100;
             usleep(500000);
         };
@@ -72,11 +74,11 @@ class GetMusicbrainzBands extends Command
         // return Command::FAILURE;
     }
 
-    private function fetchFromMusicbrainz($offset, $output)
+    private function fetchFromMusicbrainz($offset, $output, $genre)
     {
         $response = $this->client->request(
             'GET',
-            'https://musicbrainz.org/ws/2/artist?query=tag:metal&limit=100&offset='.$offset,
+            'https://musicbrainz.org/ws/2/artist?query=tag:'.$genre.'&limit=100&offset='.$offset,
             [
                 'headers' => [
                     'Accept' =>'application/json',
