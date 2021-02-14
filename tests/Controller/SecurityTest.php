@@ -54,4 +54,26 @@ class SecurityTest extends WebTestCase
         
         $this->assertSame(json_encode(["message" => "Informations modifiées."]), $response->getContent());
     }
+
+    public function testWrongUserUpdate()
+    {
+        $body = [
+            "nickname" => "lemmyMe",
+        ];
+
+        $client = $this->createAuthenticatedClient();
+
+        $client->xmlHttpRequest(
+            'PATCH', 
+            '/api/user/2',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'], 
+            json_encode($body)
+        );
+        
+        $response = $client->getResponse();
+
+        $this->assertResponseStatusCodeSame(403);
+    }
 }
