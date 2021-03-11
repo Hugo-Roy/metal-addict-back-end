@@ -25,7 +25,7 @@ The authorized method is `GET`.
 
 #### request URL example
 
-http:// 3.80.87.102/Share-O-Metal/public/api/search/5?cityName=Paris&venueName=Le%20Zenith&countryId=1&year=2000&p=1
+http://3.80.87.102/Share-O-Metal/public/api/search/5?cityName=Paris&venueName=Le%20Zenith&countryId=1&year=2000&p=1
 
 Click on the link above to see a Json response example.
 
