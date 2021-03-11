@@ -2,7 +2,7 @@
 
 The purpose of this API is to provides datas needed by the front-end application of Share-o-metal.
 
-The URL of this API is `54.162.156.51/Share-O-Metal/public/api`. No public domain has been created yet.
+The URL of this API is `3.80.87.102/Share-O-Metal/public/api`. No public domain has been created yet.
 
 Endpoints have to be prefixed by this URL in any cases.
 
@@ -25,7 +25,7 @@ The authorized method is `GET`.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/search/5?cityName=Paris&venueName=Le%20Zenith&countryId=1&year=2000&p=1
+http:// 3.80.87.102/Share-O-Metal/public/api/search/5?cityName=Paris&venueName=Le%20Zenith&countryId=1&year=2000&p=1
 
 Click on the link above to see a Json response example.
 
@@ -44,7 +44,7 @@ No query parameter is allowed.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/event/5bd6dfc0
+http://3.80.87.102/Share-O-Metal/public/api/event/5bd6dfc0
 
 Click on the link above to see a Json response example.
 
@@ -82,7 +82,7 @@ The authorized method is `GET`.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/review?limit=6&order=ASC
+http://3.80.87.102/Share-O-Metal/public/api/review?limit=6&order=ASC
 
 Click on the link above to see a Json response example.
 
@@ -101,7 +101,7 @@ No query parameter is allowed.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/review/2
+http://3.80.87.102/Share-O-Metal/public/api/review/2
 
 Click on the link above to see a Json response example.
 
@@ -180,7 +180,7 @@ No query parameter is allowed.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/user/2
+http://3.80.87.102/Share-O-Metal/public/api/user/2
 
 Click on the link above to see a Json response example.
 
@@ -211,7 +211,7 @@ No parameter is required in the Json body. Note that if you want to modify the u
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/user/2
+http://3.80.87.102/Share-O-Metal/public/api/user/2
 
 //TODO standardise the response with the front-end app.
 
@@ -237,7 +237,7 @@ No query parameter is allowed in the URL as the datas are sent in `POST`. Althou
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/login
+http://3.80.87.102/Share-O-Metal/public/api/login
 
 The response is a JWT token, decode it to get the user id, username, nickname, avatar and biography.
 
@@ -258,7 +258,7 @@ No query parameter is allowed in the URL.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/band
+http://3.80.87.102/Share-O-Metal/public/api/band
 
 Click on the link above to see a Json response example.
 
@@ -279,7 +279,7 @@ No query parameter is allowed in the URL.
 
 #### request URL example
 
-http://54.162.156.51/Share-O-Metal/public/api/country
+http://3.80.87.102/Share-O-Metal/public/api/country
 
 Click on the link above to see a Json response example.
 
