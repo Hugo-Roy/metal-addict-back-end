@@ -1,4 +1,4 @@
-# SHARE-O-METAL API
+4# SHARE-O-METAL API
 
 The purpose of this API is to provides datas needed by the front-end application of Share-o-metal.
 
@@ -101,7 +101,7 @@ No query parameter is allowed.
 
 #### request URL example
 
-http://3.80.87.102/Share-O-Metal/public/api/review/2
+http://3.80.87.102/Share-O-Metal/public/api/review/1
 
 Click on the link above to see a Json response example.
 
